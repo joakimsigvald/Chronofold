@@ -2,5 +2,5 @@
 
 public interface IVacuumService
 {
-    Monad[] GetMonads();
+    IEnumerable<Monad> CreateMonads();
 }

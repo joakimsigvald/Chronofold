@@ -1,3 +1,3 @@
 ﻿namespace Applique.Chronofold.Contract;
 
-public record Monad(int Id, double X, double Y);
+public record Monad(string Id, double X, double Y);
