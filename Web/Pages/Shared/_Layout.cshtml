@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronofold - Vacuum Observatory</title>
+    <script src="~/lib/d3/d3_7_9_0.min.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #0f0f0f; color: #eee; overflow: hidden; font-family: sans-serif; }
+        #canvas-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <main role="main">
+        @RenderBody()
+    </main>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

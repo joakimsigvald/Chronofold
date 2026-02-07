@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  <AssemblyName>Applique.Chronofold.Core</AssemblyName>
+	  <RootNamespace>Applique.Chronofold.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>
