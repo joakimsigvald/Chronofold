@@ -5,11 +5,11 @@ namespace Applique.Chronofold.Api;
 
 [ApiController]
 [Route("api/vacuum")]
-public class VacuumController : ControllerBase
+public class VacuumController(IVacuumService service) : ControllerBase
 {
     [HttpGet("version")]
     public string GetVersion() => "Chronofold API v0.0.1";
 
     [HttpGet("monads")]
-    public VacuumState GetMonads() => new([new Monad(1, 0, 0)]);
+    public VacuumState GetMonads() => new(service.GetMonads());
 }

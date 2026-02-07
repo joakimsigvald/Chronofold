@@ -8,4 +8,8 @@
 	  <RootNamespace>Applique.Chronofold.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\Contract.csproj" />
+  </ItemGroup>
+
 </Project>
