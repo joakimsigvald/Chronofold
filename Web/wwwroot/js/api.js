@@ -4,9 +4,8 @@
         return await response.text();
     },
 
-    async getMonads() {
-        const response = await fetch('/api/vacuum/monads');
-        const data = await response.json();
-        return data.monads;
+    async getVacuum() {
+        const response = await fetch('/api/vacuum');
+        return await response.json();
     }
 };

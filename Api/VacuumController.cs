@@ -10,6 +10,6 @@ public class VacuumController(IVacuumService service) : ControllerBase
     [HttpGet("version")]
     public string GetVersion() => "Chronofold API v0.0.1";
 
-    [HttpGet("monads")]
-    public VacuumState GetMonads() => new([..service.CreateMonads()]);
+    [HttpGet()]
+    public VacuumState GetVacuum() => service.CreateVacuum();
 }

@@ -2,5 +2,5 @@
 
 public interface IVacuumService
 {
-    IEnumerable<Monad> CreateMonads();
+    VacuumState CreateVacuum();
 }

@@ -1,9 +1,9 @@
 ﻿const Observatory = {
-    state: {
+    vacuum: {
         monads: [],
-        scale: 50
     },
     stage: {
+        scale: 50,
         svg: null,
         g: null
     },
@@ -15,9 +15,9 @@
             const version = await ChronofoldApi.getVersion();
             console.log("Backend:", version);
 
-            this.state.monads = await ChronofoldApi.getMonads();
-            this.createCircles();
-            this.positionCircles();
+            this.vacuum = await ChronofoldApi.getVacuum();
+            this.renderUniverse();
+            this.scaleUniverse();
 
         } catch (error) {
             console.error("Initialization failure:", error);
@@ -25,27 +25,53 @@
     },
 
     onResize() {
-        this.state.scale = window.innerWidth * 0.02;
-        this.positionCircles();
+        this.stage.scale = window.innerWidth * 0.02;
+        this.scaleUniverse();
     },
 
-    createCircles() {
+    renderUniverse() {
+        const view = this.renderVacuum();
+        this.renderMonads(view);
+        this.renderLinks(view);
+    },
+
+    renderVacuum() {
         const svg = d3.select("#universe")
             .attr("width", window.innerWidth)
             .attr("height", window.innerHeight);
         svg.selectAll("*").remove();
-        const view = svg.append("g");
-        view.selectAll("circle")
-            .data(this.state.monads)
+        return svg.append("g");
+    },
+
+    renderMonads(view) {
+        view.append("g").attr("class", "monads-layer")
+            .selectAll("circle")
+            .data(this.vacuum.monads)
             .enter()
             .append("circle")
+            .attr("class", "monad")
             .attr("fill", "#a0a0a0")
             .attr("stroke", "#444444")
             .attr("stroke-width", 2);
     },
 
-    positionCircles() {
-        const scale = this.state.scale;
+    renderLinks(view) {
+        view.append("g").attr("class", "links-layer")
+            .selectAll("circle")
+            .data(this.vacuum.links)
+            .enter()
+            .append("circle")
+            .attr("class", "link")
+            .attr("fill", "#444444"); // Darker/smaller connection point
+    },
+
+    scaleUniverse() {
+        this.scaleVacuum();
+        this.scaleMonads();
+        this.scaleLinks();
+    },
+
+    scaleVacuum() {
         const w = window.innerWidth;
         const h = window.innerHeight;
         const svg = d3.select("#universe")
@@ -53,11 +79,24 @@
             .attr("height", h);
         svg.select("g")
             .attr("transform", `translate(${w / 2}, ${h / 2})`);
-        d3.select("#universe g").selectAll("circle")
-            .data(this.state.monads)
+    },
+
+    scaleMonads() {
+        const scale = this.stage.scale;
+        d3.select(".monads-layer").selectAll("circle")
+            .data(this.vacuum.monads)
             .attr("cx", d => d.x * scale)
             .attr("cy", d => d.y * scale)
             .attr("r", scale);
+    },
+
+    scaleLinks() {
+        const scale = this.stage.scale;
+        d3.select(".links-layer").selectAll("circle")
+            .data(this.vacuum.links)
+            .attr("cx", d => d.x * scale)
+            .attr("cy", d => d.y * scale)
+            .attr("r", 0.4 * scale);
     }
 };
 
