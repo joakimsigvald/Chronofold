@@ -10,11 +10,9 @@ internal record Coordinate(int LinearIndex, int Row, int Col, int Width)
     internal int ComputeRadialIndex()
     {
         var ring = ComputeRing();
-        if (ring == 0)
-            return 0;
-
-        var step = ComputeStep();
-        return CountInside() + step;
+        return ring == 0 
+            ? 0 
+            : CountInside() + ComputeStep();
 
         int ComputeRing()
         {
@@ -26,16 +24,16 @@ internal record Coordinate(int LinearIndex, int Row, int Col, int Width)
         int ComputeStep()
         {
             if (Row <= 0 && X > Row)
-                return (X + Row) / 2 + ring - 1;
+                return (X + Row) / 2 + ring;
             if (X > 0 && X >= Row)
-                return X + 2 * Row - 1;
+                return X + 2 * Row;
             if (-X <= Row)
-                return (Row - X) / 2 + 3 * ring - 1;
+                return (Row - X) / 2 + 3 * ring;
             if (Row > 0)
-                return Row - 2 * X + ring - 1;
-            return -X - 2 * Row + 3 * ring - 1;
+                return Row - 2 * X + ring;
+            return -X - 2 * Row + 3 * ring;
         }
 
-        int CountInside() => 3 * ring * (ring - 1) + 1;
+        int CountInside() => 3 * ring * (ring - 1);
     }
 }
