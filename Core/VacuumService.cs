@@ -6,42 +6,37 @@ public class VacuumService : IVacuumService
 {
     public Vacuum CreateVacuum(int depth)
     {
-        Monad[] monads = [.. CreateMonads()];
-        Link[] links = [.. CreateLinks(monads)];
+        Coordinate[] coordinates = [.. GetCoordinates()];
+        Monad[] monads = [.. coordinates.Select(CreateMonad)];
+        Link[] links = [.. coordinates.SelectMany(CreateLinks)];
         return new(monads, links);
 
-        IEnumerable<Monad> CreateMonads()
+        IEnumerable<Link> CreateLinks(Coordinate c)
         {
-            int count = 0;
-            for (int row = -depth; row <= depth; row++)
-            {
-                int width = 2 * depth + 1 - Math.Abs(row);
-                double xOffset = 1 - width;
-                for (int col = 0; col < width; col++)
-                    yield return new($"{++count}", 2 * col + xOffset, Math.Sqrt(3) * row);
-            }
+            if (c.Col < c.Width - 1)
+                yield return new(monads[c.Index], monads[c.Index + 1]);
+            if (c.Row == depth)
+                yield break;
+
+            var offset = c.Row < 0 ? c.Width : c.Width - 1;
+            if (c.Col > 0 || c.Row < 0)
+                yield return new(monads[c.Index], monads[c.Index + offset]);
+            if (c.Col < c.Width - 1 || c.Row < 0)
+                yield return new(monads[c.Index], monads[c.Index + offset + 1]);
         }
 
-        IEnumerable<Link> CreateLinks(Monad[] monads)
+        IEnumerable<Coordinate> GetCoordinates()
         {
             int count = 0;
             for (int row = -depth; row <= depth; row++)
             {
                 int width = 2 * depth + 1 - Math.Abs(row);
                 for (int col = 0; col < width; col++)
-                {
-                    var index = count++;
-                    var offset = row < 0 ? width : width - 1;
-                    if (col < width - 1)
-                        yield return new(monads[index], monads[index + 1]);
-                    if (row == depth)
-                        continue;
-                    if (col > 0 || row < 0)
-                        yield return new(monads[index], monads[index + offset]);
-                    if (col < width - 1 || row < 0)
-                        yield return new(monads[index], monads[index + offset + 1]);
-                }
+                    yield return new(count++, row, col, width);
             }
         }
     }
+
+    private static Monad CreateMonad(Coordinate c)
+        => new($"{c.Index + 1}", 2 * c.Col + 1 - c.Width, Math.Sqrt(3) * c.Row);
 }
