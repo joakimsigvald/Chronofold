@@ -1,4 +1,9 @@
 ﻿const Observatory = {
+    black: "#050505",
+    darkgrey: "#444444",
+    lightgrey: "#a0a0a0",
+    white: "#ffffff",
+
     vacuum: {
         monads: [],
     },
@@ -30,6 +35,7 @@
         this.stage.view = this.renderVacuum();
         this.renderMonads();
         this.renderLinks();
+        this.renderLabels();
     },
 
     renderVacuum() {
@@ -41,11 +47,11 @@
     },
 
     renderMonads() {
-        this.renderCircles('monad', this.vacuum.monads, "#a0a0a0");
+        this.renderCircles('monad', this.vacuum.monads, this.lightgrey);
     },
 
     renderLinks() {
-        this.renderCircles('link', this.vacuum.links, "#444444");
+        this.renderCircles('link', this.vacuum.links, this.darkgrey);
     },
 
     renderCircles(type, circles, color) {
@@ -58,10 +64,26 @@
             .attr("fill", color);
     },
 
+    renderLabels() {
+        this.stage.view.append("g").attr("class", "labels-layer")
+            .selectAll("text")
+            .data(this.vacuum.monads)
+            .enter()
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr("fill", this.black)
+            .style("font-family", "sans-serif")
+            .style("font-weight", "bold")
+            .style("pointer-events", "none")
+            .text(d => d.id);
+    },
+
     scaleUniverse() {
         this.scaleVacuum();
         this.scaleMonads();
         this.scaleLinks();
+        this.scaleLabels();
     },
 
     scaleVacuum() {
@@ -89,6 +111,15 @@
             .attr("cx", d => d.x * scale)
             .attr("cy", d => d.y * scale)
             .attr("r", size * scale);
+    },
+
+    scaleLabels() {
+        const scale = this.stage.scale;
+        d3.select(".labels-layer").selectAll("text")
+            .data(this.vacuum.monads)
+            .attr("x", d => d.x * scale)
+            .attr("y", d => d.y * scale)
+            .style("font-size", `${scale * 0.5}px`); // Diameter is 2*scale, so this is ~45%
     }
 };
 

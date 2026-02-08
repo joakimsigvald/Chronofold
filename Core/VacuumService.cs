@@ -39,6 +39,5 @@ public class VacuumService : IVacuumService
         }
     }
 
-    private static Monad CreateMonad(Coordinate c)
-        => new($"{c.Index + 1}", 2 * c.Col + 1 - c.Width, _sqrt3 * c.Row);
+    private static Monad CreateMonad(Coordinate c) => new(c.Index, 2 * c.Col + 1 - c.Width, _sqrt3 * c.Row);
 }
