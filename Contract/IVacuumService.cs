@@ -2,5 +2,5 @@
 
 public interface IVacuumService
 {
-    VacuumState CreateVacuum();
+    Vacuum CreateVacuum(int depth);
 }

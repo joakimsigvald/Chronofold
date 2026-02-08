@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Api/Api.csproj" />
-  <Project Path="Web/Web.csproj" />
   <Project Path="Contract/Contract.csproj" />
+  <Project Path="Core.Test/Core.Test.csproj" Id="622aef24-196c-406e-835a-6da8dd7d7ceb" />
   <Project Path="Core/Core.csproj" />
+  <Project Path="Web/Web.csproj" />
 </Solution>

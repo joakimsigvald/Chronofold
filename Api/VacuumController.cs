@@ -7,9 +7,6 @@ namespace Applique.Chronofold.Api;
 [Route("api/vacuum")]
 public class VacuumController(IVacuumService service) : ControllerBase
 {
-    [HttpGet("version")]
-    public string GetVersion() => "Chronofold API v0.0.1";
-
     [HttpGet()]
-    public VacuumState GetVacuum() => service.CreateVacuum();
+    public Vacuum GetVacuum() => service.CreateVacuum(4);
 }
