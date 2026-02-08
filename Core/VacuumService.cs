@@ -4,6 +4,8 @@ namespace Applique.Chronofold.Core;
 
 public class VacuumService : IVacuumService
 {
+    private static readonly double _sqrt3 = Math.Sqrt(3);
+
     public Vacuum CreateVacuum(int depth)
     {
         Coordinate[] coordinates = [.. GetCoordinates()];
@@ -38,5 +40,5 @@ public class VacuumService : IVacuumService
     }
 
     private static Monad CreateMonad(Coordinate c)
-        => new($"{c.Index + 1}", 2 * c.Col + 1 - c.Width, Math.Sqrt(3) * c.Row);
+        => new($"{c.Index + 1}", 2 * c.Col + 1 - c.Width, _sqrt3 * c.Row);
 }
