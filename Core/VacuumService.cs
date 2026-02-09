@@ -4,39 +4,29 @@ namespace Applique.Chronofold.Core;
 
 public class VacuumService : IVacuumService
 {
-    public Vacuum CreateVacuum(int depth)
+    public Contract.View.Vacuum CreateVacuum(int depth)
     {
-        Coordinate[] coordinates = [.. GetCoordinates()];
-        Monad[] monads = [.. coordinates.Select(CreateMonad)];
-        Link[] links = [.. coordinates.SelectMany(CreateLinks)];
-        return new(monads, links);
-
-        IEnumerable<Coordinate> GetCoordinates()
-        {
-            int count = 0;
-            for (int row = -depth; row <= depth; row++)
-            {
-                int width = 2 * depth + 1 - Math.Abs(row);
-                for (int col = 0; col < width; col++) 
-                    yield return new(count++, row, col, width);
-            }
-        }
-
-        IEnumerable<Link> CreateLinks(Coordinate c)
-        {
-            var index = c.LinearIndex;
-            if (c.Col < c.Width - 1)
-                yield return new(monads[c.LinearIndex], monads[index + 1]);
-            if (c.Row == depth)
-                yield break;
-
-            var offset = c.Row < 0 ? c.Width : c.Width - 1;
-            if (c.Col > 0 || c.Row < 0)
-                yield return new(monads[index], monads[index + offset]);
-            if (c.Col < c.Width - 1 || c.Row < 0)
-                yield return new(monads[index], monads[index + offset + 1]);
-        }
+        var vacuum = VacuumGenerator.CreateVacuum(depth);
+        return new([.. vacuum.Monads.Select(ToView)], [.. vacuum.Links.Select(ToView)]);
     }
 
-    private static Monad CreateMonad(Coordinate c) => new(c.LinearIndex, c.ComputeRadialIndex(), c.X, c.Y);
+    private static Contract.View.Monad ToView(Model.Monad monad) => new(GetId(monad), monad.X, monad.Y);
+
+    private static Contract.View.Link ToView(Model.Link link) => new(GetId(link), GetX(link), GetY(link), GetColor(link));
+
+    public static double GetX(Model.Link link) => (link.Left.X + link.Right.X) / 2;
+    public static double GetY(Model.Link link) => (link.Left.Y + link.Right.Y) / 2;
+    public static string GetId(Model.Monad monad) => $"{monad.RadialIndex + 1}";
+    public static string GetId(Model.Link link) => $"{link.Index + 1}";
+    public static string GetColor(Model.Link link) 
+        => link.Color switch 
+        {
+            LinkColor.Red => "red",
+            LinkColor.Green => "green",
+            LinkColor.Blue => "blue",
+            LinkColor.Cyan => "cyan",
+            LinkColor.Magenta => "magenta",
+            LinkColor.Yellow=> "yellow",
+            _ => throw new NotImplementedException($"{link.Color}")
+        };
 }

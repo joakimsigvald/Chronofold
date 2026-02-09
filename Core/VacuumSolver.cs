@@ -1,0 +1,33 @@
+﻿using Applique.Chronofold.Contract;
+using Applique.Chronofold.Core.Model;
+namespace Applique.Chronofold.Core;
+
+public class VacuumSolver(Monad[] monads, Link[] links)
+{
+    public void ApplyNeighbours()
+    {
+        Dictionary<int, Link[]> neighbours = GetNeighbours();
+        foreach (var monad in monads) 
+        {
+            monad.Links = neighbours.TryGetValue(monad.LinearIndex, out var val) 
+                ? [..val.OrderBy(l => l.Index)] 
+                : [];
+            monad.Neighbours = [.. monad.Links.Select(l => l.OtherHalf(monad))];
+        }
+    }
+
+    public void ApplyColors()
+    {
+        foreach (var link in links)
+        {
+            link.Color = LinkColor.Blue;
+        }
+    }
+
+    Dictionary<int, Link[]> GetNeighbours()
+        => links
+        .Select(l => (m: l.Left, l))
+        .Concat(links.Select(l => (m: l.Right, l)))
+        .GroupBy(p => p.m.LinearIndex)
+        .ToDictionary(g => g.Key, g => g.Select(g => g.l).ToArray());
+}

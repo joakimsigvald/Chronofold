@@ -1,6 +1,6 @@
 ﻿namespace Applique.Chronofold.Core;
 
-internal record Coordinate(int LinearIndex, int Row, int Col, int Width)
+internal record Coordinate(int Index, int Row, int Col, int Width)
 {
     private static readonly double _sqrt3 = Math.Sqrt(3);
 

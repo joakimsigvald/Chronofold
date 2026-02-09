@@ -1,4 +1,5 @@
 ﻿using Applique.Chronofold.Contract;
+using Applique.Chronofold.Contract.View;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Applique.Chronofold.Api;

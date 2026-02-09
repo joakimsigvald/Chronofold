@@ -10,16 +10,6 @@
 
 @section Scripts {
     <script>
-        async function startup() {
-            console.log("Chronofold Observatory: Online");
-            try {
-                const response = await fetch('/api/vacuum/version');
-                const version = await response.text();
-                console.log("Backend: ", version);
-            } catch (error) {
-                console.log("Backend: Connection Failed", error);
-            }
-        }
-        startup();
+        console.log("Chronofold Observatory: Online");
     </script>
 }

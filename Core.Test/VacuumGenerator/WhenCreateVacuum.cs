@@ -1,15 +1,15 @@
-﻿using Applique.Chronofold.Contract;
+﻿using Applique.Chronofold.Core.Model;
 using XspecT;
 using XspecT.Assert;
 using Xunit;
 
-namespace Applique.Chronofold.Core.Test.VacuumService;
+namespace Applique.Chronofold.Core.Test.VacuumGenerator;
 
-public abstract class WhenCreateVacuum : Spec<Core.VacuumService, Vacuum>
+public abstract class WhenCreateVacuum : Spec<Vacuum>
 {
     private static readonly Tag<int> _depth = new(nameof(_depth));
 
-    protected WhenCreateVacuum() => When(_ => _.CreateVacuum(The(_depth)));
+    protected WhenCreateVacuum() => When(_ => Core.VacuumGenerator.CreateVacuum(The(_depth)));
 
     public class GivenDepth_0 : WhenCreateVacuum
     {
@@ -23,10 +23,10 @@ public abstract class WhenCreateVacuum : Spec<Core.VacuumService, Vacuum>
         public GivenDepth_1() => Given(_depth).Is(1);
 
         [Fact]
-        public void ThenHasSevenMonads_WithSuccessiveIds()
+        public void ThenHasSevenMonads_WithRadialIndices()
         {
             Result.Monads.Has().Count(7);
-            Result.Monads.Select(m => m.Id).Is().EqualTo(["7", "2", "6", "1", "3", "5", "4"]);
+            Result.Monads.Select(m => m.RadialIndex).Is().EqualTo([6, 1, 5, 0, 2, 4, 3]);
         }
 
         [Fact] public void ThenHas_12_Links() => Result.Links.Has().Count(12);
@@ -49,6 +49,17 @@ public abstract class WhenCreateVacuum : Spec<Core.VacuumService, Vacuum>
             linkedNodes[4].Is(3);
             linkedNodes[5].Is(3);
             linkedNodes[6].Is(3);
+
+            var centerMonad = Result.Monads[3];
+            Monad[] peripheralMonads = [.. Result.Monads.Except([centerMonad])];
+            var links = centerMonad.Links;
+
+            centerMonad.Neighbours.Is().EquivalentTo(peripheralMonads);
+            links.Has().Count(6);
+            links[..3].Select(l => l.Left).Is().EqualTo(centerMonad.Neighbours[..3]);
+            links[3..].Select(l => l.Right).Is().EqualTo(centerMonad.Neighbours[3..]);
+            links[..3].Select(l => l.Right).Has().All(m => m == centerMonad);
+            links[3..].Select(l => l.Left).Has().All(m => m == centerMonad);
         }
     }
 

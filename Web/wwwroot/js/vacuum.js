@@ -2,7 +2,7 @@
     black: "#050505",
     darkgrey: "#444444",
     lightgrey: "#a0a0a0",
-    white: "#ffffff",
+    white: "#d0d0d0",
 
     vacuum: {
         monads: [],
@@ -47,32 +47,43 @@
     },
 
     renderMonads() {
-        this.renderCircles('monad', this.vacuum.monads, this.lightgrey);
+        this.renderCircles('monad', this.vacuum.monads, _ => this.lightgrey);
     },
 
     renderLinks() {
-        this.renderCircles('link', this.vacuum.links, this.darkgrey);
+        this.renderCircles('link', this.vacuum.links, d => this.getLinkColor(d));
     },
 
-    renderCircles(type, circles, color) {
+    renderCircles(type, circles, getColor) {
         this.stage.view.append("g").attr("class", `${type}s-layer`)
             .selectAll("circle")
             .data(circles)
             .enter()
             .append("circle")
             .attr("class", type)
-            .attr("fill", color);
+            .attr("fill", getColor);
+    },
+
+    getLinkColor(link) {
+        console.log(link.color);
+        return link.isActive && link.color || this.darkgrey;
     },
 
     renderLabels() {
-        this.stage.view.append("g").attr("class", "labels-layer")
-            .selectAll("text")
-            .data(this.vacuum.monads)
+        const labelsLayer = this.stage.view.append("g").attr("class", "labels-layer");
+        this.createLabelGroups(labelsLayer, 'monad-label', this.vacuum.monads, this.black);
+        this.createLabelGroups(labelsLayer, 'link-label', this.vacuum.links, this.white);
+    },
+
+    createLabelGroups(layer, className, data, color) {
+        layer.selectAll(`text.${className}`)
+            .data(data)
             .enter()
             .append("text")
+            .attr("class", className)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .attr("fill", this.black)
+            .attr("fill", color)
             .style("font-family", "sans-serif")
             .style("font-weight", "bold")
             .style("pointer-events", "none")
@@ -115,11 +126,16 @@
 
     scaleLabels() {
         const scale = this.stage.scale;
-        d3.select(".labels-layer").selectAll("text")
-            .data(this.vacuum.monads)
+        this.updateLabelPositions(".monad-label", this.vacuum.monads, scale, 0.5);
+        this.updateLabelPositions(".link-label", this.vacuum.links, scale, 0.33);
+    },
+
+    updateLabelPositions(selector, data, scale, fontSizeFactor) {
+        d3.selectAll(selector)
+            .data(data)
             .attr("x", d => d.x * scale)
             .attr("y", d => d.y * scale)
-            .style("font-size", `${scale * 0.5}px`); // Diameter is 2*scale, so this is ~45%
+            .style("font-size", `${scale * fontSizeFactor}px`);
     }
 };
 
