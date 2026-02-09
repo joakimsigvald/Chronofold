@@ -15,12 +15,11 @@ public static class VacuumGenerator
 
         IEnumerable<Coordinate> GetCoordinates()
         {
-            int count = 0;
             for (int row = -depth; row <= depth; row++)
             {
                 int width = 2 * depth + 1 - Math.Abs(row);
                 for (int col = 0; col < width; col++)
-                    yield return new(count++, row, col, width);
+                    yield return new(row, col, width);
             }
         }
 
@@ -29,11 +28,10 @@ public static class VacuumGenerator
             int count = 0;
             return [.. coordinates.SelectMany(CreateLinks)];
 
-            IEnumerable<Link> CreateLinks(Coordinate c)
+            IEnumerable<Link> CreateLinks(Coordinate c, int index)
             {
-                var index = c.Index;
                 if (c.Col < c.Width - 1)
-                    yield return new(count++, monads[c.Index], monads[index + 1]);
+                    yield return new(count++, monads[index], monads[index + 1]);
                 if (c.Row == depth)
                     yield break;
 
@@ -46,5 +44,5 @@ public static class VacuumGenerator
         }
     }
 
-    private static Monad CreateMonad(Coordinate c) => new(c.Index, c.ComputeRadialIndex(), c.X, c.Y);
+    private static Monad CreateMonad(Coordinate c, int index) => new(index, c.ComputeRadialIndex(), c.X, c.Y);
 }
