@@ -1,19 +1,24 @@
 ﻿export const VacuumLayer = {
+
+    svg: null,
+    view: null,
+
     render() {
-        const svg = d3.select("#universe")
+        this.svg = d3.select("#universe")
             .attr("width", window.innerWidth)
             .attr("height", window.innerHeight);
-        svg.selectAll("*").remove();
-        return svg.append("g");
+        this.svg.selectAll("*").remove();
+        this.view = this.svg.append("g");
+        return this.view;
     },
 
     scale() {
         const w = window.innerWidth;
         const h = window.innerHeight;
-        const svg = d3.select("#universe")
+        this.svg
             .attr("width", w)
             .attr("height", h);
-        svg.select("g")
+        this.view
             .attr("transform", `translate(${w / 2}, ${h / 2})`);
     },
 };
