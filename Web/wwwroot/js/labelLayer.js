@@ -1,18 +1,10 @@
 ﻿import { Color, Scale } from './config.js';
 
-export const LabelLayer = {
-    render(view, monads, links) {
-        const labelsLayer = view.append("g").attr("class", "labels-layer");
-        this._create(labelsLayer, 'monad-label', monads, Color.black);
-        this._create(labelsLayer, 'link-label', links, Color.white);
-    },
+export const CreateLabelLayer = (vacuum) => {
 
-    scale(scale, monads, links) {
-        this._update(".monad-label", monads, scale, Scale.monadLabel);
-        this._update(".link-label", links, scale, Scale.linkLabel);
-    },
+    const { monads, links } = vacuum;
 
-    _create(layer, className, data, color) {
+    const _create = (layer, className, data, color) => {
         layer.selectAll(`text.${className}`)
             .data(data)
             .enter()
@@ -25,13 +17,26 @@ export const LabelLayer = {
             .style("font-weight", "bold")
             .style("pointer-events", "none")
             .text(d => d.id);
-    },
+    };
 
-    _update(selector, data, scale, fontSizeFactor) {
+    const _update = (selector, data, scale, fontSizeFactor) => {
         d3.selectAll(selector)
             .data(data)
             .attr("x", d => d.x * scale)
             .attr("y", d => d.y * scale)
             .style("font-size", `${scale * fontSizeFactor}px`);
-    }
+    };
+
+    return {
+        render(view) {
+            const labelsLayer = view.append("g").attr("class", "labels-layer");
+            _create(labelsLayer, 'monad-label', monads, Color.black);
+            _create(labelsLayer, 'link-label', links, Color.white);
+        },
+
+        scale(scale) {
+            _update(".monad-label", monads, scale, Scale.monadLabel);
+            _update(".link-label", links, scale, Scale.linkLabel);
+        },
+    };
 };

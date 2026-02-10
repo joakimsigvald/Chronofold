@@ -1,18 +1,10 @@
 ﻿import { Color, Scale } from './config.js';
 
-export const MonadLayer = {
+export const CreateMonadLayer = (vacuum) => {
 
-    render(view, monads, links) {
-        this._renderCircles(view, 'monad', monads, _ => Color.lightgrey);
-        this._renderCircles(view, 'link', links, d => this._getLinkColor(d));
-    },
+    const { monads, links } = vacuum;
 
-    scale(scale, monads, links) {
-        this._scaleCircles(scale, 'monad', monads, Scale.monad);
-        this._scaleCircles(scale, 'link', links, Scale.link);
-    },
-
-    _renderCircles(view, type, circles, getColor) {
+    const _renderCircles = (view, type, circles, getColor) => {
         view.append("g").attr("class", `${type}s-layer`)
             .selectAll("circle")
             .data(circles)
@@ -20,18 +12,29 @@ export const MonadLayer = {
             .append("circle")
             .attr("class", type)
             .attr("fill", getColor);
-    },
+    };
 
-    _getLinkColor(link) {
-        console.log(link.color);
+    const _getLinkColor = (link) => {
         return link.isActive && link.color || Color.darkgrey;
-    },
+    };
 
-    _scaleCircles(scale, type, circles, size) {
+    const _scaleCircles = (scale, type, circles, size) => {
         d3.select(`.${type}s-layer`).selectAll("circle")
             .data(circles)
             .attr("cx", d => d.x * scale)
             .attr("cy", d => d.y * scale)
             .attr("r", size * scale);
-    },
+    };
+
+    return {
+        render(view) {
+            _renderCircles(view, 'monad', monads, _ => Color.lightgrey);
+            _renderCircles(view, 'link', links, d => _getLinkColor(d));
+        },
+
+        scale(scale) {
+            _scaleCircles(scale, 'monad', monads, Scale.monad);
+            _scaleCircles(scale, 'link', links, Scale.link);
+        },
+    };
 };
