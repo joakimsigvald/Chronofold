@@ -1,4 +1,6 @@
-﻿const Observatory = {
+﻿import { ChronofoldApi } from './api.js';
+
+const Observatory = {
     black: "#050505",
     darkgrey: "#444444",
     lightgrey: "#a0a0a0",
