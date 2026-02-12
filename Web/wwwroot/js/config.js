@@ -2,7 +2,7 @@
     black: "#050505",
     darkgrey: "#444444",
     lightgrey: "#a0a0a0",
-    white: "#d0d0d0"
+    white: "#ff8800"
 };
 
 const Scale =

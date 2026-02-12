@@ -1,11 +1,21 @@
 ﻿namespace Applique.Chronofold.Core.Model;
 
-internal record Coordinate(int Row, int Col, int Width)
+public record Coordinate(int Row, int Col, int Width)
 {
     private static readonly double _sqrt3 = Math.Sqrt(3);
 
     internal int X { get; } = 2 * Col + 1 - Width;
     internal double Y { get; } = _sqrt3 * Row;
+
+    public static IEnumerable<Coordinate> Generate(int depth)
+    {
+        for (int row = -depth; row <= depth; row++)
+        {
+            int width = 2 * depth + 1 - Math.Abs(row);
+            for (int col = 0; col < width; col++)
+                yield return new(row, col, width);
+        }
+    }
 
     internal int ComputeRadialIndex()
     {

@@ -56,10 +56,10 @@ public abstract class WhenCreateVacuum : Spec<Vacuum>
 
             centerMonad.Neighbours.Is().EquivalentTo(peripheralMonads);
             links.Has().Count(6);
-            links[..3].Select(l => l.Left).Is().EqualTo(centerMonad.Neighbours[..3]);
-            links[3..].Select(l => l.Right).Is().EqualTo(centerMonad.Neighbours[3..]);
-            links[..3].Select(l => l.Right).Has().All(m => m == centerMonad);
-            links[3..].Select(l => l.Left).Has().All(m => m == centerMonad);
+            var outwardLinks = links[1..4];
+            Link[] inwardLinks = [links[0], ..links[4..]];
+            outwardLinks.Select(l => l.Left).Has().All(m => m == centerMonad);
+            inwardLinks.Select(l => l.Right).Has().All(m => m == centerMonad);
         }
     }
 
@@ -93,6 +93,30 @@ public abstract class WhenCreateVacuum : Spec<Vacuum>
             monads[0].RadialIndex.Is(first);
             monads[monads.Length / 2].RadialIndex.Is(0);
             monads[^1].RadialIndex.Is(last);
+        }
+
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(2, 7)]
+        [InlineData(3, 19)]
+        public void ThenInnerMonadHaveClockwiseLinks(int depth, int innerMonadCount)
+        {
+            Given(_depth).Is(depth);
+            var monads = Result.Monads;
+            Monad[] innerMonads = [.. Result.Monads.OrderBy(m => m.RadialIndex).Take(innerMonadCount)];
+            innerMonads.Has().All(IsLinksClockwise);
+        }
+
+        private static bool IsLinksClockwise(Monad monad)
+        {
+            var links = monad.Links;
+            return
+                links[0].X > monad.X && links[0].Y < monad.Y
+                && links[1].X > monad.X && links[1].Y == monad.Y
+                && links[2].X > monad.X && links[2].Y > monad.Y
+                && links[3].X < monad.X && links[3].Y > monad.Y
+                && links[4].X < monad.X && links[4].Y == monad.Y
+                && links[5].X < monad.X && links[5].Y < monad.Y;
         }
     }
 }

@@ -12,10 +12,8 @@ public class VacuumService : IVacuumService
 
     private static Contract.View.Monad ToView(Model.Monad monad) => new(GetId(monad), monad.X, monad.Y);
 
-    private static Contract.View.Link ToView(Model.Link link) => new(GetId(link), GetX(link), GetY(link), GetColor(link));
+    private static Contract.View.Link ToView(Model.Link link) => new(GetId(link), link.X, link.Y, GetColor(link));
 
-    public static double GetX(Model.Link link) => (link.Left.X + link.Right.X) / 2;
-    public static double GetY(Model.Link link) => (link.Left.Y + link.Right.Y) / 2;
     public static string GetId(Model.Monad monad) => $"{monad.RadialIndex + 1}";
     public static string GetId(Model.Link link) => $"{link.Index + 1}";
     public static string GetColor(Model.Link link) 
