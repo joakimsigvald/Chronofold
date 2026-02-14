@@ -22,7 +22,7 @@ public abstract class WhenApplyColors : Spec<Core.LinkColorSolver>
             new NeighbourSolver(monads, links).ApplyNeighbours();
             Given(monads);
             Then();
-            monads[3].Links.Select(l => l.Color).Is().EqualTo(LinkColor.Black.AntiSplit());
+            monads[3].Links.Select(l => l.Color).Is().EqualTo(LinkColor.Black.Complements);
         }
     }
 
@@ -39,7 +39,7 @@ public abstract class WhenApplyColors : Spec<Core.LinkColorSolver>
             Given(monads);
             Then();
             Monad[] radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];
-            radialMonads[0].Links.Select(l => l.Color).Is().EqualTo(LinkColor.Black.AntiSplit());
+            radialMonads[0].Links.Select(l => l.Color).Is().EqualTo(LinkColor.Black.Complements);
             for (var i = 0; i < 6; i++)
                 radialMonads[i + 1].Links[i].Color.Is((LinkColor)(1 << (i + 3) % 6));
         }

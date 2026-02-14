@@ -18,7 +18,7 @@ public class LinkColorSolver(Monad[] monads)
         void ColorizeCenterMonad()
         {
             int i = 0;
-            foreach (var color in LinkColor.Black.GetComplements())
+            foreach (var color in LinkColor.Black.Complements)
                 links[i++].Paint(color);
         }
 

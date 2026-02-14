@@ -55,7 +55,7 @@ public class Link(int index, Monad left, Monad right)
         return this;
     }
 
-    public LinkColor[] AvailableColors => ForbiddenBlend.GetComplements();
+    public LinkColor[] AvailableColors => ForbiddenBlend.Complements;
 
     internal Monad OtherHalf(Monad monad) => Left == monad ? Right : Left;
 
