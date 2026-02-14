@@ -55,16 +55,18 @@ public class Link(int index, Monad left, Monad right)
         return this;
     }
 
+    public LinkColor[] AvailableColors => ForbiddenBlend.GetComplements();
+
+    internal Monad OtherHalf(Monad monad) => Left == monad ? Right : Left;
+
     /// <summary>
     /// All colors used by other links to either left or rights monad are forbidden for this link.
     /// In addition, if the opposite link of either left or right is colored, 
     /// then this link is only allowed to have the inverse of that color (= opposing color)
     /// </summary>
-    public LinkColor ForbiddenBlend => LinkColor.White & (Left.Color | Right.Color | ~OpposingColor);
-
-    internal Monad OtherHalf(Monad monad) => Left == monad ? Right : Left;
+    private LinkColor ForbiddenBlend => LinkColor.White & (Left.Color | Right.Color | ~OpposingColor);
 
     private LinkColor OpposingColor => OpposingLeft() & OpposingRight();
-    private LinkColor OpposingLeft() => Left.Opposite(this).Color.Invert();
-    private LinkColor OpposingRight() => Right.Opposite(this).Color.Invert();
+    private LinkColor OpposingLeft() => Left.Opposite(this).Color.GetOpposite();
+    private LinkColor OpposingRight() => Right.Opposite(this).Color.GetOpposite();
 }

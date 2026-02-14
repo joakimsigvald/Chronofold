@@ -22,12 +22,12 @@ public static class LinkColorExtensions
             return [.. results[..count]];
         }
 
-        public LinkColor[] GetAntiSplit() => _antiSplits[(int)blend];
+        public LinkColor[] GetComplements() => _antiSplits[(int)blend];
     }
 
     extension(LinkColor color)
     {
-        public LinkColor Invert()
+        public LinkColor GetOpposite()
             => color == LinkColor.Black || color == LinkColor.White
             ? color ^ LinkColor.White
             : DoInvert((ushort)color, PaletteSize / 2);

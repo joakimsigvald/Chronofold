@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Applique.Chronofold.Core.Test.LinkColorExtensions;
 
-public class WhenInvert : Spec
+public class WhenGetOpposite : Spec
 {
     [Theory]
     [InlineData(LinkColor.Black, LinkColor.White)]
@@ -16,5 +16,5 @@ public class WhenInvert : Spec
     [InlineData(LinkColor.Magenta, LinkColor.Green)]
     [InlineData(LinkColor.Yellow, LinkColor.Blue)]
     [InlineData(LinkColor.White, LinkColor.Black)]
-    public void ThenInvert(LinkColor from, LinkColor to) => from.Invert().Is(to);
+    public void ThenReturnOpposite(LinkColor from, LinkColor to) => from.GetOpposite().Is(to);
 }
