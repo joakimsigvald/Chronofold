@@ -3,22 +3,22 @@ using XspecT;
 using XspecT.Assert;
 using Xunit;
 
-namespace Applique.Chronofold.Core.Test.VacuumGenerator;
+namespace Applique.Chronofold.Core.Test.Vacuum;
 
-public abstract class WhenCreateVacuum : Spec<Vacuum>
+public abstract class WhenCreate : Spec<Core.Model.Vacuum>
 {
     private static readonly Tag<int> _depth = new(nameof(_depth));
 
-    protected WhenCreateVacuum() => When(_ => Core.VacuumGenerator.CreateVacuum(The(_depth)));
+    protected WhenCreate() => When(_ => Core.Model.Vacuum.Create(The(_depth)));
 
-    public class GivenDepth_0 : WhenCreateVacuum
+    public class GivenDepth_0 : WhenCreate
     {
         public GivenDepth_0() => Given(_depth).Is(0);
         [Fact] public void ThenHasOneMonad() => Result.Monads.Has().Count(1);
         [Fact] public void ThenHasNoLinks() => Result.Links.Is().Empty();
     }
 
-    public class GivenDepth_1 : WhenCreateVacuum
+    public class GivenDepth_1 : WhenCreate
     {
         public GivenDepth_1() => Given(_depth).Is(1);
 
@@ -63,7 +63,7 @@ public abstract class WhenCreateVacuum : Spec<Vacuum>
         }
     }
 
-    public class GivenDifferentDepths : WhenCreateVacuum
+    public class GivenDifferentDepths : WhenCreate
     {
         [Theory]
         [InlineData(0)]

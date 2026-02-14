@@ -17,7 +17,7 @@ public record Coordinate(int Row, int Col, int Width)
         }
     }
 
-    internal int ComputeRadialIndex()
+    public int ComputeRadialIndex()
     {
         var ring = ComputeRing();
         return ring == 0 
