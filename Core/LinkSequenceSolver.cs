@@ -27,26 +27,27 @@ public class LinkSequenceSolver
 
     private int[] GetBestSequence()
     {
-        int[][] startingSequences = [.. GetAllPermutations()];
-        (string dna, int count)[] runs = [.. startingSequences.Select(s => (dna: GetDna(s), count: Run(s))).Where(t => t.count > 0)];
-        return GetSequence(runs.OrderBy(t => t.count).FirstOrDefault().dna);
+        int[][] sequences = [.. GetAllPermutations()];
+        SequenceGroup[] runs = [.. sequences
+            .Select(Run).Where(g => g.Score > 0)];
+        return runs.OrderBy(g => g.Score).FirstOrDefault()?.MainSequence ?? [];
     }
 
-    private int Run(int[] startingSequence)
+    private SequenceGroup Run(int[] mainSequence)
     {
-        HashSet<string> candidateDnas = [GetDna(startingSequence)];
-        _centerMonad.Sequence = startingSequence;
+        List<int[]> candidates = [mainSequence];
+        _centerMonad.Sequence = mainSequence;
         LinkColor[] coloring = [.. _centerMonad.Sequence.Select(idx => _centerMonad.Links[idx].Color)];
         for (int i = 1; i < _innerMonads.Length; i++)
         {
             var monad = _radialMonads[i];
             var sequence = ApplySequence(monad, coloring);
             if (!IsMonadSequenced(monad) || !IsSequenceCongruent(monad))
-                return 0;
+                return new(mainSequence, []);
 
-            candidateDnas.Add(GetDna(sequence));
+            candidates.Add(sequence);
         }
-        return candidateDnas.Count;
+        return new(mainSequence, candidates);
     }
 
     private void Apply(int[] startingSequence)
@@ -58,10 +59,6 @@ public class LinkSequenceSolver
             ApplySequence(monad, coloring);
     }
 
-    private static string GetDna(int[] sequence) => string.Join('-', sequence);
-    private static int[] GetSequence(string dna)
-        => string.IsNullOrEmpty(dna) ? [] : [.. dna.Split('-').Select(int.Parse)];
-
     private static int[] ApplySequence(Monad monad, LinkColor[] coloring)
         => monad.Sequence = FindSequence(monad, coloring);
 
@@ -72,25 +69,16 @@ public class LinkSequenceSolver
         => monad.Sequence.All(p => p >= 0);
 
     private static bool IsSequenceCongruent(Monad monad)
-    {
-        if (monad.Sequence.Any(p => p < 0))
-            return false;
+        => GetSequencedNeighbors(monad).All(t => AreAligned(t.port, monad, t.neighbor));
 
-        (int, Monad)[] sequencedNeighbors = [
+    private static (int port, Monad neighbor)[] GetSequencedNeighbors(Monad monad)
+        => [
             .. monad.Neighbours
             .Select((n, i) => (i, n))
             .Where(t => t.n.RadialIndex < monad.RadialIndex)];
 
-        foreach (var (port, neighbor) in sequencedNeighbors)
-        {
-            int myStep = Array.IndexOf(monad.Sequence, port);
-            int portBackToMe = (port + 3) % 6;
-            int neighborStep = Array.IndexOf(neighbor.Sequence, portBackToMe);
-            if (myStep != neighborStep)
-                return false;
-        }
-        return true;
-    }
+    private static bool AreAligned(int port, Monad monad, Monad neighbor)
+        => Array.IndexOf(monad.Sequence, port) == Array.IndexOf(neighbor.Sequence, (port + 3) % 6);
 
     private static IEnumerable<int[]> GetAllPermutations()
     {
