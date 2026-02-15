@@ -13,8 +13,7 @@ public class VacuumService : IVacuumService
 
     private static Contract.View.Monad ToView(Monad monad)
     {
-        var phaseShift = monad.PhaseShift;
-        return new(GetId(monad), monad.X, monad.Y, [.. monad.Links.Select(l => l.Id)], monad.PhaseShift, monad.Sequence);
+        return new(GetId(monad), monad.X, monad.Y, [.. monad.Links.Select(l => l.Id)], monad.Sequence);
     }
 
     private static Contract.View.Link ToView(Link link) 

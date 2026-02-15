@@ -13,7 +13,7 @@ export const CreateMonadLayer = (vacuum) => {
             .attr("class", type)
             .attr("fill", getColor);
 
-    const _getActivePort = (monad, tick) => monad.sequence[(tick + monad.phaseShift) % 6];
+    const _getActivePort = (monad, tick) => monad.sequence[tick];
 
     const _getPort = (link, monad) => monad.links.indexOf(link.id);
 

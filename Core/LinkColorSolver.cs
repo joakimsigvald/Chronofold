@@ -13,7 +13,7 @@ public class LinkColorSolver(Monad[] monads)
 
         ColorizeCenterMonad();
         if (!Solve(LinkColorExtensions.PaletteSize))
-            throw new Exception("No valid coloring found for this topology!");
+            throw new ApplicationException("No valid coloring found for this topology!");
 
         void ColorizeCenterMonad()
         {

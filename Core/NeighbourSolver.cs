@@ -7,12 +7,9 @@ public class NeighbourSolver(Monad[] monads, Link[] links)
     {
         Dictionary<int, Link[]> neighbours = GetNeighbours();
         foreach (var monad in monads)
-        {
             monad.Links = neighbours.TryGetValue(monad.LinearIndex, out var links)
                 ? [.. SortClockwise(links)]
                 : [];
-            monad.Neighbours = [.. monad.Links.Select(l => l.OtherHalf(monad))];
-        }
     }
 
     private static IEnumerable<Link> SortClockwise(Link[] linearLinks)

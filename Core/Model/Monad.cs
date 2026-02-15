@@ -12,18 +12,15 @@ public class Monad(int linearIndex, int radialIndex, double x = 0, double y = 0)
     public double Y => y;
 
     public Link[] Links { get; set; } = [];
-    public Monad[] Neighbours { get; set; } = [];
+    public Monad[] Neighbours => [.. Links.Select(l => l.OtherHalf(this))];
+
     public LinkColor Color { get; set; }
     public int[] Sequence { get; set; } = [0, 1, 2, 3, 4, 5];
-
-    public int PhaseShift => Array.FindIndex(Links, l => l.Color == LinkColor.Red);
 
     public override string ToString() 
         => $"({RadialIndex}: {Color} = {string.Join('-', Links.Select(l => l.Color))})";
 
     public static IEnumerable<Monad> Generate(Coordinate[] coordinates) => coordinates.Select(Create);
-
-    private static Monad Create(Coordinate c, int index) => new(index, c.ComputeRadialIndex(), c.X, c.Y);
 
     internal void Blend(LinkColor color) => Color |= color;
     internal void Unblend(LinkColor color) => Color &= ~color;
@@ -32,5 +29,7 @@ public class Monad(int linearIndex, int radialIndex, double x = 0, double y = 0)
     internal int OppositeIndex(Link link) 
         => (Links.IndexOf(link) + LinkColorExtensions.PaletteSize / 2) % LinkColorExtensions.PaletteSize;
 
-    private bool IsOnTheEdge => Links.Length < LinkColorExtensions.PaletteSize;
+    internal bool IsOnTheEdge => Links.Length < LinkColorExtensions.PaletteSize;
+
+    private static Monad Create(Coordinate c, int index) => new(index, c.ComputeRadialIndex(), c.X, c.Y);
 }
