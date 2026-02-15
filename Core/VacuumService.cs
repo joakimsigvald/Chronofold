@@ -11,8 +11,15 @@ public class VacuumService : IVacuumService
         return new([.. vacuum.Monads.Select(ToView)], [.. vacuum.Links.Select(ToView)]);
     }
 
-    private static Contract.View.Monad ToView(Monad monad) => new(GetId(monad), monad.X, monad.Y);
-    private static Contract.View.Link ToView(Link link) => new(GetId(link), link.X, link.Y, GetColor(link));
+    private static Contract.View.Monad ToView(Monad monad)
+    {
+        var phaseShift = monad.PhaseShift;
+        return new(GetId(monad), monad.X, monad.Y, [.. monad.Links.Select(l => l.Id)], monad.PhaseShift, monad.Sequence);
+    }
+
+    private static Contract.View.Link ToView(Link link) 
+        => new(GetId(link), link.X, link.Y, GetColor(link), ToView(link.Left), ToView(link.Right));
+
     public static string GetId(Monad monad) => $"{monad.RadialIndex + 1}";
     public static string GetId(Link link) => $"{link.Index + 1}";
     public static string GetColor(Link link) => $"{link.Color}".ToLower();

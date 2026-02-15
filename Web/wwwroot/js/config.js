@@ -11,8 +11,8 @@ const Scale =
     link: 0.5,
     monadLabel: 0.5,
     linkLabel: 0.33,
-    initialUnitSize: 50, //initial pixels per unit
-    resolution: 50.0 // number of units that fit the screen
+    initialUnitSize: 25, //initial pixels per unit
+    resolution: 100.0 // number of units that fit the screen
 };
 
 export { Color, Scale };

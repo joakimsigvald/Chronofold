@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Applique.Chronofold.Core.Test.LinkColorSolver;
 
-public abstract class WhenApplyColors : Spec<Core.LinkColorSolver>
+public abstract class WhenSolve : Spec<Core.LinkColorSolver>
 {
-    protected WhenApplyColors() => When(_ => _.ApplyColors());
+    protected WhenSolve() => When(_ => _.Solve());
 
-    public class GivenOneRing : WhenApplyColors
+    public class GivenOneRing : WhenSolve
     {
         [Fact]
         public void ThenColorAllLinks()
@@ -19,14 +19,14 @@ public abstract class WhenApplyColors : Spec<Core.LinkColorSolver>
             Coordinate[] coordinates = [.. Coordinate.Generate(depth)];
             Monad[] monads = [.. Monad.Generate(coordinates)];
             Link[] links = [.. Link.Generate(depth, coordinates, monads)];
-            new NeighbourSolver(monads, links).ApplyNeighbours();
+            new NeighbourSolver(monads, links).Solve();
             Given(monads);
             Then();
             monads[3].Links.Select(l => l.Color).Is().EqualTo(LinkColor.Black.Complements);
         }
     }
 
-    public class GivenTwoRings : WhenApplyColors
+    public class GivenTwoRings : WhenSolve
     {
         [Fact]
         public void ThenColorAllLinks()
@@ -35,7 +35,7 @@ public abstract class WhenApplyColors : Spec<Core.LinkColorSolver>
             Coordinate[] coordinates = [.. Coordinate.Generate(depth)];
             Monad[] monads = [.. Monad.Generate(coordinates)];
             Link[] links = [.. Link.Generate(depth, coordinates, monads)];
-            new NeighbourSolver(monads, links).ApplyNeighbours();
+            new NeighbourSolver(monads, links).Solve();
             Given(monads);
             Then();
             Monad[] radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];

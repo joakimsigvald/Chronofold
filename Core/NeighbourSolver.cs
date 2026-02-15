@@ -3,7 +3,7 @@ namespace Applique.Chronofold.Core;
 
 public class NeighbourSolver(Monad[] monads, Link[] links)
 {
-    public void ApplyNeighbours()
+    public void Solve()
     {
         Dictionary<int, Link[]> neighbours = GetNeighbours();
         foreach (var monad in monads)

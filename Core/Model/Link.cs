@@ -7,7 +7,7 @@ public class Link(int index, Monad left, Monad right)
     public static readonly Link NoLink = new(-1, Monad.NoMonad, Monad.NoMonad);
 
     public LinkColor Color { get; private set; }
-
+    public string Id => $"{Index + 1}";
     public int Index => index;
     public Monad Left => left;
     public Monad Right => right;

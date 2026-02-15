@@ -4,7 +4,7 @@ namespace Applique.Chronofold.Core;
 
 public class LinkColorSolver(Monad[] monads)
 {
-    public void ApplyColors()
+    public void Solve()
     {
         Monad[] radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];
         Link[] links = [.. radialMonads.SelectMany(m => m.Links).Distinct()];

@@ -14,6 +14,9 @@ public class Monad(int linearIndex, int radialIndex, double x = 0, double y = 0)
     public Link[] Links { get; set; } = [];
     public Monad[] Neighbours { get; set; } = [];
     public LinkColor Color { get; set; }
+    public int[] Sequence { get; set; } = [0, 1, 2, 3, 4, 5];
+
+    public int PhaseShift => Array.FindIndex(Links, l => l.Color == LinkColor.Red);
 
     public override string ToString() 
         => $"({RadialIndex}: {Color} = {string.Join('-', Links.Select(l => l.Color))})";
