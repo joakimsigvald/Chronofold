@@ -8,13 +8,16 @@ public class VacuumService : IVacuumService
     public Contract.View.Vacuum CreateVacuum(int depth)
     {
         var vacuum = Vacuum.Create(depth);
-        return new([.. vacuum.Monads.Select(ToView)], [.. vacuum.Links.Select(ToView)]);
+        return new([.. vacuum.Monads.Select(ToView)], [.. vacuum.Links.Select(ToView)], LinkColorExtensions.PaletteSize);
     }
 
     private static Contract.View.Monad ToView(Monad monad)
-    {
-        return new(GetId(monad), monad.X, monad.Y, [.. monad.Links.Select(l => l.Id)], monad.Sequence);
-    }
+        => new(GetId(monad), 
+            monad.X, 
+            monad.Y, 
+            [.. monad.Links.Select(l => l.Id)], 
+            monad.Sequence, 
+            monad.RadialIndex % LinkColorExtensions.PaletteSize);
 
     private static Contract.View.Link ToView(Link link) 
         => new(GetId(link), link.X, link.Y, GetColor(link), ToView(link.Left), ToView(link.Right));

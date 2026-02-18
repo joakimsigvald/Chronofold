@@ -3,12 +3,14 @@ import { Scale } from './config.js';
 import { VacuumLayer } from './vacuumLayer.js';
 import { CreateMonadLayer } from './monadLayer.js';
 import { CreateLabelLayer } from './labelLayer.js';
+import { CreateMonadEngine } from './monadEngine.js';
 
 const Observatory = {
     tick: 0,
     vacuum: null,
     showLabels: false,
     layers: {},
+    monadEngine: null,
 
     async init() {
         console.log("Chronofold Observatory: Online");
@@ -16,11 +18,12 @@ const Observatory = {
             this.vacuum = await ChronofoldApi.getVacuum();
             this.layers.labels = CreateLabelLayer(this.vacuum);
             this.layers.monads = CreateMonadLayer(this.vacuum);
+            this.monadEngine = CreateMonadEngine(this.vacuum);
             this.render();
             this.onResize();
             window.addEventListener("resize", () => this.onResize());
             console.log("Starting Heartbeat.");
-            this.startHeartbeat(300);
+            this.startHeartbeat(1000);
         } catch (error) {
             console.error("Initialization failure:", error);
         }
@@ -47,9 +50,11 @@ const Observatory = {
     startHeartbeat(interval = 1000) {
         setInterval(() => {
             console.log("Beat...");
-            this.tick = (this.tick + 1) % 6;
-            if (this.layers.monads.update)
-                this.layers.monads.update(this.tick);
+            this.monadEngine.updateActivePorts(++this.tick);
+            this.monadEngine.updateActiveLinks();
+            this.monadEngine.updateStrain();
+            this.layers.monads.update();
+            this.monadEngine.releaveStrain();
         }, interval);
     }
 };

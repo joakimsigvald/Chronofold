@@ -2,11 +2,10 @@
 using Applique.Chronofold.Core.Model;
 namespace Applique.Chronofold.Core;
 
-public class LinkColorSolver(Monad[] monads)
+public class LinkColorSolver(Monad[] radialMonads)
 {
     public void Solve()
     {
-        Monad[] radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];
         Link[] links = [.. radialMonads.SelectMany(m => m.Links).Distinct()];
         if (links.Length < LinkColorExtensions.PaletteSize)
             return;

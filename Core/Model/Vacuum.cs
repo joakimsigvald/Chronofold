@@ -9,10 +9,12 @@ public class Vacuum(Monad[] monads, Link[] links)
     {
         Coordinate[] coordinates = [.. Coordinate.Generate(depth)];
         Monad[] monads = [.. Monad.Generate(coordinates)];
+        Monad[] radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];
         Link[] links = [.. Link.Generate(depth, coordinates, monads)];
         new NeighbourSolver(monads, links).Solve();
-        new LinkColorSolver(monads).Solve();
-        new LinkSequenceSolver(monads).Solve();
+        new LinkColorSolver(radialMonads).Solve();
+        //new LinkSequenceSolver(radialMonads).Solve();
+        new SimpleSequenceInitializer(monads).Solve();
         return new(monads, links);
     }
 }

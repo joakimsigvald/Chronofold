@@ -3,18 +3,10 @@ using Applique.Chronofold.Core.Model;
 
 namespace Applique.Chronofold.Core;
 
-public class LinkSequenceSolver
+public class LinkSequenceSolver(Monad[] radialMonads)
 {
-    private readonly Monad[] _radialMonads;
-    private readonly Monad _centerMonad;
-    private readonly Monad[] _innerMonads;
-
-    public LinkSequenceSolver(Monad[] monads)
-    {
-        _radialMonads = [.. monads.OrderBy(m => m.RadialIndex)];
-        _centerMonad = _radialMonads[0];
-        _innerMonads = [.. _radialMonads[1..].TakeWhile(m => !m.IsOnTheEdge)];
-    }
+    private readonly Monad _centerMonad = radialMonads[0];
+    private readonly Monad[] _innerMonads = [.. radialMonads[1..].TakeWhile(m => !m.IsOnTheEdge)];
 
     public void Solve()
     {
@@ -40,7 +32,7 @@ public class LinkSequenceSolver
         LinkColor[] coloring = [.. _centerMonad.Sequence.Select(idx => _centerMonad.Links[idx].Color)];
         for (int i = 1; i < _innerMonads.Length; i++)
         {
-            var monad = _radialMonads[i];
+            var monad = radialMonads[i];
             var sequence = ApplySequence(monad, coloring);
             if (!IsMonadSequenced(monad) || !IsSequenceCongruent(monad))
                 return new(mainSequence, []);
@@ -52,10 +44,9 @@ public class LinkSequenceSolver
 
     private void Apply(int[] startingSequence)
     {
-        var centerMonad = _radialMonads[0];
-        centerMonad.Sequence = startingSequence;
-        LinkColor[] coloring = [.. centerMonad.Sequence.Select(idx => centerMonad.Links[idx].Color)];
-        foreach (var monad in _radialMonads[1..])
+        _centerMonad.Sequence = startingSequence;
+        LinkColor[] coloring = [.. _centerMonad.Sequence.Select(idx => _centerMonad.Links[idx].Color)];
+        foreach (var monad in radialMonads[1..])
             ApplySequence(monad, coloring);
     }
 
