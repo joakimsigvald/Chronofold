@@ -9,5 +9,5 @@ namespace Applique.Chronofold.Api;
 public class VacuumController(IVacuumService service) : ControllerBase
 {
     [HttpGet()]
-    public Vacuum GetVacuum() => service.CreateVacuum(10);
+    public Vacuum GetVacuum() => service.CreateVacuum(4);
 }

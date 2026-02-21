@@ -12,7 +12,7 @@ public class VacuumService : IVacuumService
     }
 
     private static Contract.View.Monad ToView(Monad monad)
-        => new(GetId(monad), 
+        => new(monad.Id, 
             monad.X, 
             monad.Y, 
             [.. monad.Links.Select(l => l.Id)], 
@@ -20,9 +20,5 @@ public class VacuumService : IVacuumService
             monad.RadialIndex % LinkColorExtensions.PaletteSize);
 
     private static Contract.View.Link ToView(Link link) 
-        => new(GetId(link), link.X, link.Y, GetColor(link), ToView(link.Left), ToView(link.Right));
-
-    public static string GetId(Monad monad) => $"{monad.RadialIndex + 1}";
-    public static string GetId(Link link) => $"{link.Index + 1}";
-    public static string GetColor(Link link) => $"{link.Color}".ToLower();
+        => new(link.Id, link.X, link.Y, link.ColorName, link.Left.Id, link.Right.Id);
 }

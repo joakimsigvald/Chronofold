@@ -16,6 +16,7 @@ public class Monad(int linearIndex, int radialIndex, double x = 0, double y = 0)
 
     public LinkColor Color { get; set; }
     public int[] Sequence { get; set; } = [0, 1, 2, 3, 4, 5];
+    public string Id => $"{RadialIndex + 1}";
 
     public override string ToString() 
         => $"({RadialIndex}: {Color} = {string.Join('-', Links.Select(l => l.Color))})";

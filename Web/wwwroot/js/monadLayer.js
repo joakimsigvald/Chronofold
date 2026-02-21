@@ -12,7 +12,9 @@ export const CreateMonadLayer = (vacuum) => {
             .attr("class", type)
             .attr("fill", getColor);
 
-    const _getLinkColor = (link) => link.isActive ? link.color : Color.darkgrey;
+    const _getLinkColor = (link) => link.isRightActive
+        ? link.color
+        : link.isLeftActive ? d3.interpolateRgb(Color.darkgrey, link.color)(0.2) : Color.darkgrey;
 
     const _scaleCircles = (scale, type, circles, size) =>
         d3.select(`.${type}s-layer`).selectAll("circle")
@@ -30,8 +32,6 @@ export const CreateMonadLayer = (vacuum) => {
         update() {
             d3.select(".links-layer").selectAll("circle")
                 .data(links)
-                .transition()
-                .duration(100)
                 .attr("fill", d => _getLinkColor(d));
         },
 

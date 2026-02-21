@@ -2,28 +2,88 @@
     const { monads, links, paletteSize } = vacuum;
     const linkMap = Object.fromEntries(links.map(l => [l.id, l]));
 
-    const _getPort = (link, monad) => monad.links.indexOf(link.id);
-    const _isActivePort = (link, monad) => _getPort(link, monad) === monad.activePort;
-    const _isActive = (link) => _isActivePort(link, link.left) && _isActivePort(link, link.right);
-    const _isStrained = (monad) => {
-        const linkId = monad.links[monad.activePort];
-        const link = linkMap[linkId];
-        return link && !link.isActive;
+    const _getLink = monad => {
+        const activePort = monad.sequence[monad.phase];
+        const linkId = monad.links[activePort];
+        return linkMap[linkId];
+    };
+
+    const _clearLink = link => {
+        link.isLeftActive = false;
+        link.isRightActive = false;
+    };
+
+    const _isBounced = link => link.isLeftActive && !link.isRightActive;
+
+    const _flip = link => {
+        const left = link.left;
+        link.left = link.right;
+        link.right = left;
+        //console.log('link flip', link.right, link.left);
+    };
+
+    const _swapPorts = (monad, slotA, slotB) => {
+        const portA = monad.sequence[slotA];
+        monad.sequence[slotA] = monad.sequence[slotB];
+        monad.sequence[slotB] = portA;
+        console.log('monad adapt sequence', monad.sequence);
+    };
+
+    const _advancePhase = monad => monad.phase = (monad.phase + 1) % paletteSize;
+
+    const _isSender = (monad, link) => link?.left === monad.id;
+    const _hasIncomingSignal = link => link?.isLeftActive;
+    const _acceptSignal = link => {
+        link.isRightActive = true;
+        //console.log('monad receive', link.right, link.id);
+    }
+
+    const _adaptSequence = monad => {
+        const currentPhase = monad.phase;
+        //let targetPhase = (currentPhase + 1) % paletteSize;
+        for (let i = 1; i < paletteSize; i++) {
+            _advancePhase(monad);
+            const futureLink = _getLink(monad);
+            if (futureLink && _hasIncomingSignal(futureLink)) {
+                _acceptSignal(futureLink);
+                //targetPhase = monad.phase;
+                break;
+            }
+        }
+        _swapPorts(monad, currentPhase, monad.phase);
+        monad.phase = currentPhase; // Always rewind the clock
+    };
+
+    const _send = monad => {
+        const currentLink = _getLink(monad);
+        if (currentLink?.left !== monad.id)
+            return;
+
+        //console.log('monad send', monad.id, currentLink.id);
+        currentLink.isLeftActive = true;
+    };
+
+    const _receive = monad => {
+        const currentLink = _getLink(monad);
+        if (_isSender(monad, currentLink))
+            return;
+
+        if (_hasIncomingSignal(currentLink))
+            _acceptSignal(currentLink);
+        else
+            _adaptSequence(monad);
     };
 
     return {
-        updateActivePorts: (tick) => monads.forEach(monad => {
-            monad.phase = (monad.initialPhase + tick) % paletteSize;
-            monad.activePort = monad.sequence[monad.phase];
-        }),
-        updateActiveLinks: () => links.forEach(l => l.isActive = _isActive(l)),
-        updateStrain: () => monads.forEach(m => m.isStrained = _isStrained(m)),
-        releaveStrain: () => monads
-            .filter(m => m.isStrained)
-            .forEach(m => {
-                const next = (m.phase + 1) % paletteSize;
-                m.sequence[m.phase] = m.sequence[next];
-                m.sequence[next] = m.activePort;
-            })
+        step: () => {
+            links.forEach(_clearLink);
+            monads.forEach(_advancePhase);
+        },
+
+        send: () => monads.forEach(_send),
+
+        receive: () => monads.forEach(_receive),
+
+        resolve: () => links.filter(_isBounced).forEach(_flip),
     };
 };

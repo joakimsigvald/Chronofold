@@ -6,7 +6,6 @@ import { CreateLabelLayer } from './labelLayer.js';
 import { CreateMonadEngine } from './monadEngine.js';
 
 const Observatory = {
-    tick: 0,
     vacuum: null,
     showLabels: false,
     layers: {},
@@ -23,7 +22,7 @@ const Observatory = {
             this.onResize();
             window.addEventListener("resize", () => this.onResize());
             console.log("Starting Heartbeat.");
-            this.startHeartbeat(1000);
+            this.startHeartbeat(400);
         } catch (error) {
             console.error("Initialization failure:", error);
         }
@@ -49,12 +48,11 @@ const Observatory = {
 
     startHeartbeat(interval = 1000) {
         setInterval(() => {
-            console.log("Beat...");
-            this.monadEngine.updateActivePorts(++this.tick);
-            this.monadEngine.updateActiveLinks();
-            this.monadEngine.updateStrain();
-            this.layers.monads.update();
-            this.monadEngine.releaveStrain();
+            this.monadEngine.step();
+            this.monadEngine.send();
+            this.monadEngine.receive(); //swap ports if needed
+            this.monadEngine.resolve(); //all bounced links are fliped
+            this.layers.monads.update(); //update the visualization to represent current state
         }, interval);
     }
 };

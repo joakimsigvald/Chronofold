@@ -11,6 +11,7 @@ public class Link(int index, Monad left, Monad right)
     public int Index => index;
     public Monad Left => left;
     public Monad Right => right;
+    public string ColorName => $"{Color}".ToLower();
 
     public double X => (Left.X + Right.X) / 2;
     public double Y => (Left.Y + Right.Y) / 2;
