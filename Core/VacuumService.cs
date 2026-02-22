@@ -18,7 +18,8 @@ public class VacuumService : IVacuumService
             [.. monad.Links.Select(l => l.Id)], 
             monad.Sequence,
             [..monad.Sequence.Select(_ => false)],
-            monad.RadialIndex % LinkColorExtensions.PaletteSize);
+            monad.RadialIndex % LinkColorExtensions.PaletteSize,
+            0);
 
     private static Contract.View.Link ToView(Link link) 
         => new(link.Id, link.X, link.Y, link.ColorName, link.Left.Id, link.Right.Id);

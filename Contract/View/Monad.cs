@@ -1,3 +1,3 @@
 ﻿namespace Applique.Chronofold.Contract.View;
 
-public record Monad(string Id, double X, double Y, string[] Links, int[] Sequence, bool[] Matches, int Phase);
+public record Monad(string Id, double X, double Y, string[] Links, int[] Sequence, bool[] Matches, int Phase, int Charge);

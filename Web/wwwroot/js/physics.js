@@ -1,4 +1,4 @@
-﻿export const CreateMonadEngine = (vacuum) => {
+﻿export const CreatePhysics = (vacuum) => {
     const { monads, links, paletteSize } = vacuum;
     const linkMap = Object.fromEntries(links.map(l => [l.id, l]));
     const monadMap = Object.fromEntries(monads.map(m => [m.id, m]));
@@ -26,6 +26,10 @@
         const left = link.left;
         link.left = link.right;
         link.right = left;
+        const leftMonad = monadMap[link.left];
+        const rightMonad = monadMap[link.right];
+        leftMonad.charge++;
+        rightMonad.charge--;
     };
 
     const _swapPorts = (monad, slotA, slotB) => {
@@ -97,13 +101,15 @@
             _adaptSequence(monad);
     };
 
+    const _bounce = () => links.filter(_isBounced).forEach(_flip);
+
     return {
-        step: () => {
+        advance: () => {
             links.forEach(_clear);
             monads.forEach(_step);
-        },
-        send: () => monads.forEach(_send),
-        receive: () => monads.forEach(_receive),
-        resolve: () => links.filter(_isBounced).forEach(_flip),
+            monads.forEach(_send);
+            monads.forEach(_receive);
+            _bounce();
+        }
     };
 };

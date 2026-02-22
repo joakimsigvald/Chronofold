@@ -16,10 +16,16 @@ export const CreateLabelLayer = (vacuum) => {
             .style("font-family", "sans-serif")
             .style("font-weight", "bold")
             .style("pointer-events", "none")
-            .text(d => d.id);
+            .text(d => d.charge);
     };
 
-    const _update = (selector, data, scale, fontSizeFactor) => {
+    const _update = (selector, data) => {
+        d3.selectAll(selector)
+            .data(data)
+            .text(d => d.charge);
+    };
+
+    const _scale = (selector, data, scale, fontSizeFactor) => {
         d3.selectAll(selector)
             .data(data)
             .attr("x", d => d.x * scale)
@@ -31,12 +37,19 @@ export const CreateLabelLayer = (vacuum) => {
         render(view) {
             const labelsLayer = view.append("g").attr("class", "labels-layer");
             _create(labelsLayer, 'monad-label', monads, Color.black);
-            _create(labelsLayer, 'link-label', links, Color.white);
+            //_create(labelsLayer, 'link-label', links, Color.white);
         },
 
+
+        update() {
+            _update(".monad-label", monads);
+            //_update(".link-label", links);
+        },
+
+
         scale(scale) {
-            _update(".monad-label", monads, scale, Scale.monadLabel);
-            _update(".link-label", links, scale, Scale.linkLabel);
+            _scale(".monad-label", monads, scale, Scale.monadLabel);
+            //_scale(".link-label", links, scale, Scale.linkLabel);
         },
     };
 };
