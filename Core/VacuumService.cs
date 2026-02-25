@@ -17,7 +17,6 @@ public class VacuumService : IVacuumService
             monad.Y, 
             [.. monad.Links.Select(l => l.Id)], 
             monad.Sequence,
-            [..monad.Sequence.Select(_ => false)],
             monad.RadialIndex % LinkColorExtensions.PaletteSize,
             0);
 

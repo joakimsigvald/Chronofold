@@ -18,7 +18,7 @@ export const CreateMonadLayer = (vacuum) => {
                 : Color.darkgrey;
 
     const _getMonadColor = (monad) =>
-        monad.isStressed ? Color.white : Color.lightgrey;
+        monad.hasSent || monad.hasReceived ? Color.lightgrey : Color.white;
 
     const _scaleCircles = (scale, type, circles, size) =>
         d3.select(`.${type}s-layer`).selectAll("circle")
