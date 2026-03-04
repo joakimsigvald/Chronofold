@@ -1,75 +1,174 @@
 # The Fluid Spacetime Engine
-**Goal:** To derive a self-saturating, 4D macroscopic world model (a zero-energy vacuum state capable of supporting persistent "Braid and Loop" topological particles) entirely from the simplicity of relational sequences and pairs, without relying on a rigid coordinate grid or global clock.
-## 1. Core Primitives
-Space and Time do not exist as containers. They emerge from the interactions of the fundamental unit: **The Monad**.
 
-A Monad is completely defined by its **Context** and its **State**.
-### The Context (Topology & Causality)
-* **The History (Proto-Time):** An immutable, strictly ordered ledger of every event the Monad has participated in. It represents the causal timeline of the entity.
-* **The Active Horizon (Proto-Space):** A mutable, Least Recently Used (LRU) queue containing the IDs of other Monads. It defines who the Monad is currently topologically "entangled" with. 
-* **The MaxCapacity (M)**: The maximum count of the Active horizon (N), where M >= N.
-### The State (Psychology & Thermodynamics)
-The state consists of two continuous scalars bounded between 0 and 1.
-* **Boredom ($B$):** The intolerance for repetition. High boredom expands the Active Horizon and increases the probability of spawning new monads (Expansion/Dark Energy).
-* **Anxiety ($A$):** The intolerance for chaos. High anxiety shrinks the Active Horizon, increasing the probability of pairing with familiar, reliable monads (Gravity/Binding).
+### A Relational Framework for Emergent Topology
 
-Two components of the state can be derived from the first two:
-* **Happiness (H)**: Not a driver for action but a target to aim for. The system will try to optimize for maximal happiness at all times. Happiness is calculated as H = Sqrt((1 - A)(1 - B))
-* **Curiosity (C)**: Curiosity is the driver for exploring the unknown. It is calculated as C = Sqrt((1 - A)B). Curiosity is proportional with boredom but the capacity for curiosity is limited by anxiety.
+**Abstract:** This paper outlines a **self-organizing fundamental framework for emergent, four-dimensional spacetime**. The objective is to derive a zero-energy vacuum state capable of supporting persistent **topological defects** (particles) entirely from relational sequences and pairs, abandoning rigid coordinate grids and global clocks.
 
 ---
-## 2. The Mechanics of Reality
-Because there is no global clock or spatial coordinate system, reality updates via localized, asynchronous interactions.
-### The Double-Buffered Execution Loop
-To simulate asynchronous reality without introducing deterministic spatial biases (a "wind"), the engine process monads in a Double-Buffered FIFO Queue.
-Each monad is handled in turn.
-If the monad doesn't signal, it is moved to a handled queue. 
-If it signals, it is moved to a waiting queue.
-the waiting queue is processed after the signaling phase to see which signal is resolved. Regardless if a handshake is successful or rejected, the signaling monad goes to the handled queue. The same goes for signaling monads that receive and accept a signal while it is still in the waiting queue.
+## I. The Fundamental Manifold
 
-The handled queue becomes the next round's main queue.
-### The Handshake Protocol (2-Phase Commit)
-Events occur via an Asynchronous Propose/Resolve cycle to prevent topological deadlocks:
-1. **Signal Phase:** Monad A decides to act. Based on its current Curiosity, it selects a target Monad B from its Active Horizon (LRU) and sends a proposal. The index of the monad to signal from the ActiveHorizon is calculated as {Floor(C * M) | C < 1, M-1 | C = 1}. The higher the curiosity, the farther out the monad will reach.
-2. **Receive Phase:** Monad B evaluates the proposal. 
-    * If idle, it accepts (Success). 
-    * If already locked in a resolved event, it rejects (Bounce). 
-    * **Deadlock Break:** If Monad B has currently dispatched its own signal but has not yet been acknowledged, it will immediately accept the incoming proposal, drop its signal, and move from the waiting to the handled queue. This elegantly guarantees the resolution of circular deadlocks. It will also ensure that two monads signaling each other will resolve the event (one of the signals will be resolved while the opposite signal is deleted).
+Space and time do not exist as absolute _a priori_ containers. They are emergent properties of discrete, asynchronous interactions between fundamental, dimensionless units called **Monads**.
+
+A Monad is entirely defined by its topological context (its connections) and its internal thermodynamic state (its tension).
+
+- **Proto-Time (The History):** An immutable, strictly ordered ledger of causal events the Monad has participated in. Time is strictly local to the entity.
+
+- **Proto-Space (The Active Horizon):** A mutable, Least Recently Used (LRU) queue of entangled Monad IDs. Space is the relational distance (recency) within this queue.
+
+- **Dimensional Capacity ($M$):** The allowed upper bound of the Active Horizon's populated size ($N$), strictly maintaining $M \ge N$. This limit constrains the local topological density, effectively defining the maximum dimensionality of the emergent space.
 
 ---
-## 3. Event Types (Graph Rewriting)
-When a Handshake succeeds, the universe physically updates using one of two methods:
+## II. The Thermodynamic Potential
 
-* **The Internal Handshake (Gravity / Weaving):** A Monad connects with an existing ID in its Active Horizon. The two Monads sync, log the event, and put each other first in their respective ActiveHorizon. If any of them has room to expand their horizon (M > N) they pick the first (most recent) monad from the other's ActiveHorizon that is not already in their own ActiveHorizon. ActiveHorizon can only be expanded with one monad each tick/round. We call this a Triad Closure - it folds branches together, cross-linking the network into a dense 2D or 3D mesh.
-* **The Genesis Handshake (Dark Energy / Expansion):** If a monad selects an index outside of its ActiveHorizon, it spawns a new monad and sends a signal to it. Since it is not yet in the ActiveHorizon its distance will be considered infinite, which will affect the boredom update as we will see later). When the new monad accepts it will be added to the beginning of the ActiveHorizon (most recent). The new monad is initialized with (M=1,A=0,B=0) and added to the end of the handled queue (as opposed to human babies, newborn monads are perfectly happy).
+The system is driven to minimize **Topological Tension** (Drive), governed by two independent internal scalars bounded within $[0, 1]$.
+
+**1. The Primary Drivers**
+
+- **Anxiety ($A$):** The intolerance for chaos. It acts as the system's **Gravity** (Attraction), forcing horizon collapse and prioritizing familiar, reliable entanglement.
+
+- **Boredom ($B$):** The intolerance for repetition. It acts as the system's **Dark Energy** (Repulsion), driving horizon expansion and the spawning of novel geometry.
+
+**2. The Emergent Fields**
+
+From these dual forces, two behavioral fields emerge that dictate the system's trajectory:
+
+- **Curiosity ($C$):** The active vector of exploration. It scales with boredom but is intrinsically dampened by the need for stability:$$C = \sqrt{(1 - A)B}$$
+- **Drive ($D$):** The scalar magnitude of the Monad's need to act. It represents the system's deviation from equilibrium. The network naturally evolves to minimize:$$D = 1 - \sqrt{(1 - A)(1 - B)}$$
+---
+## III. System Kinematics (The Mechanics of Reality)
+
+Reality updates via localized, asynchronous handshakes. To prevent deterministic spatial artifacts (a topological "wind"), the engine sidesteps global arrays in favor of a **Double-Buffered FIFO Execution Loop**.
+
+**1. The Flow of Time (The Execution Loop)**
+
+1. Monads are evaluated sequentially from a Main Queue.
+
+2. If $D \le \tau_D$ (equilibrium), the Monad rests and is pushed directly to the Handled Queue.
+
+3. If $D > \tau_D$ (instability), the Monad signals and is sidelined to a Waiting Queue.
+
+4. Following the signal phase, the Waiting Queue processes all handshakes. Signaling Monads then pass into the Handled Queue.
+
+5. The Handled Queue becomes the Main Queue for the subsequent causal tick.
+
+**2. The Handshake Protocol**
+
+Events occur via an asynchronous two-phase commit:
+
+- **Signal Phase:** Driven by Curiosity ($C$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:$$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } C < 1 \\ M - 1 & \text{if } C = 1 \end{cases}$$
+- **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or the void:
+
+   - **Internal Target ($n < N$):** The targeted Monad evaluates the proposal. It accepts the handshake _only_ if it is currently idle and the signaling Monad is already present in its Active Horizon. If the targeted Monad is locked, or if the sender is unknown to it, the signal is bounced.
+
+   - **Void Target ($n \ge N$):** The signal reaches beyond the populated horizon into the void. It is automatically accepted, drawing energy from the void to spawn a newborn Monad.
+
+- **Symmetry Breaking (Deadlock Resolution):** If Monad B receives a valid signal from Monad A while B has an unacknowledged outgoing signal, B immediately drops its outgoing signal, accepts A's proposal, and resolves the handshake.
 
 ---
-## 4. The Thermodynamic Drivers (Update Rules)
-A Monad's decision to act, who it targets, and how it modifies its Horizon are dictated by the continuous drift and event-triggered jumps of its internal scalars. 
 
-Let $N$ be the current size of the Active Horizon, and $x$, $y$, $\alpha$, and $\beta$ be calibration constants.
-### The Continuous Drift (Tick Updates)
-Every time a Monad is evaluated in the global loop, its tension naturally rises.
-* **Boredom increases:** $B \leftarrow B + x \frac{1 - B}{N}$
-* **Anxiety increases:** $A \leftarrow A + y(1 - A)$
-* **The Action Trigger:** The Monad will choose to enter the Signal Phase if $H < t_h$ (the threshold for action).
-### The Event Resolution (Handshake Updates)
-If a Monad attempts an action, the success or failure of that handshake instantly alters its state.
+## IV. Topological Phase Transitions
 
-**Anxiety ($A$): The Drive to Bind**
-Driven purely by the success or failure of the proposal.
-* **On Failure (Bounce):** The Monad becomes more isolated. $A \leftarrow A + \alpha(1 - A)$
-* **On Success:** The Monad relieves its isolation. $A \leftarrow A(1 - \alpha)$
+Upon a successful handshake, the causal graph physically rewrites itself based on the targeted index $n$.
 
-**Boredom ($B$): The Drive to Expand**
-Evaluates the recency index ($n$) of the partner within the LRU queue upon a successful connection.
-* **On Failure:** Unchanged (chaos is not boring).
-* **On Success:** Blends with the exponential recency of the connection. $B \leftarrow (1 - \beta)B + \beta(2^{-n})$
-*(Note: Connecting to a recently used node where $n=0$ drives $B$ toward 1. Connecting to an old, novel node where $n$ is large drives $B$ toward 0).**
+**1. The Internal Handshake (Gravity / Weaving)**
 
-**ActiveHorizon**
-After the signal and resolve phases, monads will update the size of its ActiveHorizon based on its state:
-* If boredom is above a threshold, $t_{b}$, MaxCapacity, M, is increased by 1.
-* If anxiety is above a threshold, $t_{a}$, MaxCapacity, M, is decreased by 1. If N > M, the last monad will be dropped from ActiveHorizon, making N = M. M can never drop below 1.
-## The initial state (Big bang)
-Two monads and an event is created initially. Both monads have M=N=1 with each other in their ActiveHorizons and the initial event in their history.
+Triggered when $n < N$. The participants synchronize histories and elevate each other to the front (MRU) of their Active Horizons.
+
+- **Triad Closure:** If either Monad possesses empty capacity ($M > N$), it absorbs the most recent, novel connection from its partner's horizon. This folds branches together, cross-linking the manifold into a dense mesh.
+
+**2. The Genesis Handshake (Dark Energy / Expansion)**
+
+Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy from the void to spawn a new Monad.
+
+- Because the newborn is entirely novel, its topological distance is effectively infinite ($n \to \infty$).
+
+- Upon acceptance, the newborn is anchored at the front of the parent's horizon.
+
+- Newborns initialize with zero thermodynamic tension ($M=1, N=1, A=0, B=0$) and enter the Handled Queue.
+
+---
+
+## V. Continuous Drift and State Updates
+
+The decision to act, and the structural limits of the horizon, dynamically shift according to strict update rules.
+
+**1. The Arrow of Time (Tick Updates)**
+
+Tension naturally escalates as unrequited time progresses:
+
+$$B \leftarrow B + \lambda \frac{1 - B}{N}$$
+
+**2. Event Resolution**
+
+The outcome of a handshake permanently alters the psychological geometry:
+
+- **On Failure (Bounce):** Isolation compounds.$$A \leftarrow A + \alpha(1 - A)$$
+- **On Success:** Isolation is relieved, and boredom blends with the exponential recency of the partner.$$A \leftarrow A(1 - \alpha)$$$$B \leftarrow (1 - \beta)B + \beta(2^{-n})$$
+**3. Horizon Elasticity (Structural Limits)**
+
+Following the resolve phase, structural bounds are re-evaluated:
+
+- **Expansion:** If $B > \tau_B$, capacity expands: $M \leftarrow M + 1$.
+
+- **Contraction:** If $A > \tau_A$, capacity shrinks: $M \leftarrow M - 1$.
+
+- **Asymmetric Severing:** If a shrinking capacity forces $N > M$, the Monad drops the stalest ID (LRU) from its horizon, organically severing the topological link.
+
+- **Topological Collapse (Entropy):** If a Monad's capacity shrinks to $M=0$, it instantly vanishes from the manifold. All surviving Monads that possessed an active link to the deceased must immediately purge the ID from their horizons, shifting their remaining connections forward to fill the void.
+
+**4. Boundary Initialization (The Big Bang)**
+
+The universe initializes with a mutually entangled pair of Monads, bound by a shared genesis event. Both entities begin with $M=N=1$, ensuring relational space exists from the first discrete tick.
+## VI. Calibration Constants and Universal Inheritance
+
+The behavior of the universe is tuned by six fundamental constants. Rather than acting as static global laws, these constants are dynamic and inheritable "genetics" specific to each Monad, allowing the vacuum to naturally select for physics that support persistent topological structures.
+
+|**Constant**|**Symbol**|**Mechanical Role in the Engine**|
+|---|---|---|
+|**Cosmological Rate**|$\lambda$|The passive accumulation rate. It dictates the exact fraction by which Boredom ($B$) passively increases during every causal tick where no action is taken.|
+|**Friction Coeff.**|$\alpha$|The penalty multiplier for failed handshakes. It determines exactly how quickly Anxiety ($A$) spikes toward $1.0$ when a signal bounces.|
+|**Relaxation Coeff.**|$\beta$|The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Boredom ($B$) based on the partner's relational distance.|
+|**Critical Drive**|$\tau_D$|The thermodynamic trigger point. If a Monad's overall Drive ($D$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.|
+|**Critical Expansion**|$\tau_B$|The specific Boredom threshold. If $B$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.|
+|**Critical Contraction**|$\tau_A$|The specific Anxiety threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its stalest connection.|
+**1. The Bounded Hypercube and Initialization**
+
+To prevent fatal computational errors (such as division by zero, infinite expansion, or permanently frozen states), all six constants are strictly bounded within the open interval $(0, 1)$.
+
+At the genesis of the simulation (the Big Bang), the prime Monad pair initializes with all six constants set exactly to 0.5 (or $2^{-1}$). This ensures perfect mathematical symmetry, placing the primordial universe at the exact origin point of the evolutionary parameter space without any initial structural bias.
+
+**2. The Genesis Mutation Protocol**
+
+During a Genesis Handshake, the newborn Monad inherits its parent's constants. To ensure mutated values drift but mathematically resist breaching the absolute 0 or 1 boundaries, the inheritance applies a Logit-Normal distribution driven by a universal, base-2 mutation rate ($\sigma = 2^{-6}$).
+
+For any given parent constant $p$, the child's constant $c$ is derived in three distinct steps:
+
+- **Unbounding:** The parent's bounded value is mapped to the infinite real number line via a logit transform:$$x_p = \ln\left(\frac{p}{1 - p}\right)$$
+- **Mutation:** A standard Gaussian drift is applied using the universal mutation rate:$$x_c = x_p + \mathcal{N}(0, \sigma^2)$$
+- **Rebounding:** The mutated value is compressed back into the strict (0, 1) bounds via the standard logistic (sigmoid) function:$$c = \frac{1}{1 + e^{-x_c}}$$
+Because of the asymptotic curves of the transformation, the parameter space naturally "stiffens" as a Monad's constants approach the extreme edges of reality, protecting the thermodynamic integrity of the network.
+### VII. Pragmatic Garbage Collection and Event Horizons
+
+While the physical laws of the Fluid Spacetime Engine operate on strict, asynchronous locality, the overarching computational simulation requires a mechanism to manage finite memory constraints. As the manifold evolves, topological space can organically fracture, creating isolated multiverse instances. A global garbage collection protocol is introduced not as a physical force within the universe, but as a pragmatic simulation artifact that mirrors the concept of cosmological event horizons.
+
+**1. Causal Decoupling (The Network Event Horizon)**
+
+Because the handshake protocol enforces strict "friends of friends" locality, a Monad can only interact with IDs reachable through mutual connections. As capacities expand and contract, clusters of Monads may organically lose either _all incoming_ or _all outgoing_ directed links to the primary network.
+
+Once a strictly one-way topological boundary forms, it acts as an absolute event horizon. Without reciprocal links, the two-phase handshake cannot bridge the gap to re-establish mutual contact. The two regions become permanently causally decoupled. To the main simulation, the orphaned cluster effectively ceases to exist, making its continued computation a drain on hardware resources.
+
+**2. The Fitness Function: Survival by Causal Action**
+
+To resolve multiverse splits and conserve finite computational resources, the simulation requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as Total Causal Action.
+
+The garbage collector calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
+
+If we define a universe cluster $U$ containing a set of Monads, and $h_i$ represents the total number of logged handshake events in the history of Monad $i$, the fitness score $F$ of the universe is:
+
+$$F(U) = \sum_{i \in U} h_i$$
+
+**3. Evolutionary Consequences**
+
+When a network fracture occurs, the simulation compares $F(U)$ for the resulting disconnected clusters and purges the sub-manifold with the lowest score.
+
+This mechanism serves as the ultimate Darwinian pressure for the physical constants defined in Section VI. It naturally selects for universes whose laws of physics successfully weave dense, highly interactive geometric structures. A universe that successfully forms persistent, stable matter will continually execute successful handshakes, rapidly accumulating massive causal history, whereas a universe of chaotic gas or frozen nodes will stagnate and be discarded.

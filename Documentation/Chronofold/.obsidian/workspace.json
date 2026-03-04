@@ -6,6 +6,7 @@
       {
         "id": "99ec728b4238b9ac",
         "type": "tabs",
+        "dimension": 42.238267148014444,
         "children": [
           {
             "id": "df22d1eea46311b3",
@@ -27,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "AI-rewrite of base model.md",
+                "file": "base model.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AI-rewrite of base model"
+              "title": "base model"
             }
           }
         ],
@@ -41,6 +42,7 @@
       {
         "id": "b55139651b26bab9",
         "type": "tabs",
+        "dimension": 57.761732851985556,
         "children": [
           {
             "id": "5743172afd75cd8e",
@@ -214,7 +216,7 @@
       "bases:Skapa ny bas": false
     }
   },
-  "active": "1f7d0c7325476a5f",
+  "active": "5743172afd75cd8e",
   "lastOpenFiles": [
     "base model.md",
     "AI-rewrite of base model.md",
