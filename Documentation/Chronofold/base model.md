@@ -72,7 +72,7 @@ Upon a successful handshake, the causal graph physically rewrites itself based o
 
 **1. The Internal Handshake (Gravity / Weaving)**
 
-Triggered when $n < N$. The participants synchronize histories and elevate each other to the front (MRU) of their Active Horizons.
+Triggered when $n < N$. The participants get causally entangled by sharing a new event and elevate each other to the front (MRU) of their Active Horizons.
 
 - **Triad Closure:** If either Monad possesses empty capacity ($M > N$), it absorbs the most recent, novel connection from its partner's horizon. This folds branches together, cross-linking the manifold into a dense mesh.
 
@@ -83,6 +83,8 @@ Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy 
 - Because the newborn is entirely novel, its topological distance is effectively infinite ($n \to \infty$).
 
 - Upon acceptance, the newborn is anchored at the front of the parent's horizon.
+
+- **Causal Split:** The newborn inherits an exact copy of its parent's Proto-Time ledger up to the moment of genesis. This bifurcates the timeline, ensuring the newly instantiated space shares a consistent, unbroken causal history with its local macroscopic neighborhood.
 
 - Newborns initialize with zero thermodynamic tension ($M=1, N=1, A=0, B=0$) and enter the Handled Queue.
 
@@ -139,17 +141,17 @@ At the genesis of the simulation (the Big Bang), the prime Monad pair initialize
 
 **2. The Genesis Mutation Protocol**
 
-During a Genesis Handshake, the newborn Monad inherits its parent's constants. To ensure mutated values drift but mathematically resist breaching the absolute 0 or 1 boundaries, the inheritance applies a Logit-Normal distribution driven by a universal, base-2 mutation rate ($\sigma = 2^{-6}$).
-
+During a Genesis Handshake, the newborn Monad inherits its parent's constants. To ensure mutated values drift but mathematically resist breaching the absolute 0 or 1 boundaries, the inheritance applies a Logit-Normal distribution driven by a localized mutation rate $\sigma$. To simulate cooling and stabilizing constants over time while strictly adhering to local causality, $\sigma$ is calculated at the moment of genesis as the inverse square root of the newborn's inherited topological age (the total number of causal events, $T_p$, shared with the parent):
+$$\sigma \leftarrow T_p^{-1/2}$$
 For any given parent constant $p$, the child's constant $c$ is derived in three distinct steps:
 
 - **Unbounding:** The parent's bounded value is mapped to the infinite real number line via a logit transform:$$x_p = \ln\left(\frac{p}{1 - p}\right)$$
-- **Mutation:** A standard Gaussian drift is applied using the universal mutation rate:$$x_c = x_p + \mathcal{N}(0, \sigma^2)$$
+- **Mutation:** A standard Gaussian drift is applied using the monad's mutation rate:$$x_c = x_p + \mathcal{N}(0, \sigma^2)$$
 - **Rebounding:** The mutated value is compressed back into the strict (0, 1) bounds via the standard logistic (sigmoid) function:$$c = \frac{1}{1 + e^{-x_c}}$$
 Because of the asymptotic curves of the transformation, the parameter space naturally "stiffens" as a Monad's constants approach the extreme edges of reality, protecting the thermodynamic integrity of the network.
-### VII. Pragmatic Garbage Collection and Event Horizons
+### VII. Causal pruning and Event Horizons
 
-While the physical laws of the Fluid Spacetime Engine operate on strict, asynchronous locality, the overarching computational simulation requires a mechanism to manage finite memory constraints. As the manifold evolves, topological space can organically fracture, creating isolated multiverse instances. A global garbage collection protocol is introduced not as a physical force within the universe, but as a pragmatic simulation artifact that mirrors the concept of cosmological event horizons.
+While the physical laws of the Fluid Spacetime Engine operate on strict, asynchronous locality, the overarching computational simulation requires a mechanism to manage finite memory constraints. As the manifold evolves, topological space can organically fracture, creating isolated multiverse instances. A global causal pruning protocol is introduced as a pragmatic simulation artifact that mirrors the concept of cosmological event horizons.
 
 **1. Causal Decoupling (The Network Event Horizon)**
 
@@ -161,7 +163,7 @@ Once a strictly one-way topological boundary forms, it acts as an absolute event
 
 To resolve multiverse splits and conserve finite computational resources, the simulation requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as Total Causal Action.
 
-The garbage collector calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
+The pruning algorithm calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
 
 If we define a universe cluster $U$ containing a set of Monads, and $h_i$ represents the total number of logged handshake events in the history of Monad $i$, the fitness score $F$ of the universe is:
 
