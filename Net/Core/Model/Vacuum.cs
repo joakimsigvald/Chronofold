@@ -13,7 +13,7 @@ public class Vacuum(Monad[] monads, Link[] links)
         Link[] links = [.. Link.Generate(depth, coordinates, monads)];
         new NeighbourSolver(monads, links).Solve();
         new LinkColorSolver(radialMonads).Solve();
-        //new LinkSequenceSolver(radialMonads).Solve();
+        new LinkSequenceSolver(radialMonads).Solve();
         new SimpleSequenceInitializer(monads).Solve();
         return new(monads, links);
     }
