@@ -10,6 +10,10 @@ async fn main() {
             "/",
             get(|| async { Html(include_str!("../templates/index.html")) }),
         )
+        .route(
+            "/simulation",
+            get(|| async { Html(include_str!("../templates/simulation.html")) }),
+        )
         .nest_service("/assets", ServeDir::new("assets")) // Generic handler
         .route("/ws", get(ws_handler));
 
