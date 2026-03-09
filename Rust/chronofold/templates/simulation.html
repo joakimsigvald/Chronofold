@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronofold - Active Horizon</title>
+    <title>Chronofold - Simulation</title>
     <link rel="stylesheet" href="/assets/simulation.css">
+    <script src="/assets/lib/d3/d3_7_9_0.min.js" defer></script>
+    <script src="/assets/js/simulation.js" defer></script>
 </head>
 
 <body>
@@ -15,9 +17,10 @@
         <div class="counter">Tick: <span id="tick-display">0</span></div>
     </header>
     <main>
-        <div class="placeholder">[ Network Canvas ]</div>
+        <main>
+            <svg id="universe"></svg>
+        </main>
     </main>
-    <script src="/assets/simulation.js"></script>
 </body>
 
 </html>
