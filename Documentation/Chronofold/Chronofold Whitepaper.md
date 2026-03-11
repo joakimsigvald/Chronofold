@@ -180,7 +180,7 @@ $$x_c = x_p + \mathcal{N}(0, \sigma^2)$$
 $$c = \frac{1}{1 + e^{-x_c}}$$
 
 Because of the asymptotic curves of the transformation, the parameter space naturally "stiffens" as a Monad's constants approach the extreme edges of reality, protecting the thermodynamic integrity of the network.
-### VII. Causal pruning and Event Horizons
+## VII. Causal pruning and Event Horizons
 
 While the physical laws of the Fluid Spacetime Engine operate on strict, asynchronous locality, the overarching computational simulation requires a mechanism to manage finite memory constraints. As the manifold evolves, topological space can organically fracture, creating isolated multiverse instances. A global causal pruning protocol is introduced as a pragmatic simulation artifact that mirrors the concept of cosmological event horizons.
 
