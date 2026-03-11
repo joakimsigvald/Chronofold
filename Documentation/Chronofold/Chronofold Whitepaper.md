@@ -118,6 +118,7 @@ $$A \leftarrow A + \alpha(1 - A)$$
 
 $$A \leftarrow A(1 - \alpha)$$
 $$B \leftarrow (1 - \beta)B + \beta(2^{-n})$$
+
 **3. Horizon Elasticity (Structural Limits)**
 
 Following the resolve phase, structural bounds are re-evaluated:
@@ -154,15 +155,23 @@ At the genesis of the simulation (the Big Bang), the prime Monad pair initialize
 **2. The Genesis Mutation Protocol**
 
 During a Genesis Handshake, the newborn Monad inherits its parent's constants. To ensure mutated values drift but mathematically resist breaching the absolute 0 or 1 boundaries, the inheritance applies a Logit-Normal distribution driven by a localized mutation rate $\sigma$. To simulate cooling and stabilizing constants over time while strictly adhering to local causality, $\sigma$ is calculated at the moment of genesis as the inverse square root of the newborn's inherited topological age (the total number of causal events, $T_p$, shared with the parent):
+
 $$\sigma \leftarrow T_p^{-1/2}$$
+
 For any given parent constant $p$, the child's constant $c$ is derived in three distinct steps:
 
 - **Unbounding:** The parent's bounded value is mapped to the infinite real number line via a logit transform:
+
 $$x_p = \ln\left(\frac{p}{1 - p}\right)$$
+
 - **Mutation:** A standard Gaussian drift is applied using the monad's mutation rate:
+
 $$x_c = x_p + \mathcal{N}(0, \sigma^2)$$
+
 - **Rebounding:** The mutated value is compressed back into the strict (0, 1) bounds via the standard logistic (sigmoid) function:
+
 $$c = \frac{1}{1 + e^{-x_c}}$$
+
 Because of the asymptotic curves of the transformation, the parameter space naturally "stiffens" as a Monad's constants approach the extreme edges of reality, protecting the thermodynamic integrity of the network.
 ### VII. Causal pruning and Event Horizons
 
@@ -181,7 +190,9 @@ To resolve multiverse splits and conserve finite computational resources, the si
 The pruning algorithm calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
 
 If we define a universe cluster $U$ containing a set of Monads, and $h_i$ represents the total number of logged handshake events in the history of Monad $i$, the fitness score $F$ of the universe is:
+
 $$F(U) = \sum_{i \in U} h_i$$
+
 **3. Evolutionary Consequences**
 
 When a network fracture occurs, the simulation compares $F(U)$ for the resulting disconnected clusters and purges the sub-manifold with the lowest score.
