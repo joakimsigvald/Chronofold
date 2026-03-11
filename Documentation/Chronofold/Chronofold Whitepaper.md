@@ -104,6 +104,7 @@ The decision to act, and the structural limits of the horizon, dynamically shift
 **1. The Arrow of Time (Tick Updates)**
 
 Tension naturally escalates as unrequited time progresses:
+
 $$B \leftarrow B + \lambda \frac{1 - B}{N}$$
 
 **2. Event Resolution**
@@ -111,9 +112,12 @@ $$B \leftarrow B + \lambda \frac{1 - B}{N}$$
 The outcome of a handshake permanently alters the psychological geometry:
 
 - **On Failure (Bounce):** Isolation compounds.
+
 $$A \leftarrow A + \alpha(1 - A)$$
 - **On Success:** Isolation is relieved, and boredom blends with the exponential recency of the partner.
-$$A \leftarrow A(1 - \alpha)$$$$B \leftarrow (1 - \beta)B + \beta(2^{-n})$$
+
+$$A \leftarrow A(1 - \alpha)$$
+$$B \leftarrow (1 - \beta)B + \beta(2^{-n})$$
 **3. Horizon Elasticity (Structural Limits)**
 
 Following the resolve phase, structural bounds are re-evaluated:
