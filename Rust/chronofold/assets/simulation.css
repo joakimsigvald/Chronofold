@@ -22,20 +22,6 @@ header {
     letter-spacing: 0.1em;
     color: #888;
 }
-.status {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.5rem;
-    color: #888;
-}
-.status.running {
-    color: #44dd22; /* Green */
-}
-.status.paused {
-    color: #ffb700; /* A nice visible yellow-orange */
-}
-.status.halted {
-    color: #ff4444; /* Red */
-}
 .counter {
     font-family: monospace;
     font-size: 1.5rem;

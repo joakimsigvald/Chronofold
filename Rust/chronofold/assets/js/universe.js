@@ -1,13 +1,11 @@
 ﻿import { CreateMonadLayer } from './monadLayer.js';
-import { CreateLabelLayer } from './labelLayer.js';
 
-export const CreateUniverse = (vacuum, showLabels) => {
+export const CreateUniverse = (vacuum) => {
     let svg = null;
     let view = null;
-    const labelsLayer = CreateLabelLayer(vacuum);
     const monadsLayer = CreateMonadLayer(vacuum);
 
-    const _render = () => {
+    const _init = () => {
         svg = d3.select("#universe")
             .attr("width", window.innerWidth)
             .attr("height", window.innerHeight);
@@ -26,22 +24,16 @@ export const CreateUniverse = (vacuum, showLabels) => {
     }
 
     return {
-        render() {
-            _render();
-            monadsLayer.render(view);
-            if (showLabels)
-                labelsLayer.render(view);
+        init() {
+            _init();
+            monadsLayer.init(view);
         },
         update() {
             monadsLayer.update();
-            if (showLabels)
-                labelsLayer.update();
         },
         scale(scale) {
             _scale();
             monadsLayer.scale(scale);
-            if (showLabels)
-                labelsLayer.scale(scale);
         },
     };
 };

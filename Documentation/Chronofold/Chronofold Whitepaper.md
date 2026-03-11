@@ -33,7 +33,7 @@ The system is driven to minimize **Topological Tension** (Drive), governed by tw
 From these dual forces, two behavioral fields emerge that dictate the system's trajectory:
 
 - **Curiosity ($C$):** The active vector of exploration. It scales with boredom but is intrinsically dampened by the need for stability:$$C = \sqrt{(1 - A)B}$$
-- **Drive ($D$):** The scalar magnitude of the Monad's need to act. It represents the system's deviation from equilibrium. The network naturally evolves to minimize:$$D = 1 - \sqrt{(1 - A)(1 - B)}$$
+- **Drive ($D$):** The scalar magnitude of the Monad's need for change. It represents the system's deviation from equilibrium. The network naturally evolves to minimize:$$D = 1 - \sqrt{(1 - A)(1 - B)}$$
 ---
 ## III. System Kinematics (The Mechanics of Reality)
 
@@ -56,7 +56,7 @@ Reality updates via localized, asynchronous handshakes. To prevent deterministic
 Events occur via an asynchronous two-phase commit:
 
 - **Signal Phase:** Driven by Curiosity ($C$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:$$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } C < 1 \\ M - 1 & \text{if } C = 1 \end{cases}$$
-- **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or the void:
+- **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or not:
 
    - **Internal Target ($n < N$):** The targeted Monad evaluates the proposal. It accepts the handshake _only_ if it is currently idle and the signaling Monad is already present in its Active Horizon. If the targeted Monad is locked, or if the sender is unknown to it, the signal is bounced.
 
@@ -82,11 +82,15 @@ Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy 
 
 - Because the newborn is entirely novel, its topological distance is effectively infinite ($n \to \infty$).
 
-- Upon acceptance, the newborn is anchored at the front of the parent's horizon.
+- Upon acceptance, the newborn is anchored at the front of the parent's horizon and the parent becomes the newborn's only known peer.
 
 - **Causal Split:** The newborn inherits an exact copy of its parent's Proto-Time ledger up to the moment of genesis. This bifurcates the timeline, ensuring the newly instantiated space shares a consistent, unbroken causal history with its local macroscopic neighborhood.
 
-- Newborns initialize with zero thermodynamic tension ($M=1, N=1, A=0, B=0$) and enter the Handled Queue.
+- Newborns initialize with zero thermodynamic tension ($M=N=1, A=B=0$) and enter the Handled Queue.
+
+**3. Bounce**
+
+On an unsuccessful handshake, the initiator push the unresponsive peer to the end of its Active horizon.
 
 ---
 

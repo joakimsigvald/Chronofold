@@ -1,50 +1,44 @@
 ﻿import { Color, Scale } from './config.js';
 
 export const CreateMonadLayer = (vacuum) => {
-    const { monads, links, paletteSize } = vacuum;
+    let currentScale = 1.0;
+    let nodeElements = null;
+    let viewGroup = null;
 
-    const _renderCircles = (view, type, circles, getColor) =>
-        view.append("g").attr("class", `${type}s-layer`)
-            .selectAll("circle")
-            .data(circles)
-            .enter()
-            .append("circle")
-            .attr("class", type)
-            .attr("fill", getColor);
-
-    const _getLinkColor = (link) =>
-        link.isRightActive ? link.color
-            : link.isLeftActive ? d3.interpolateRgb(Color.darkgrey, link.color)(0.2)
-                : Color.darkgrey;
-
-    const _getMonadColor = (monad) =>
-        monad.hasSent || monad.hasReceived ? Color.lightgrey : Color.white;
-
-    const _scaleCircles = (scale, type, circles, size) =>
-        d3.select(`.${type}s-layer`).selectAll("circle")
-            .data(circles)
-            .attr("cx", d => d.x * scale)
-            .attr("cy", d => d.y * scale)
-            .attr("r", size * scale);
+    const simulation = d3.forceSimulation()
+        .force("charge", d3.forceManyBody().strength(-1))
+        .force("x", d3.forceX(0).strength(0.1))
+        .force("y", d3.forceY(0).strength(0.1))
+        .on("tick", () => {
+            if (!nodeElements) return;
+            nodeElements
+                .attr("cx", d => d.x * currentScale)
+                .attr("cy", d => d.y * currentScale);
+        });
 
     return {
-        render(view) {
-            _renderCircles(view, 'monad', monads, d => _getMonadColor(d));
-            _renderCircles(view, 'link', links, d => _getLinkColor(d));
+        init(view) {
+            viewGroup = view.append("g").attr("class", "monads-layer");
         },
 
         update() {
-            d3.select(".links-layer").selectAll("circle")
-                .data(links)
-                .attr("fill", d => _getLinkColor(d));
-            d3.select(".monads-layer").selectAll("circle")
-                .data(monads)
-                .attr("fill", d => _getMonadColor(d));
+            simulation.nodes(vacuum.monads);
+            nodeElements = viewGroup.selectAll("circle.monad")
+                .data(vacuum.monads, d => d.id)
+                .join("circle")
+                .attr("class", "monad")
+                .attr("fill", Color.white) // Simplified for the vacuum state
+                .attr("r", Scale.monad * currentScale);
+
+            simulation.alpha(1).restart();
         },
 
         scale(scale) {
-            _scaleCircles(scale, 'monad', monads, Scale.monad);
-            _scaleCircles(scale, 'link', links, Scale.link);
+            currentScale = scale;
+            if (nodeElements) {
+                nodeElements.attr("r", Scale.monad * currentScale);
+            }
+            simulation.alpha(0.3).restart();
         },
     };
 };
