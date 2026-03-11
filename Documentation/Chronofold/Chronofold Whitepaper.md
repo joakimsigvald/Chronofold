@@ -33,9 +33,13 @@ The system is driven to minimize **Topological Tension** (Drive), governed by tw
 From these dual forces, two behavioral fields emerge that dictate the system's trajectory:
 
 - **Curiosity ($C$):** The active vector of exploration. It scales with boredom but is intrinsically dampened by the need for stability:
+
 $$C = \sqrt{(1 - A)B}$$
+
 - **Drive ($D$):** The scalar magnitude of the Monad's need for change. It represents the system's deviation from equilibrium. The network naturally evolves to minimize:
+
 $$D = 1 - \sqrt{(1 - A)(1 - B)}$$
+
 ---
 ## III. System Kinematics (The Mechanics of Reality)
 
@@ -58,7 +62,9 @@ Reality updates via localized, asynchronous handshakes. To prevent deterministic
 Events occur via an asynchronous two-phase commit:
 
 - **Signal Phase:** Driven by Curiosity ($C$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:
+
 $$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } C < 1 \\ M - 1 & \text{if } C = 1 \end{cases}$$
+
 - **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or not:
 
    - **Internal Target ($n < N$):** The targeted Monad evaluates the proposal. It accepts the handshake _only_ if it is currently idle and the signaling Monad is already present in its Active Horizon. If the targeted Monad is locked, or if the sender is unknown to it, the signal is bounced.
