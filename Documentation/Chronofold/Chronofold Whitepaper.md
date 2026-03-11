@@ -152,6 +152,7 @@ The behavior of the universe is tuned by six fundamental constants. Rather than 
 |**Critical Drive**|$\tau_D$|The thermodynamic trigger point. If a Monad's overall Drive ($D$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.|
 |**Critical Expansion**|$\tau_B$|The specific Boredom threshold. If $B$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.|
 |**Critical Contraction**|$\tau_A$|The specific Anxiety threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its stalest connection.|
+
 **1. The Bounded Hypercube and Initialization**
 
 To prevent fatal computational errors (such as division by zero, infinite expansion, or permanently frozen states), all six constants are strictly bounded within the open interval $(0, 1)$.
