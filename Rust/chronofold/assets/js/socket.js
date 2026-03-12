@@ -1,7 +1,13 @@
 export const CreateSocket = ({ onMessage, onConnect, onPause, onResume, onDisconnect }) => {
+    const timeMs = 500;
+
     let ws = null;
     let isPaused = false;
-    let pendingAck = false;
+    let syncCount = 0;
+    let timeoutId = null;
+
+    const sendAck = () => ws && ws.readyState === 1 && ws.send("ACK");
+    const advanceSync = () => ++syncCount > 1 && !isPaused && sendAck();
 
     return {
         connect: () => {
@@ -9,24 +15,20 @@ export const CreateSocket = ({ onMessage, onConnect, onPause, onResume, onDiscon
 
             ws.onopen = () => {
                 isPaused = false;
-                pendingAck = false;
-                if (onConnect) 
-                    onConnect();
+                syncCount = 0;
+                onConnect?.();
             };
 
             ws.onmessage = (event) => {
-                if (onMessage) 
-                    onMessage(event.data);
-
-                if (isPaused) {
-                    pendingAck = true;
-                } else if (ws.readyState === 1) {
-                    ws.send("ACK");
-                }
+                syncCount = 0;
+                timeoutId = setTimeout(advanceSync, timeMs);
+                onMessage?.(event.data);
+                advanceSync();
             };
 
             ws.onclose = () => {
-                if (onDisconnect) onDisconnect();
+                if (timeoutId) clearTimeout(timeoutId);
+                onDisconnect?.();
             };
 
             ws.onerror = (err) => console.error("Network Failure:", err);
@@ -40,21 +42,18 @@ export const CreateSocket = ({ onMessage, onConnect, onPause, onResume, onDiscon
         },
 
         togglePause: () => {
-            if (!ws || ws.readyState !== 1) 
+            if (!ws || ws.readyState !== 1)
                 return;
 
             isPaused = !isPaused;
             if (isPaused) {
-                if (onPause) 
-                    onPause();
+                onPause?.();
                 return;
             }
 
-            if (onResume) 
-                onResume();
-            if (pendingAck) {
-                ws.send("ACK");
-                pendingAck = false;
+            onResume?.();
+            if (syncCount > 1) {
+                sendAck();
             }
         }
     };
