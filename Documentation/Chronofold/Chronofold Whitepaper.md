@@ -20,25 +20,25 @@ A Monad is entirely defined by its topological context (its connections) and its
 ---
 ## II. The Thermodynamic Potential
 
-The system is driven to minimize **Topological Tension** (Drive), governed by two independent internal scalars bounded within $[0, 1]$.
+The system is driven to minimize Structural Stress ($S$), governed by two independent internal scalars bounded within $[0, 1]$.
 
 **1. The Primary Drivers**
 
-- **Anxiety ($A$):** The intolerance for chaos. It acts as the system's **Gravity** (Attraction), forcing horizon collapse and prioritizing familiar, reliable entanglement.
+- **Affinity ($A$):** The internal drive to exploit known geometry; the resistance to topological noise. It acts as the system's densification pressure, forcing horizon collapse and prioritizing familiar, reliable entanglement.
 
-- **Boredom ($B$):** The intolerance for repetition. It acts as the system's **Dark Energy** (Repulsion), driving horizon expansion and the spawning of novel geometry.
+- **Fugacity ($F$):** The internal escaping tendency; the resistance to topological stagnation. It acts as the system's expansive pressure, driving horizon expansion and the spawning of novel geometry.
 
-**2. The Emergent Fields**
+**2. The Emergent States**
 
-From these dual forces, two behavioral fields emerge that dictate the system's trajectory:
+From these dual competing pressures, two behavioral states emerge that dictate the system's trajectory:
 
-- **Curiosity ($C$):** The active vector of exploration. It scales with boredom but is intrinsically dampened by the need for stability:
+- **Aperture ($P$):** The Monad's internal receptivity to the void. It scales with fugacity but is intrinsically dampened by the need for cohesive stability. This normalized scalar determines the exact proportional reach ($n$) of the handshake signal across the dimensional capacity.
 
-$$C = \sqrt{(1 - A)B}$$
+$$C = \sqrt{(1 - A)F}$$
 
-- **Drive ($D$):** The scalar magnitude of the Monad's need for change. It represents the system's deviation from equilibrium. The network naturally evolves to minimize:
+- **Stress ($S$):** The overarching structural pressure of the Monad. It represents the localized deviation from thermodynamic equilibrium. When $S > \tau_S$, the Monad breaks equilibrium and must initiate a handshake. The network naturally evolves to minimize stress.
 
-$$D = 1 - \sqrt{(1 - A)(1 - B)}$$
+$$S = 1 - \sqrt{(1 - A)(1 - F)}$$
 
 ---
 ## III. System Kinematics (The Mechanics of Reality)
@@ -49,9 +49,9 @@ Reality updates via localized, asynchronous handshakes. To prevent deterministic
 
 1. Monads are evaluated sequentially from a Main Queue.
 
-2. If $D \le \tau_D$ (equilibrium), the Monad rests and is pushed directly to the Handled Queue.
+2. If $S \le \tau_S$ (equilibrium), the Monad rests and is pushed directly to the Handled Queue.
 
-3. If $D > \tau_D$ (instability), the Monad signals and is sidelined to a Waiting Queue.
+3. If $S > \tau_S$ (instability), the Monad signals and is sidelined to a Waiting Queue.
 
 4. Following the signal phase, the Waiting Queue processes all handshakes. Signaling Monads then pass into the Handled Queue.
 
@@ -61,9 +61,9 @@ Reality updates via localized, asynchronous handshakes. To prevent deterministic
 
 Events occur via an asynchronous two-phase commit:
 
-- **Signal Phase:** Driven by Curiosity ($C$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:
+- **Signal Phase:** Driven by Aperture ($P$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:
 
-$$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } C < 1 \\ M - 1 & \text{if } C = 1 \end{cases}$$
+$$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } P < 1 \\ M - 1 & \text{if } P = 1 \end{cases}$$
 
 - **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or not:
 
@@ -95,7 +95,7 @@ Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy 
 
 - **Causal Split:** The newborn inherits an exact copy of its parent's Proto-Time ledger up to the moment of genesis. This bifurcates the timeline, ensuring the newly instantiated space shares a consistent, unbroken causal history with its local macroscopic neighborhood.
 
-- Newborns initialize with zero thermodynamic tension ($M=N=1, A=B=0$) and enter the Handled Queue.
+- Newborns initialize with zero structural stress ($M=N=1$, $A=0$, $F=0$) and enter the Handled Queue.
 
 **3. Bounce**
 
@@ -109,27 +109,27 @@ The decision to act, and the structural limits of the horizon, dynamically shift
 
 **1. The Arrow of Time (Tick Updates)**
 
-Tension naturally escalates as unrequited time progresses:
+Fugacity naturally escalates as unrequited time progresses:
 
-$$B \leftarrow B + \lambda \frac{1 - B}{N}$$
+$$F \leftarrow F + \lambda \frac{1 - F}{N}$$
 
 **2. Event Resolution**
 
-The outcome of a handshake permanently alters the psychological geometry:
+The outcome of a handshake permanently alters the internal state:
 
 - **On Failure (Bounce):** Isolation compounds.
 
 $$A \leftarrow A + \alpha(1 - A)$$
-- **On Success:** Isolation is relieved, and boredom blends with the exponential recency of the partner.
+- **On Success:** Isolation is relieved, and fugacity blends with the exponential recency of the partner.
 
 $$A \leftarrow A(1 - \alpha)$$
-$$B \leftarrow (1 - \beta)B + \beta(2^{-n})$$
+$$F \leftarrow (1 - \beta)F + \beta(2^{-n})$$
 
 **3. Horizon Elasticity (Structural Limits)**
 
 Following the resolve phase, structural bounds are re-evaluated:
 
-- **Expansion:** If $B > \tau_B$, capacity expands: $M \leftarrow M + 1$.
+- **Expansion:** If $F > \tau_F$, capacity expands: $M \leftarrow M + 1$.
 
 - **Contraction:** If $A > \tau_A$, capacity shrinks: $M \leftarrow M - 1$.
 
@@ -144,14 +144,14 @@ The universe initializes with a mutually entangled pair of Monads, bound by a sh
 
 The behavior of the universe is tuned by six fundamental constants. Rather than acting as static global laws, these constants are dynamic and inheritable "genetics" specific to each Monad, allowing the vacuum to naturally select for physics that support persistent topological structures.
 
-|**Constant**|**Symbol**|**Mechanical Role in the Engine**|
-|---|---|---|
-|**Cosmological Rate**|$\lambda$|The passive accumulation rate. It dictates the exact fraction by which Boredom ($B$) passively increases during every causal tick where no action is taken.|
-|**Friction Coeff.**|$\alpha$|The penalty multiplier for failed handshakes. It determines exactly how quickly Anxiety ($A$) spikes toward $1.0$ when a signal bounces.|
-|**Relaxation Coeff.**|$\beta$|The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Boredom ($B$) based on the partner's relational distance.|
-|**Critical Drive**|$\tau_D$|The thermodynamic trigger point. If a Monad's overall Drive ($D$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.|
-|**Critical Expansion**|$\tau_B$|The specific Boredom threshold. If $B$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.|
-|**Critical Contraction**|$\tau_A$|The specific Anxiety threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its stalest connection.|
+| **Constant**             | **Symbol** | **Mechanical Role in the Engine**                                                                                                                                            |
+| ------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                 |
+| **Friction Coeff.**      | $\alpha$   | The penalty multiplier for failed handshakes. It determines exactly how quickly Affinity ($A$) spikes toward $1.0$ when a signal bounces.                                    |
+| **Relaxation Coeff.**    | $\beta$    | The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Fugacity ($F$) based on the partner's relational distance. |
+| **Critical Stress**      | $\tau_S$   | The thermodynamic trigger point. If a Monad's overall Stress ($S$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.                 |
+| **Critical Expansion**   | $\tau_F$   | The specific Fugacity threshold. If $F$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.                        |
+| **Critical Contraction** | $\tau_A$   | The specific Affinity threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its stalest connection.           |
 
 **1. The Bounded Hypercube and Initialization**
 
@@ -192,16 +192,16 @@ Once a strictly one-way topological boundary forms, it acts as an absolute event
 
 **2. The Fitness Function: Survival by Causal Action**
 
-To resolve multiverse splits and conserve finite computational resources, the simulation requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as Total Causal Action.
+To resolve multiverse splits and conserve finite computational resources, the simulation requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as **Total Causal Action**.
 
 The pruning algorithm calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
 
-If we define a universe cluster $U$ containing a set of Monads, and $h_i$ represents the total number of logged handshake events in the history of Monad $i$, the fitness score $F$ of the universe is:
+If we define a universe cluster $U$ containing a set of Monads, and $h_i$ represents the total number of logged handshake events in the history of Monad $i$, the Total Causal Action $\Phi$ of the universe is:
 
-$$F(U) = \sum_{i \in U} h_i$$
+$$\Phi(U) = \sum_{i \in U} h_i$$
 
 **3. Evolutionary Consequences**
 
-When a network fracture occurs, the simulation compares $F(U)$ for the resulting disconnected clusters and purges the sub-manifold with the lowest score.
+When a network fracture occurs, the simulation compares $\Phi(U)$ for the resulting disconnected clusters and purges the sub-manifold with the lowest score.
 
 This mechanism serves as the ultimate Darwinian pressure for the physical constants defined in Section VI. It naturally selects for universes whose laws of physics successfully weave dense, highly interactive geometric structures. A universe that successfully forms persistent, stable matter will continually execute successful handshakes, rapidly accumulating massive causal history, whereas a universe of chaotic gas or frozen nodes will stagnate and be discarded.
