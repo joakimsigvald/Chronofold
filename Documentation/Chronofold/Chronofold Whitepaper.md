@@ -13,7 +13,7 @@ A Monad is entirely defined by its topological context (its connections) and its
 
 - **Proto-Time (The History):** An immutable, strictly ordered ledger of causal events the Monad has participated in. Time is strictly local to the entity.
 
-- **Proto-Space (The Active Horizon):** A mutable, Least Recently Used (LRU) queue of entangled Monad IDs. Space is the relational distance (recency) within this queue.
+- **Proto-Space (The Active Horizon):** A mutable, strictly ordered gradient of entangled Monad IDs sorted by causal recency. Space is the relational distance (recency) within this gradient.
 
 - **Dimensional Capacity ($M$):** The allowed upper bound of the Active Horizon's populated size ($N$), strictly maintaining $M \ge N$. This limit constrains the local topological density, effectively defining the maximum dimensionality of the emergent space.
 
@@ -34,7 +34,7 @@ From these dual competing pressures, two behavioral states emerge that dictate t
 
 - **Aperture ($P$):** The Monad's internal receptivity to the void. It scales with fugacity but is intrinsically dampened by the need for cohesive stability. This normalized scalar determines the exact proportional reach ($n$) of the handshake signal across the dimensional capacity.
 
-$$C = \sqrt{(1 - A)F}$$
+$$P = \sqrt{(1 - A)F}$$
 
 - **Stress ($S$):** The overarching structural pressure of the Monad. It represents the localized deviation from thermodynamic equilibrium. When $S > \tau_S$, the Monad breaks equilibrium and must initiate a handshake. The network naturally evolves to minimize stress.
 
@@ -43,35 +43,46 @@ $$S = 1 - \sqrt{(1 - A)(1 - F)}$$
 ---
 ## III. System Kinematics (The Mechanics of Reality)
 
-Reality updates via localized, asynchronous handshakes. To prevent deterministic spatial artifacts (a topological "wind"), the engine sidesteps global arrays in favor of a **Double-Buffered FIFO Execution Loop**.
+Reality updates via localized, asynchronous handshakes. To prevent deterministic spatial artifacts (a topological "wind") caused by sequential processing, the manifold enforces causal simultaneity through a strictly discrete, three-state thermodynamic cycle.
 
-**1. The Flow of Time (The Execution Loop)**
+**1. The Flow of Time (The Update Cycle)**
 
-1. Monads are evaluated sequentially from a Main Queue.
+To ensure time emerges organically without a global macroscopic clock, every Monad transitions through a localized superposition of states during each causal tick:
 
-2. If $S \le \tau_S$ (equilibrium), the Monad rests and is pushed directly to the Handled Queue.
-
-3. If $S > \tau_S$ (instability), the Monad signals and is sidelined to a Waiting Queue.
-
-4. Following the signal phase, the Waiting Queue processes all handshakes. Signaling Monads then pass into the Handled Queue.
-
-5. The Handled Queue becomes the Main Queue for the subsequent causal tick.
+- **Phase 1: Thermodynamic Evaluation**
+    
+    - At the onset of the tick, all Monads reside in the baseline **Inert State**.
+        
+    - Monads are evaluated independently based on their internal Stress ($S$).
+        
+    - If $S \le \tau_S$ (equilibrium), the Monad remains in the Inert State, acting as a potential sink for incoming signals.
+        
+    - If $S > \tau_S$ (instability), the Monad generates a propagation vector and shifts into the **Excited State**.
+        
+- **Phase 2: Waveform Resolution**
+    
+    - Following the evaluation phase, the network strictly processes all Excited propagation vectors.
+        
+    - Upon a definitive topological interaction (a successful entanglement or a bounce), the participating Monads instantly collapse into the **Resolved State**, permanently locking their causal ledgers for the duration of the tick.
+        
+    - Once all Excited signals are processed, any untouched Inert Monads passively collapse into the Resolved State. The collective Resolved States instantiate the overarching Causal Frame for the subsequent tick.
+        
 
 **2. The Handshake Protocol**
 
-Events occur via an asynchronous two-phase commit:
+Events occur via an asynchronous, bipartite interaction protocol:
 
-- **Signal Phase:** Driven by Aperture ($P$), a Monad targets an index $n$ within its capacity $M$. Higher curiosity pushes the reach toward the horizon's edge:
-
-$$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } P < 1 \\ M - 1 & \text{if } P = 1 \end{cases}$$
-
-- **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or not:
-
-   - **Internal Target ($n < N$):** The targeted Monad evaluates the proposal. It accepts the handshake _only_ if it is currently idle and the signaling Monad is already present in its Active Horizon. If the targeted Monad is locked, or if the sender is unknown to it, the signal is bounced.
-
-   - **Void Target ($n \ge N$):** The signal reaches beyond the populated horizon into the void. It is automatically accepted, drawing energy from the void to spawn a newborn Monad.
-
-- **Symmetry Breaking (Deadlock Resolution):** If Monad B receives a valid signal from Monad A while B has an unacknowledged outgoing signal, B immediately drops its outgoing signal, accepts A's proposal, and resolves the handshake.
+- **Signal Phase:** Driven by Aperture ($P$), an Excited Monad targets an index $n$ within its capacity $M$. A wider aperture pushes the propagation reach toward the horizon's edge:
+    
+    $$n = \begin{cases} \lfloor P \cdot M \rfloor & \text{if } P < 1 \\ M - 1 & \text{if } P = 1 \end{cases}$$
+    
+- **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or the unmapped void:
+    
+    - **Internal Target ($n < N$):** The targeted Monad evaluates the incoming proposal. It accepts the handshake only if it has not yet collapsed into the Resolved State, and the signaling Monad is already present in its Active Horizon. If the target is already Resolved, or if the sender is topologically unknown to it, the signal is repelled (bounced). _Thermodynamic Tie-Breaker:_ If a Monad receives multiple simultaneous signals, it inherently bonds with the sender exhibiting the highest localized Stress ($S$).
+        
+    - **Void Target ($n \ge N$):** The propagation vector reaches beyond the populated horizon into the void. It is automatically accepted, drawing vacuum energy to spawn a newborn Monad.
+        
+    - **Symmetry Breaking:** If an Excited Monad B receives a valid signal from Monad A while B holds its own unacknowledged outgoing vector, B evaluates the structural gradient. If A possesses a higher internal pressure ($S_A > S_B$), B instantly drops its outgoing vector, accepts A's proposal, and collapses into the Resolved State. This naturally breaks topological symmetry and prevents causal loops without requiring a global mediator.
 
 ---
 
@@ -79,13 +90,13 @@ $$n = \begin{cases} \lfloor C \cdot M \rfloor & \text{if } P < 1 \\ M - 1 & \tex
 
 Upon a successful handshake, the causal graph physically rewrites itself based on the targeted index $n$.
 
-**1. The Internal Handshake (Gravity / Weaving)**
+**1. The Internal Handshake (Densification / Weaving)**
 
-Triggered when $n < N$. The participants get causally entangled by sharing a new event and elevate each other to the front (MRU) of their Active Horizons.
+Triggered when $n < N$. The participants get causally entangled by sharing a new event and elevate each other to the absolute forefront of causal recency within their Active Horizons.
 
 - **Triad Closure:** If either Monad possesses empty capacity ($M > N$), it absorbs the most recent, novel connection from its partner's horizon. This folds branches together, cross-linking the manifold into a dense mesh.
 
-**2. The Genesis Handshake (Dark Energy / Expansion)**
+**2. The Genesis Handshake (Expansion / Bifurcation)**
 
 Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy from the void to spawn a new Monad.
 
@@ -95,11 +106,11 @@ Triggered when $n \ge N$. The Monad reaches into empty capacity, pulling energy 
 
 - **Causal Split:** The newborn inherits an exact copy of its parent's Proto-Time ledger up to the moment of genesis. This bifurcates the timeline, ensuring the newly instantiated space shares a consistent, unbroken causal history with its local macroscopic neighborhood.
 
-- Newborns initialize with zero structural stress ($M=N=1$, $A=0$, $F=0$) and enter the Handled Queue.
+- Newborns initialize with zero structural stress ($M=N=1$, $A=0$, $F=0$) and enter the Resolved State.
 
 **3. Bounce**
 
-On an unsuccessful handshake, the initiator push the unresponsive peer to the end of its Active horizon.
+On an unsuccessful handshake, the initiator pushes the unresponsive peer to the end of its Active horizon.
 
 ---
 
@@ -123,6 +134,7 @@ $$A \leftarrow A + \alpha(1 - A)$$
 - **On Success:** Isolation is relieved, and fugacity blends with the exponential recency of the partner.
 
 $$A \leftarrow A(1 - \alpha)$$
+
 $$F \leftarrow (1 - \beta)F + \beta(2^{-n})$$
 
 **3. Horizon Elasticity (Structural Limits)**
@@ -133,9 +145,9 @@ Following the resolve phase, structural bounds are re-evaluated:
 
 - **Contraction:** If $A > \tau_A$, capacity shrinks: $M \leftarrow M - 1$.
 
-- **Asymmetric Severing:** If a shrinking capacity forces $N > M$, the Monad drops the stalest ID (LRU) from its horizon, organically severing the topological link.
+- **Asymmetric Severing:** If a shrinking capacity forces $N > M$, the Monad drops the most causally distant ID from its horizon, organically severing the topological link.
 
-- **Topological Collapse (Entropy):** If a Monad's capacity shrinks to $M=0$, it instantly vanishes from the manifold. All surviving Monads that possessed an active link to the deceased must immediately purge the ID from their horizons, shifting their remaining connections forward to fill the void.
+- **Topological Collapse (Entropy):** If a Monad's Active horizon shrinks to $N=0$, it instantly vanishes from the manifold. All surviving Monads that possessed an active link to the deceased must immediately purge the ID from their horizons, shifting their remaining connections forward to fill the void.
 
 **4. Boundary Initialization (The Big Bang)**
 
@@ -144,14 +156,14 @@ The universe initializes with a mutually entangled pair of Monads, bound by a sh
 
 The behavior of the universe is tuned by six fundamental constants. Rather than acting as static global laws, these constants are dynamic and inheritable "genetics" specific to each Monad, allowing the vacuum to naturally select for physics that support persistent topological structures.
 
-| **Constant**             | **Symbol** | **Mechanical Role in the Engine**                                                                                                                                            |
-| ------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                 |
-| **Friction Coeff.**      | $\alpha$   | The penalty multiplier for failed handshakes. It determines exactly how quickly Affinity ($A$) spikes toward $1.0$ when a signal bounces.                                    |
-| **Relaxation Coeff.**    | $\beta$    | The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Fugacity ($F$) based on the partner's relational distance. |
-| **Critical Stress**      | $\tau_S$   | The thermodynamic trigger point. If a Monad's overall Stress ($S$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.                 |
-| **Critical Expansion**   | $\tau_F$   | The specific Fugacity threshold. If $F$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.                        |
-| **Critical Contraction** | $\tau_A$   | The specific Affinity threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its stalest connection.           |
+| **Constant**             | **Symbol** | **Mechanical Role in the Manifold**                                                                                                                                                |
+| ------------------------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                     |
+| **Friction Coeff.**      | $\alpha$   | The penalty multiplier for failed handshakes. It determines exactly how quickly Affinity ($A$) spikes toward $1.0$ when a signal bounces.                                        |
+| **Relaxation Coeff.**    | $\beta$    | The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Fugacity ($F$) based on the partner's relational distance.     |
+| **Critical Stress**      | $\tau_S$   | The thermodynamic trigger point. If a Monad's overall Stress ($S$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.                     |
+| **Critical Expansion**   | $\tau_F$   | The specific Fugacity threshold. If $F$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.                            |
+| **Critical Contraction** | $\tau_A$   | The specific Affinity threshold. If $A$ exceeds this fraction, the Monad shrinks its Dimensional Capacity ($M \leftarrow M - 1$), severing its most causally distant connection. |
 
 **1. The Bounded Hypercube and Initialization**
 
@@ -182,17 +194,17 @@ $$c = \frac{1}{1 + e^{-x_c}}$$
 Because of the asymptotic curves of the transformation, the parameter space naturally "stiffens" as a Monad's constants approach the extreme edges of reality, protecting the thermodynamic integrity of the network.
 ## VII. Causal pruning and Event Horizons
 
-While the physical laws of the Fluid Spacetime Engine operate on strict, asynchronous locality, the overarching computational simulation requires a mechanism to manage finite memory constraints. As the manifold evolves, topological space can organically fracture, creating isolated multiverse instances. A global causal pruning protocol is introduced as a pragmatic simulation artifact that mirrors the concept of cosmological event horizons.
+While the physical laws of the fluid spacetime manifold operate on strict, asynchronous locality, the overarching topology must naturally manage its finite informational capacity. As the causal graph evolves, topological space can organically fracture, creating isolated multiverse instances. This structural decoupling naturally limits causal propagation, manifesting macroscopically as cosmological event horizons.
 
 **1. Causal Decoupling (The Network Event Horizon)**
 
 Because the handshake protocol enforces strict "friends of friends" locality, a Monad can only interact with IDs reachable through mutual connections. As capacities expand and contract, clusters of Monads may organically lose either _all incoming_ or _all outgoing_ directed links to the primary network.
 
-Once a strictly one-way topological boundary forms, it acts as an absolute event horizon. Without reciprocal links, the two-phase handshake cannot bridge the gap to re-establish mutual contact. The two regions become permanently causally decoupled. To the main simulation, the orphaned cluster effectively ceases to exist, making its continued computation a drain on hardware resources.
+Once a strictly one-way topological boundary forms, it acts as an absolute event horizon. Without reciprocal links, the bipartite protocol cannot bridge the gap to re-establish mutual contact. The two regions become permanently causally decoupled. To the primary causal graph, the orphaned cluster effectively ceases to exist, naturally pruning the evolutionary tree to conserve the finite informational capacity of the overarching manifold.
 
 **2. The Fitness Function: Survival by Causal Action**
 
-To resolve multiverse splits and conserve finite computational resources, the simulation requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as **Total Causal Action**.
+To resolve multiverse splits and conserve finite informational capacity, the manifold requires a metric to determine which disconnected universe to preserve. Since space and time in this framework are emergent properties of discrete interactions, the viability of a universe is best measured by the sheer volume of interactive reality it has successfully sustained. We define this metric as **Total Causal Action**.
 
 The pruning algorithm calculates this by summing the historical events (handshake pairs) logged across the Proto-Time ledgers of every Monad within an isolated cluster.
 
@@ -202,6 +214,6 @@ $$\Phi(U) = \sum_{i \in U} h_i$$
 
 **3. Evolutionary Consequences**
 
-When a network fracture occurs, the simulation compares $\Phi(U)$ for the resulting disconnected clusters and purges the sub-manifold with the lowest score.
+When a network fracture occurs, the overarching manifold naturally selects for the resulting disconnected cluster with the highest $\Phi(U)$, instantly decoupling the lesser sub-manifold.
 
 This mechanism serves as the ultimate Darwinian pressure for the physical constants defined in Section VI. It naturally selects for universes whose laws of physics successfully weave dense, highly interactive geometric structures. A universe that successfully forms persistent, stable matter will continually execute successful handshakes, rapidly accumulating massive causal history, whereas a universe of chaotic gas or frozen nodes will stagnate and be discarded.
