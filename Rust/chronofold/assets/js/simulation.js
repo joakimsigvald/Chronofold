@@ -1,6 +1,5 @@
 import { Scale } from './config.js';
 import { CreateUniverse } from './universe.js';
-import { CreatePhysics } from './physics.js';
 import { CreateStatusLabel, Status, CreateCounter } from './header.js';
 import { CreateSocket } from './socket.js';
 
@@ -8,10 +7,7 @@ const Simulation = {
     counter: null,
     statusLabel: null,
     socket: null,
-    vacuum: { monads: [], links: [] },
     universe: null,
-    physics: null,
-    isPaused: false,
 
     async init() {
         this.counter = CreateCounter();
@@ -27,8 +23,7 @@ const Simulation = {
 
         console.log("Chronofold Observatory: Online");
         try {
-            this.physics = CreatePhysics(this.vacuum);
-            this.universe = CreateUniverse(this.vacuum);
+            this.universe = CreateUniverse();
             this.universe.init();
             this.setupControls();
             this.socket.connect();
@@ -44,10 +39,8 @@ const Simulation = {
 
     receive(data) {
         const state = JSON.parse(data);
-        this.vacuum.monads = this.merge(this.vacuum.monads, state.monads);
-        this.vacuum.links = state.links;
         this.counter.set(state.tick);
-        this.universe.update();
+        this.universe.update(state);
     },
 
     setupControls() {

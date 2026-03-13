@@ -1,9 +1,10 @@
-﻿import { CreateMonadLayer } from './monadLayer.js';
+﻿import { CreateVacuum } from './vacuum.js';
 
-export const CreateUniverse = (vacuum) => {
+export const CreateUniverse = () => {
     let svg = null;
     let view = null;
-    const monadsLayer = CreateMonadLayer(vacuum);
+    const vacuum = CreateVacuum();
+    let monads = [];
 
     const _init = () => {
         svg = d3.select("#universe")
@@ -23,17 +24,29 @@ export const CreateUniverse = (vacuum) => {
             .attr("transform", `translate(${w / 2}, ${h / 2})`);
     }
 
+    const _updateMonads = (newMonads) => {
+        const monadMap = new Map(monads.map(m => [m.id, m]));
+        monads = newMonads.map(m => ({ ...monadMap.get(m.id), ...m }));
+    }
+
+    const _createLinks = (handshakes) => {
+        const monadMap = new Map(monads.map(m => [m.id, m]));
+        return handshakes.map(hs => ({ source: monadMap.get(hs.source_id), target: monadMap.get(hs.target_id) }));
+    }
+
     return {
         init() {
             _init();
-            monadsLayer.init(view);
+            vacuum.init(view);
         },
-        update() {
-            monadsLayer.update();
+        update(state) {
+            _updateMonads(state.monads);
+            const links = _createLinks(state.handshakes);
+            vacuum.update(monads, links);
         },
         scale(scale) {
             _scale();
-            monadsLayer.scale(scale);
+            vacuum.scale(scale);
         },
     };
 };

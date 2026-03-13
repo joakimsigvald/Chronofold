@@ -1,7 +1,7 @@
+use crate::engine::advance_tick;
+use crate::models::{Monad, Handshake, VacuumState};
 use axum::extract::ws::{Message, WebSocket, WebSocketUpgrade};
 use axum::response::{Html, IntoResponse};
-use crate::models::{Monad, VacuumState};
-use crate::engine::advance_tick;
 
 pub async fn index_html() -> Html<&'static str> {
     Html(include_str!("../templates/index.html"))
@@ -24,11 +24,11 @@ async fn handle_handshake(mut socket: WebSocket) {
     // Initialize the Big Bang
     let mut current_state = VacuumState {
         tick: 0,
-        monads: vec![
-            Monad { id: 0, horizon: vec![1] },
-            Monad { id: 1, horizon: vec![0] },
-        ],
-        links: vec![(0, 1)],
+        monads: vec![Monad { id: 0 }, Monad { id: 1 }],
+        handshakes: vec![Handshake {
+            source_id: 0,
+            target_id: 1,
+        }],
     };
 
     // Send initial state
