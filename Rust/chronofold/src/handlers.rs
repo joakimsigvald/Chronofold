@@ -2,7 +2,7 @@ use axum::extract::ws::{Message, WebSocket, WebSocketUpgrade};
 use axum::response::{Html, IntoResponse};
 
 use crate::engine::ChronofoldEngine;
-use crate::models::VacuumState;
+use crate::models::vacuum::Vacuum;
 
 pub async fn index_html() -> Html<&'static str> {
     Html(include_str!("../templates/index.html"))
@@ -16,7 +16,7 @@ pub async fn ws_handler(ws: WebSocketUpgrade) -> impl IntoResponse {
     ws.on_upgrade(run_simulation)
 }
 
-async fn send_state(state: &VacuumState, socket: &mut WebSocket) -> Result<(), ()> {
+async fn send_state(state: &Vacuum, socket: &mut WebSocket) -> Result<(), ()> {
     let json = serde_json::to_string(state).unwrap();
     socket.send(Message::Text(json)).await.map_err(|_| ())
 }
@@ -26,7 +26,7 @@ async fn run_simulation(mut socket: WebSocket) {
     let mut engine = ChronofoldEngine::ignite();
 
     // Send initial state
-    if send_state(engine.state(), &mut socket).await.is_err() {
+    if send_state(engine.vacuum(), &mut socket).await.is_err() {
         return;
     }
 
@@ -44,7 +44,7 @@ async fn run_simulation(mut socket: WebSocket) {
         match text.as_deref() {
             Some("ACK") => {
                 engine.advance();
-                if send_state(engine.state(), &mut socket).await.is_err() {
+                if send_state(engine.vacuum(), &mut socket).await.is_err() {
                     break;
                 }
             }
