@@ -1,7 +1,8 @@
-use crate::engine::advance_tick;
-use crate::models::{Monad, Handshake, VacuumState};
 use axum::extract::ws::{Message, WebSocket, WebSocketUpgrade};
 use axum::response::{Html, IntoResponse};
+
+use crate::engine::ChronofoldEngine;
+use crate::models::VacuumState;
 
 pub async fn index_html() -> Html<&'static str> {
     Html(include_str!("../templates/index.html"))
@@ -12,7 +13,7 @@ pub async fn simulation_html() -> Html<&'static str> {
 }
 
 pub async fn ws_handler(ws: WebSocketUpgrade) -> impl IntoResponse {
-    ws.on_upgrade(handle_handshake)
+    ws.on_upgrade(run_simulation)
 }
 
 async fn send_state(state: &VacuumState, socket: &mut WebSocket) -> Result<(), ()> {
@@ -20,19 +21,12 @@ async fn send_state(state: &VacuumState, socket: &mut WebSocket) -> Result<(), (
     socket.send(Message::Text(json)).await.map_err(|_| ())
 }
 
-async fn handle_handshake(mut socket: WebSocket) {
+async fn run_simulation(mut socket: WebSocket) {
     // Initialize the Big Bang
-    let mut current_state = VacuumState {
-        tick: 0,
-        monads: vec![Monad { id: 0 }, Monad { id: 1 }],
-        handshakes: vec![Handshake {
-            source_id: 0,
-            target_id: 1,
-        }],
-    };
+    let mut engine = ChronofoldEngine::ignite();
 
     // Send initial state
-    if send_state(&current_state, &mut socket).await.is_err() {
+    if send_state(engine.state(), &mut socket).await.is_err() {
         return;
     }
 
@@ -49,8 +43,8 @@ async fn handle_handshake(mut socket: WebSocket) {
 
         match text.as_deref() {
             Some("ACK") => {
-                advance_tick(&mut current_state);
-                if send_state(&current_state, &mut socket).await.is_err() {
+                engine.advance();
+                if send_state(engine.state(), &mut socket).await.is_err() {
                     break;
                 }
             }

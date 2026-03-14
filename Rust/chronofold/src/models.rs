@@ -3,6 +3,9 @@ use serde::Serialize;
 #[derive(Serialize, Clone)]
 pub struct Monad {
     pub id: u32,
+    pub horizon: Vec<u32>,
+    pub fugacity: f64,
+    pub affinity: f64,
 }
 
 #[derive(Serialize, Clone)]
