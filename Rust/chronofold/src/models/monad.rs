@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use serde::Serialize;
 
 const INITIAL_AFFINITY: f64 = 0.0;
@@ -15,6 +16,8 @@ pub struct Monad {
     pub beta: f64,
     pub lambda: f64,
     pub tau_s: f64,
+    pub tau_f: f64,
+    pub tau_a: f64,
 }
 
 impl Monad {
@@ -47,6 +50,18 @@ impl Monad {
         self.fugacity += self.lambda * (1.0 - self.fugacity) / n;
     }
 
+    pub fn update_capacity(&mut self) {
+        if self.fugacity > self.tau_f {
+            self.capacity += 1;
+        }
+        if self.affinity > self.tau_a {
+            self.capacity -= 1;
+        }
+        while self.horizon.len() > self.capacity as usize {
+            self.horizon.pop();
+        }
+    }
+
     pub fn entangle(&mut self, target_id: u32) {
         self.fugacity =
             (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target_id));
@@ -61,6 +76,8 @@ impl Monad {
             self.beta,
             self.lambda,
             self.tau_s,
+            self.tau_f,
+            self.tau_a,
         )
     }
 
@@ -70,6 +87,10 @@ impl Monad {
         } else if excited {
             self.affinity += self.alpha * (1.0 - self.affinity);
         }
+    }
+
+    pub fn prune_horizon(&mut self, dead_ids: &HashSet<u32>) {
+        self.horizon.retain(|id| !dead_ids.contains(id));
     }
 
     fn target_index(&self) -> usize {
@@ -101,6 +122,8 @@ impl Monad {
         beta: f64,
         lambda: f64,
         tau_s: f64,
+        tau_f: f64,
+        tau_a: f64,
     ) -> Monad {
         Self {
             id,
@@ -112,6 +135,8 @@ impl Monad {
             beta,
             lambda,
             tau_s,
+            tau_f,
+            tau_a,
         }
     }
 }

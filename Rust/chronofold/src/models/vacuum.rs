@@ -5,10 +5,29 @@ use crate::models::monad::Monad;
 
 use serde::Serialize;
 
-const INITIAL_ALPHA: f64 = 0.1;
-const INITIAL_BETA: f64 = 0.1;
-const INITIAL_LAMBDA: f64 = 0.1;
-const INITIAL_TAU_S: f64 = 0.5;
+/// Friction (λ): Passive Fugacity growth per tick.
+/// High values make Monads crave novelty faster.
+const LAMBDA: f64 = 0.10;
+
+/// Relaxation (β): The satisfying "cool-down" of Fugacity after a handshake.
+/// Higher values make successful connections more "fulfilling."
+const BETA: f64 = 0.15;
+
+/// Penalty (α): How quickly Affinity (clinging) spikes after a failed signal.
+/// Lower values (like 0.05) make the network more resilient to rejection.
+const ALPHA: f64 = 0.05;
+
+/// Critical Stress (τ_S): The threshold for action.
+/// When internal stress > τ_S, the Monad is forced to signal.
+const TAU_S: f64 = 0.75;
+
+/// Critical Expansion (τ_F): The threshold for growth.
+/// When Fugacity > τ_F, the Monad gains +1 Dimensional Capacity.
+const TAU_F: f64 = 0.60;
+
+/// Critical Contraction (τ_A): The threshold for retreat.
+/// When Affinity > τ_A, the Monad loses -1 Dimensional Capacity.
+const TAU_A: f64 = 0.85;
 
 #[derive(Serialize, Clone)]
 pub struct Vacuum {
@@ -29,11 +48,6 @@ impl Vacuum {
                 target_id: 1,
             }],
         }
-    }
-
-    pub fn prune(&mut self) {
-        self.prune_monads();
-        self.prune_handshakes();
     }
 
     pub fn update_fugacity(&mut self) {
@@ -57,7 +71,11 @@ impl Vacuum {
         (handshake, newborn)
     }
 
-    pub fn perform_peer_handshake(&mut self, source_idx: usize, target_id: u32) -> Option<Handshake> {
+    pub fn perform_peer_handshake(
+        &mut self,
+        source_idx: usize,
+        target_id: u32,
+    ) -> Option<Handshake> {
         let target_idx = self.find_monad(target_id)?;
         let [source, target] = self.get_disjoint_monads(source_idx, target_idx)?;
         Some(Handshake::perform(source, target))
@@ -72,6 +90,43 @@ impl Vacuum {
 
             monad.update_affinity(connected, excited);
         }
+    }
+
+    pub fn update_topology(&mut self) {
+        for monad in &mut self.monads {
+            monad.update_capacity();
+        }
+        let dead_ids = self.kill_monads();
+        if dead_ids.is_empty() {
+            return;
+        }
+        self.handshakes
+            .retain(|h| !dead_ids.contains(&h.source_id) && !dead_ids.contains(&h.target_id));
+    }
+
+    fn kill_monads(&mut self) -> HashSet<u32> {
+        let mut all_dead_ids = HashSet::new();
+
+        loop {
+            let new_dead_ids: HashSet<u32> = self
+                .monads
+                .iter()
+                .filter(|m| m.horizon.is_empty())
+                .map(|m| m.id)
+                .collect();
+
+            if new_dead_ids.is_empty() {
+                break;
+            }
+
+            all_dead_ids.extend(&new_dead_ids);
+            self.monads.retain(|m| !new_dead_ids.contains(&m.id));
+            for monad in &mut self.monads {
+                monad.prune_horizon(&new_dead_ids);
+            }
+        }
+
+        all_dead_ids
     }
 
     fn find_monad(&self, id: u32) -> Option<usize> {
@@ -89,33 +144,6 @@ impl Vacuum {
         (source, newborn)
     }
 
-    fn prune_monads(&mut self) {
-        loop {
-            let dead_ids: HashSet<u32> = self
-                .monads
-                .iter()
-                .filter(|m| m.horizon.is_empty())
-                .map(|m| m.id)
-                .collect();
-
-            if dead_ids.is_empty() {
-                break;
-            }
-
-            self.monads.retain(|m| !dead_ids.contains(&m.id));
-
-            for monad in &mut self.monads {
-                monad.horizon.retain(|id| !dead_ids.contains(id));
-            }
-        }
-    }
-
-    fn prune_handshakes(&mut self) {
-        let monad_ids: std::collections::HashSet<u32> = self.monads.iter().map(|m| m.id).collect();
-        self.handshakes
-            .retain(|h| monad_ids.contains(&h.source_id) && monad_ids.contains(&h.target_id));
-    }
-
     fn get_ids(&self, indices: &[usize]) -> HashSet<u32> {
         indices.iter().map(|&idx| self.monads[idx].id).collect()
     }
@@ -124,10 +152,12 @@ impl Vacuum {
         Monad::create(
             source_id,
             vec![peer_id],
-            INITIAL_ALPHA,
-            INITIAL_BETA,
-            INITIAL_LAMBDA,
-            INITIAL_TAU_S,
+            ALPHA,
+            BETA,
+            LAMBDA,
+            TAU_S,
+            TAU_F,
+            TAU_A,
         )
     }
 }

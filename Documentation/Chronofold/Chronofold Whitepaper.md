@@ -156,7 +156,7 @@ The universe initializes with a mutually entangled pair of Monads, bound by a sh
 
 The behavior of the universe is tuned by six fundamental constants. Rather than acting as static global laws, these constants are dynamic and inheritable "genetics" specific to each Monad, allowing the vacuum to naturally select for physics that support persistent topological structures.
 
-| **Constant**             | **Symbol** | **Mechanical Role in the Manifold**                                                                                                                                                |
+| **Constant**             | **Symbol** | **Mechanical Role in the Manifold**                                                                                                                                              |
 | ------------------------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                     |
 | **Friction Coeff.**      | $\alpha$   | The penalty multiplier for failed handshakes. It determines exactly how quickly Affinity ($A$) spikes toward $1.0$ when a signal bounces.                                        |

@@ -14,12 +14,12 @@ impl ChronofoldEngine {
 
     pub fn advance(&mut self) {
         self.vacuum_state.tick += 1;
-        self.vacuum_state.prune();
         self.vacuum_state.update_fugacity();
         let excited_indices = self.vacuum_state.get_excited_indices();
-        let connected_indices = self.resolve_handshakes(&excited_indices);
+        let connected_ids = self.resolve_handshakes(&excited_indices);
         self.vacuum_state
-            .update_affinity(&excited_indices, connected_indices);
+            .update_affinity(&excited_indices, connected_ids);
+        self.vacuum_state.update_topology();
     }
 
     pub fn vacuum(&self) -> &Vacuum {
