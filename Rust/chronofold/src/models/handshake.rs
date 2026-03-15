@@ -1,7 +1,6 @@
 use crate::models::monad::Monad;
-use serde::Serialize;
 
-#[derive(Serialize, Clone)]
+#[derive(Clone)]
 pub struct Handshake {
     pub source_id: u32,
     pub target_id: u32,

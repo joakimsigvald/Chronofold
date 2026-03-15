@@ -1,11 +1,10 @@
 use std::collections::HashSet;
-use serde::Serialize;
 
 const INITIAL_AFFINITY: f64 = 0.0;
 const INITIAL_FUGACITY: f64 = 0.0;
 const INITIAL_CAPACITY: usize = 1;
 
-#[derive(Serialize, Clone)]
+#[derive(Clone)]
 pub struct Monad {
     pub id: u32,
     pub horizon: Vec<u32>,

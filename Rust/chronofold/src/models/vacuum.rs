@@ -29,7 +29,7 @@ const TAU_F: f64 = 0.60;
 /// When Affinity > τ_A, the Monad loses -1 Dimensional Capacity.
 const TAU_A: f64 = 0.85;
 
-#[derive(Serialize, Clone)]
+#[derive(Clone)]
 pub struct Vacuum {
     pub tick: u64,
     pub max_id: u32,

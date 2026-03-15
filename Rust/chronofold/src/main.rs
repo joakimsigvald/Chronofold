@@ -1,6 +1,7 @@
 mod engine;
 mod handlers;
 mod models;
+mod view_models;
 
 use axum::{Router, routing::get};
 use tower_http::services::ServeDir;

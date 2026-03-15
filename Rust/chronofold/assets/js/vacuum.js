@@ -51,7 +51,7 @@ export const CreateVacuum = () => {
                 .attr("class", "handshake")
                 .attr("stroke", Color.white)
                 .attr("stroke-width", Scale.linkWidth * _currentScale)
-                .attr("stroke-opacity", 0.6);
+                .attr("stroke-opacity", d => d.strength);
 
             _nodeElements = _monadGroup.selectAll("circle.monad")
                 .data(monads, d => d.id)
