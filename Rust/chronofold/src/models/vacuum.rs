@@ -31,11 +31,36 @@ impl Vacuum {
         }
     }
 
-    pub fn spawn_newborn(&mut self, source_idx: usize) -> (&mut Monad, Monad) {
-        self.max_id += 1;
-        let source = &mut self.monads[source_idx];
-        let newborn = source.spawn_newborn(self.max_id);
-        (source, newborn)
+    pub fn prune(&mut self) {
+        self.prune_monads();
+        self.prune_handshakes();
+    }
+
+    pub fn update_fugacity(&mut self) {
+        for monad in &mut self.monads {
+            monad.update_fugacity();
+        }
+    }
+
+    pub fn get_excited_indices(&self) -> Vec<usize> {
+        self.monads
+            .iter()
+            .enumerate()
+            .filter(|(_, m)| m.stress() > m.tau_s)
+            .map(|(i, _)| i)
+            .collect()
+    }
+
+    pub fn perform_genesis_handshake(&mut self, source_idx: usize) -> (Handshake, Monad) {
+        let (source, mut newborn) = self.spawn_newborn(source_idx);
+        let handshake = Handshake::perform(source, &mut newborn);
+        (handshake, newborn)
+    }
+
+    pub fn perform_peer_handshake(&mut self, source_idx: usize, target_id: u32) -> Option<Handshake> {
+        let target_idx = self.find_monad(target_id)?;
+        let [source, target] = self.get_disjoint_monads(source_idx, target_idx)?;
+        Some(Handshake::perform(source, target))
     }
 
     pub fn update_affinity(&mut self, excited_indices: &[usize], connected_ids: HashSet<u32>) {
@@ -49,12 +74,46 @@ impl Vacuum {
         }
     }
 
-    pub fn find_monad(&self, id: u32) -> Option<usize> {
+    fn find_monad(&self, id: u32) -> Option<usize> {
         self.monads.iter().position(|m| m.id == id)
     }
 
-    pub fn get_disjoint_monads(&mut self, idx1: usize, idx2: usize) -> Option<[&mut Monad; 2]> {
+    fn get_disjoint_monads(&mut self, idx1: usize, idx2: usize) -> Option<[&mut Monad; 2]> {
         self.monads.get_disjoint_mut([idx1, idx2]).ok()
+    }
+
+    fn spawn_newborn(&mut self, source_idx: usize) -> (&mut Monad, Monad) {
+        self.max_id += 1;
+        let source = &mut self.monads[source_idx];
+        let newborn = source.spawn_newborn(self.max_id);
+        (source, newborn)
+    }
+
+    fn prune_monads(&mut self) {
+        loop {
+            let dead_ids: HashSet<u32> = self
+                .monads
+                .iter()
+                .filter(|m| m.horizon.is_empty())
+                .map(|m| m.id)
+                .collect();
+
+            if dead_ids.is_empty() {
+                break;
+            }
+
+            self.monads.retain(|m| !dead_ids.contains(&m.id));
+
+            for monad in &mut self.monads {
+                monad.horizon.retain(|id| !dead_ids.contains(id));
+            }
+        }
+    }
+
+    fn prune_handshakes(&mut self) {
+        let monad_ids: std::collections::HashSet<u32> = self.monads.iter().map(|m| m.id).collect();
+        self.handshakes
+            .retain(|h| monad_ids.contains(&h.source_id) && monad_ids.contains(&h.target_id));
     }
 
     fn get_ids(&self, indices: &[usize]) -> HashSet<u32> {
