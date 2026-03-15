@@ -53,6 +53,25 @@ impl Monad {
         self.elevate(target_id);
     }
 
+    pub fn spawn_newborn(&mut self, newborn_id: u32) -> Monad {
+        Monad::create(
+            newborn_id,
+            vec![self.id],
+            self.alpha,
+            self.beta,
+            self.lambda,
+            self.tau_s,
+        )
+    }
+
+    pub fn update_affinity(&mut self, connected: bool, excited: bool) {
+        if connected {
+            self.affinity *= 1.0 - self.alpha;
+        } else if excited {
+            self.affinity += self.alpha * (1.0 - self.affinity);
+        }
+    }
+
     fn target_index(&self) -> usize {
         let p = self.aperture();
         if p < 1.0 {
@@ -77,7 +96,7 @@ impl Monad {
 
     pub fn create(
         id: u32,
-        parent_id: u32,
+        horizon: Vec<u32>,
         alpha: f64,
         beta: f64,
         lambda: f64,
@@ -85,7 +104,7 @@ impl Monad {
     ) -> Monad {
         Self {
             id,
-            horizon: vec![parent_id],
+            horizon,
             affinity: INITIAL_AFFINITY,
             fugacity: INITIAL_FUGACITY,
             capacity: INITIAL_CAPACITY,

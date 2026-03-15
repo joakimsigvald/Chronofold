@@ -1,3 +1,4 @@
+use crate::models::monad::Monad;
 use serde::Serialize;
 
 #[derive(Serialize, Clone)]
@@ -7,10 +8,12 @@ pub struct Handshake {
 }
 
 impl Handshake {
-    pub fn create(source_id: u32, target_id: u32) -> Handshake {
+    pub fn perform(source: &mut Monad, target: &mut Monad) -> Handshake {
+        source.entangle(target.id);
+        target.entangle(source.id);
         Self {
-            source_id,
-            target_id,
+            source_id: source.id,
+            target_id: target.id,
         }
     }
 }
