@@ -1,5 +1,5 @@
-use serde::Serialize;
 use crate::models::Monad;
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct HandshakeView {
@@ -13,7 +13,10 @@ impl HandshakeView {
         Self {
             source_id: source.id,
             target_id: target.id,
-            strength: Self::compute_strength(source.index_of(target.id), target.index_of(source.id)),
+            strength: Self::compute_strength(
+                source.index_of(target.id),
+                target.index_of(source.id),
+            ),
         }
     }
 

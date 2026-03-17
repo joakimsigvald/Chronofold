@@ -8,7 +8,7 @@
 
 const Scale =
 {
-    resolution: 100.0, // number of units that fit the screen
+    resolution: 200.0, // number of units that fit the screen
     linkWidth: 0.3 // link width in relation to monad radius
 };
 
