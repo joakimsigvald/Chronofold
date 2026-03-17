@@ -8,8 +8,8 @@ pub struct Handshake {
 
 impl Handshake {
     pub fn perform(source: &mut Monad, target: &mut Monad) -> Handshake {
-        source.entangle(target.id);
-        target.entangle(source.id);
+        source.entangle(target);
+        target.entangle(source);
         Self {
             source_id: source.id,
             target_id: target.id,

@@ -25,7 +25,7 @@ pub fn map_to_view(vacuum: &Vacuum) -> VacuumView {
             let Some(idx_b) = monad_b.horizon.iter().position(|&id| id == monad_a.id) else {
                 continue;
             };
-            let strength = (((idx_a + 1) * (idx_b + 1)) as f64).sqrt();
+            let strength = (((idx_a + 1) * (idx_b + 1)) as f32).sqrt();
             handshake_views.push(HandshakeView {
                 source_id: monad_a.id,
                 target_id,

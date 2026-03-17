@@ -5,7 +5,7 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct VacuumView {
-    pub tick: u64,
+    pub tick: u32,
     pub monads: Vec<MonadView>,
     pub handshakes: Vec<HandshakeView>,
 }

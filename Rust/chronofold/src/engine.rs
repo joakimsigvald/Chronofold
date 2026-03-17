@@ -26,12 +26,6 @@ impl ChronofoldEngine {
         &self.vacuum_state
     }
 
-    fn update_fugacity(&mut self) {
-        for monad in &mut self.vacuum_state.monads {
-            monad.update_fugacity();
-        }
-    }
-
     fn resolve_handshakes(&mut self, excited_indices: &[usize]) -> HashSet<u32> {
         let mut connected_ids = std::collections::HashSet::new();
         let mut newborns = Vec::new();
@@ -58,7 +52,6 @@ impl ChronofoldEngine {
                 }
             };
 
-            // Standardized bookkeeping for both Genesis and Internal
             if let Some((hs, newborn_opt)) = result {
                 connected_ids.extend([hs.source_id, hs.target_id]);
                 handshakes.push(hs);

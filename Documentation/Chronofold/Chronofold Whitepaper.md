@@ -94,7 +94,7 @@ Upon a successful handshake, the causal graph physically rewrites itself based o
 
 Triggered when $n < N$. The participants get causally entangled by sharing a new event and elevate each other to the absolute forefront of causal recency within their Active Horizons.
 
-- **Triad Closure:** If either Monad possesses empty capacity ($M > N$), it absorbs the most recent, novel connection from its partner's horizon. This folds branches together, cross-linking the manifold into a dense mesh.
+- **Triad Closure:** If either Monad possesses empty capacity ($M > N$), it absorbs the most recent, novel connection from its partner's horizon to the end of its own horizon. This folds branches together, cross-linking the manifold into a dense mesh.
 
 **2. The Genesis Handshake (Expansion / Bifurcation)**
 
