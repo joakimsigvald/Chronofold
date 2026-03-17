@@ -31,7 +31,12 @@ export const CreateUniverse = () => {
 
     const _createLinks = (handshakes) => {
         const monadMap = new Map(monads.map(m => [m.id, m]));
-        return handshakes.map(hs => ({ source: monadMap.get(hs.source_id), target: monadMap.get(hs.target_id) }));
+        return handshakes.map(hs => (
+            {
+                source: monadMap.get(hs.source_id),
+                target: monadMap.get(hs.target_id),
+                strength: hs.strength
+            }));
     }
 
     return {

@@ -113,6 +113,14 @@ impl Monad {
             .map(|id| self.horizon.push(id));
     }
 
+    pub fn index_of(&self, peer_id: u32) -> usize {
+        self.horizon.iter().position(|&id| id == peer_id).unwrap()
+    }
+
+    pub fn get_higher_peers(&self) -> impl Iterator<Item = u32> + '_ {
+        self.horizon.iter().copied().filter(move |&id| id > self.id)
+    }
+
     fn find_novel_link_from(&self, peer: &Monad) -> Option<u32> {
         peer.horizon
             .iter()
@@ -142,7 +150,7 @@ impl Monad {
         self.horizon
             .iter()
             .position(|&id| id == target_id)
-            .map(|n| 2.0_f32.powf(-(n as f32)))
+            .map(|n| 1.0 / 2.0_f32.powf(n as f32))
             .unwrap_or(0.0)
     }
 
