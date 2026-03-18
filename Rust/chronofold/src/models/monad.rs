@@ -62,6 +62,7 @@ impl Monad {
     }
 
     pub fn entangle(&mut self, target: &mut Monad) {
+        //TODO: move update fugacity to a separate function (move all mathematics to one place)
         self.fugacity =
             (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target.id));
         self.elevate(target.id);
@@ -82,6 +83,7 @@ impl Monad {
         )
     }
 
+//TODO: Use formula from paper
     pub fn update_affinity(&mut self, connected: bool, excited: bool) {
         if connected {
             self.affinity *= 1.0 - self.alpha;

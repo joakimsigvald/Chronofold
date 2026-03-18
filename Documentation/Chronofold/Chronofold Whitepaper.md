@@ -128,12 +128,12 @@ $$F \leftarrow F + \lambda \frac{1 - F}{N}$$
 
 The outcome of a handshake permanently alters the internal state:
 
-- **On Failure (Bounce):** Isolation compounds.
+- **On Failure (Bounce):** The drive to exploit known geometry intensifies.
 
 $$A \leftarrow A + \alpha(1 - A)$$
-- **On Success:** Isolation is relieved, and fugacity blends with the exponential recency of the partner.
+- **On Success:** The causal link resolves, blending internal drives symmetrically with the topological recency of the partner, governed by the cohesion constant ($\kappa$).
 
-$$A \leftarrow A(1 - \alpha)$$
+$$A \leftarrow (1 - \alpha)A + \alpha(1 - \kappa^{\frac{n}{12}})$$
 
 $$F \leftarrow (1 - \beta)F + \beta(2^{-n})$$
 
@@ -158,8 +158,9 @@ The behavior of the universe is tuned by six fundamental constants. Rather than 
 
 | **Constant**             | **Symbol** | **Mechanical Role in the Manifold**                                                                                                                                              |
 | ------------------------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                     |
 | **Friction Coeff.**      | $\alpha$   | The penalty multiplier for failed handshakes. It determines exactly how quickly Affinity ($A$) spikes toward $1.0$ when a signal bounces.                                        |
+| **Cohesion Factor**      | $\kappa$   | The spatial tolerance threshold. It governs the topological resonance ($\kappa^{\frac{n}{12}}$), dictating how thermodynamic impact scales with relational distance ($n$).       |
+| **Cosmological Rate**    | $\lambda$  | The passive accumulation rate. It dictates the exact fraction by which Fugacity ($F$) passively increases during every causal tick where no action is taken.                     |
 | **Relaxation Coeff.**    | $\beta$    | The blending weight for successful handshakes. It dictates how heavily a successful connection overwrites current Fugacity ($F$) based on the partner's relational distance.     |
 | **Critical Stress**      | $\tau_S$   | The thermodynamic trigger point. If a Monad's overall Stress ($S$) exceeds this fraction, it leaves the resting state and is forced to initiate a handshake.                     |
 | **Critical Expansion**   | $\tau_F$   | The specific Fugacity threshold. If $F$ exceeds this fraction, the Monad expands its Dimensional Capacity ($M \leftarrow M + 1$) to seek novel space.                            |
@@ -167,7 +168,7 @@ The behavior of the universe is tuned by six fundamental constants. Rather than 
 
 **1. The Bounded Hypercube and Initialization**
 
-To prevent fatal computational errors (such as division by zero, infinite expansion, or permanently frozen states), all six constants are strictly bounded within the open interval $(0, 1)$.
+To prevent fatal computational errors (such as division by zero, infinite expansion, or permanently frozen states), all seven constants are strictly bounded within the open interval $(0, 1)$.
 
 At the genesis of the simulation (the Big Bang), the prime Monad pair initializes with all six constants set exactly to 0.5 (or $2^{-1}$). This ensures perfect mathematical symmetry, placing the primordial universe at the exact origin point of the evolutionary parameter space without any initial structural bias.
 
