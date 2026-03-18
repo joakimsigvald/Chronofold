@@ -29,13 +29,14 @@ export const CreateUniverse = () => {
         monads = newMonads.map(m => ({ ...monadMap.get(m.id), ...m }));
     }
 
-    const _createLinks = (handshakes) => {
+    const _mapLinks = (links) => {
         const monadMap = new Map(monads.map(m => [m.id, m]));
-        return handshakes.map(hs => (
+        return links.map(l => (
             {
-                source: monadMap.get(hs.source_id),
-                target: monadMap.get(hs.target_id),
-                strength: hs.strength
+                id: `${l.left_id}-${l.right_id}`,
+                source: monadMap.get(l.left_id),
+                target: monadMap.get(l.right_id),
+                strength: l.strength
             }));
     }
 
@@ -46,8 +47,7 @@ export const CreateUniverse = () => {
         },
         update(state) {
             _updateMonads(state.monads);
-            const links = _createLinks(state.handshakes);
-            vacuum.update(monads, links);
+            vacuum.update(monads, _mapLinks(state.links));
         },
         scale(scale) {
             _scale();

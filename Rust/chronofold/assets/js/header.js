@@ -14,11 +14,11 @@ export const CreateStatusLabel = () => {
 }
 
 export const CreateCounter = () => {
-    const label = document.querySelector('.counter');
+    const label = document.querySelector('#counter-display');
 
     return {
-        set: (tick) => {
-            label.innerText = tick;
+        set: (tick, count) => {
+            label.innerText = `t: ${tick} | n: ${count}`;
         }
     };
 }

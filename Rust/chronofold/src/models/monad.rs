@@ -51,12 +51,12 @@ impl Monad {
 
     pub fn update_capacity(&mut self) {
         if self.fugacity > self.tau_f {
-            self.capacity += 1;
+            self.capacity = self.capacity.saturating_add(1);
         }
         if self.affinity > self.tau_a {
-            self.capacity -= 1;
+            self.capacity = self.capacity.saturating_sub(1);
         }
-        while self.is_over_capacity() {
+        if self.is_over_capacity() {
             self.horizon.pop();
         }
     }

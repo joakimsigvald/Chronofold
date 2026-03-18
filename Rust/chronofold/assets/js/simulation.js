@@ -39,7 +39,7 @@ const Simulation = {
 
     receive(data) {
         const state = JSON.parse(data);
-        this.counter.set(state.tick);
+        this.counter.set(state.tick, state.monads.length);
         this.universe.update(state);
     },
 

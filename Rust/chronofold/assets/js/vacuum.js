@@ -9,7 +9,7 @@ export const CreateVacuum = () => {
     let _monadGroup = null;
 
     const _simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(d => d.id).distance(2).strength(0.5))
+        .force("link", d3.forceLink().id(d => d.id).distance(2).strength(d => d.strength))
         .force("charge", d3.forceManyBody().strength(-1))
         .force("x", d3.forceX(0).strength(0.1))
         .force("y", d3.forceY(0).strength(0.1))
@@ -45,8 +45,7 @@ export const CreateVacuum = () => {
             _simulation.force("link").links(links);
 
             _linkElements = _linkGroup.selectAll("line.handshake")
-                // Use a composite key so D3 accurately tracks specific pair connections
-                .data(links, d => `${d.source.id}-${d.target.id}`)
+                .data(links, d => d.id)
                 .join("line")
                 .attr("class", "handshake")
                 .attr("stroke", Color.white)
