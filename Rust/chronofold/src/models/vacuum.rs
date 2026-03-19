@@ -1,19 +1,25 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 use crate::models::handshake::Handshake;
 use crate::models::monad::Monad;
 
-/// Friction (λ): Passive Fugacity growth per tick.
-/// High values make Monads crave novelty faster.
-const LAMBDA: f32 = 0.2;
+/// Penalty (α): How quickly Affinity (clinging) spikes after a failed signal.
+/// Lower values (like 0.05) make the network more resilient to rejection.
+const ALPHA: f32 = 0.1;
 
 /// Relaxation (β): The satisfying "cool-down" of Fugacity after a handshake.
 /// Higher values make successful connections more "fulfilling."
 const BETA: f32 = 0.1;
 
-/// Penalty (α): How quickly Affinity (clinging) spikes after a failed signal.
-/// Lower values (like 0.05) make the network more resilient to rejection.
-const ALPHA: f32 = 0.1;
+// Cohesion (κ): The distance tolerance dial for Affinity.
+/// Pulls Affinity toward `1.0 - κ^n` upon a successful handshake at index `n`.
+/// Higher values (e.g., 0.95) let the Monad tolerate deeper connections,
+/// while lower values cause Affinity to spike aggressively even at short distances.
+const KAPPA: f32 = 0.95;
+
+/// Friction (λ): Passive Fugacity growth per tick.
+/// High values make Monads crave novelty faster.
+const LAMBDA: f32 = 0.2;
 
 /// Critical Stress (τ_S): The threshold for action.
 /// When internal stress > τ_S, the Monad is forced to signal.
@@ -31,26 +37,29 @@ const TAU_A: f32 = 0.7;
 pub struct Vacuum {
     pub tick: u32,
     pub max_id: u32,
-    pub monads: Vec<Monad>,
-    pub handshakes: Vec<Handshake>, // Entanglements / Triad Closures
+    monads: Vec<Monad>,
+    monad_indices: HashMap<u32, usize>,
 }
 
 impl Vacuum {
     pub fn create() -> Vacuum {
+        let monads = vec![Self::create_primordial(0, 1), Self::create_primordial(1, 0)];
+        let monad_indices: HashMap<u32, usize> = monads
+            .iter()
+            .enumerate()
+            .map(|(index, monad)| (monad.id, index))
+            .collect();
         Self {
             tick: 0,
             max_id: 1,
-            monads: vec![Self::create_primordial(0, 1), Self::create_primordial(1, 0)],
-            handshakes: vec![Handshake {
-                source_id: 0,
-                target_id: 1,
-            }],
+            monads: monads,
+            monad_indices: monad_indices,
         }
     }
 
     pub fn update_fugacity(&mut self) {
         for monad in &mut self.monads {
-            monad.update_fugacity();
+            monad.escalate_fugacity();
         }
     }
 
@@ -79,17 +88,6 @@ impl Vacuum {
         Some(Handshake::perform(source, target))
     }
 
-    pub fn update_affinity(&mut self, excited_indices: &[usize], connected_ids: HashSet<u32>) {
-        let excited_ids = self.get_ids(excited_indices);
-
-        for monad in &mut self.monads {
-            let connected = connected_ids.contains(&monad.id);
-            let excited = excited_ids.contains(&monad.id);
-
-            monad.update_affinity(connected, excited);
-        }
-    }
-
     pub fn update_topology(&mut self) {
         for monad in &mut self.monads {
             monad.update_capacity();
@@ -98,8 +96,35 @@ impl Vacuum {
         if dead_ids.is_empty() {
             return;
         }
-        self.handshakes
-            .retain(|h| !dead_ids.contains(&h.source_id) && !dead_ids.contains(&h.target_id));
+    }
+
+    pub fn extend(&mut self, newborns: Vec<Monad>) {
+        let start_idx = self.monads.len();
+        for (offset, monad) in newborns.iter().enumerate() {
+            self.monad_indices.insert(monad.id, start_idx + offset);
+        }
+        self.monads.extend(newborns);
+    }
+
+    pub fn get_at(&self, index: usize) -> Option<&Monad> {
+        self.monads.get(index)
+    }
+
+    pub fn get_at_mut(&mut self, index: usize) -> Option<&mut Monad> {
+        self.monads.get_mut(index)
+    }
+
+    pub fn get_monad(&self, id: u32) -> Option<&Monad> {
+        self.find_monad(id).and_then(|index| self.monads.get(index))
+    }
+
+    pub fn get_monad_mut(&mut self, id: u32) -> Option<&mut Monad> {
+        self.find_monad(id)
+            .and_then(|index| self.monads.get_mut(index))
+    }
+
+    fn find_monad(&self, id: u32) -> Option<usize> {
+        self.monad_indices.get(&id).copied()
     }
 
     fn kill_monads(&mut self) -> HashSet<u32> {
@@ -127,10 +152,6 @@ impl Vacuum {
         all_dead_ids
     }
 
-    fn find_monad(&self, id: u32) -> Option<usize> {
-        self.monads.iter().position(|m| m.id == id)
-    }
-
     fn get_disjoint_monads(&mut self, idx1: usize, idx2: usize) -> Option<[&mut Monad; 2]> {
         self.monads.get_disjoint_mut([idx1, idx2]).ok()
     }
@@ -152,6 +173,7 @@ impl Vacuum {
             vec![peer_id],
             ALPHA,
             BETA,
+            KAPPA,
             LAMBDA,
             TAU_S,
             TAU_F,

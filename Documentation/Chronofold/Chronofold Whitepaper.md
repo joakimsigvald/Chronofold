@@ -7,6 +7,8 @@
 ---
 ## I. The Fundamental Manifold
 
+**The Ansatz of Finite Computation:** The universe is a strictly finite informational regime. Continuous, infinite-precision mathematics are abandoned in favor of discrete, computable state updates. The physical laws of the manifold are entirely self-contained and mathematically finite, organically mutating to maximize causal density while minimizing thermodynamic and computational expenditure.
+
 Space and time do not exist as absolute _a priori_ containers. They are emergent properties of discrete, asynchronous interactions between fundamental, dimensionless units called **Monads**.
 
 A Monad is entirely defined by its topological context (its connections) and its internal thermodynamic state (its tension).
@@ -120,24 +122,25 @@ The decision to act, and the structural limits of the horizon, dynamically shift
 
 **1. The Arrow of Time (Tick Updates)**
 
-Fugacity naturally escalates as unrequited time progresses:
+Fugacity naturally escalates as unrequited time progresses before a handshake resolution:
 
 $$F \leftarrow F + \lambda \frac{1 - F}{N}$$
 
-**2. Event Resolution**
+**2. Failed Handshake (Bounce)**
 
-The outcome of a handshake permanently alters the internal state:
-
-- **On Failure (Bounce):** The drive to exploit known geometry intensifies.
+The outcome of a rejected handshake permanently alters the internal state. The drive to exploit known geometry intensifies:
 
 $$A \leftarrow A + \alpha(1 - A)$$
-- **On Success:** The causal link resolves, blending internal drives symmetrically with the topological recency of the partner, governed by the cohesion constant ($\kappa$).
 
-$$A \leftarrow (1 - \alpha)A + \alpha(1 - \kappa^{\frac{n}{12}})$$
+**3. Successful Handshake (State Update)**
+
+The causal link resolves. Affinity updates via pure topological resonance, driven by the inherited cohesion constant ($\kappa$). Fugacity blends independently with the exponential recency of the partner:
+
+$$A \leftarrow (1 - \alpha)A + \alpha(1 - \kappa^n)$$
 
 $$F \leftarrow (1 - \beta)F + \beta(2^{-n})$$
 
-**3. Horizon Elasticity (Structural Limits)**
+**4. Horizon Elasticity (Structural Limits)**
 
 Following the resolve phase, structural bounds are re-evaluated:
 
@@ -149,7 +152,7 @@ Following the resolve phase, structural bounds are re-evaluated:
 
 - **Topological Collapse (Entropy):** If a Monad's Active horizon shrinks to $N=0$, it instantly vanishes from the manifold. All surviving Monads that possessed an active link to the deceased must immediately purge the ID from their horizons, shifting their remaining connections forward to fill the void.
 
-**4. Boundary Initialization (The Big Bang)**
+**5. Boundary Initialization (The Big Bang)**
 
 The universe initializes with a mutually entangled pair of Monads, bound by a shared genesis event. Both entities begin with $M=N=1$, ensuring relational space exists from the first discrete tick.
 ## VI. Calibration Constants and Universal Inheritance

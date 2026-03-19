@@ -13,6 +13,7 @@ pub struct Monad {
     pub capacity: u8,
     pub alpha: f32,
     pub beta: f32,
+    pub kappa: f32,
     pub lambda: f32,
     pub tau_s: f32,
     pub tau_f: f32,
@@ -37,16 +38,12 @@ impl Monad {
         }
     }
 
-    pub fn update_fugacity(&mut self) {
-        let n = self.valence();
-        if n == 0 {
-            panic!(
-                "Topological Entropy Violation: Monad {} attempted to update with an empty horizon. \
-                This indicates a failure in the pruning cascade.",
-                self.id
-            );
-        }
-        self.fugacity += self.lambda * (1.0 - self.fugacity) / (n as f32);
+    pub fn escalate_affinity(&mut self) {
+        self.update_affinity(None);
+    }
+
+    pub fn escalate_fugacity(&mut self) {
+        self.fugacity += self.lambda * (1.0 - self.fugacity) / (self.valence() as f32);
     }
 
     pub fn update_capacity(&mut self) {
@@ -62,12 +59,10 @@ impl Monad {
     }
 
     pub fn entangle(&mut self, target: &mut Monad) {
-        //TODO: move update fugacity to a separate function (move all mathematics to one place)
-        self.fugacity =
-            (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target.id));
+        self.update_fugacity(target.id);
+        self.update_affinity(Some(target.id));
         self.elevate(target.id);
         self.sample_from(target);
-        target.sample_from(self);
     }
 
     pub fn spawn_newborn(&mut self, newborn_id: u32) -> Monad {
@@ -76,20 +71,12 @@ impl Monad {
             vec![self.id],
             self.alpha,
             self.beta,
+            self.kappa,
             self.lambda,
             self.tau_s,
             self.tau_f,
             self.tau_a,
         )
-    }
-
-//TODO: Use formula from paper
-    pub fn update_affinity(&mut self, connected: bool, excited: bool) {
-        if connected {
-            self.affinity *= 1.0 - self.alpha;
-        } else if excited {
-            self.affinity += self.alpha * (1.0 - self.affinity);
-        }
     }
 
     pub fn prune_horizon(&mut self, dead_ids: &HashSet<u32>) {
@@ -123,10 +110,26 @@ impl Monad {
         self.horizon.iter().copied().filter(move |&id| id > self.id)
     }
 
+    pub fn knows(&self, peer_id: u32) -> bool {
+        self.horizon.contains(&peer_id)
+    }
+
+    fn update_affinity(&mut self, target_id: Option<u32>) {
+        let penalty = target_id
+            .and_then(|id| self.get_distance(id))
+            .map_or(1.0, |n| 1.0 - self.kappa.powi(n as i32));
+        self.affinity += self.alpha * (penalty - self.affinity);
+    }
+
+    fn update_fugacity(&mut self, target_id: u32) {
+        self.fugacity =
+            (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target_id));
+    }
+
     fn find_novel_link_from(&self, peer: &Monad) -> Option<u32> {
         peer.horizon
             .iter()
-            .find(|&id| *id != self.id && !self.horizon.contains(&id))
+            .find(|&id| *id != self.id && !self.knows(*id))
             .copied()
     }
 
@@ -149,11 +152,13 @@ impl Monad {
     }
 
     fn get_recency(&self, target_id: u32) -> f32 {
-        self.horizon
-            .iter()
-            .position(|&id| id == target_id)
+        self.get_distance(target_id)
             .map(|n| 1.0 / 2.0_f32.powf(n as f32))
             .unwrap_or(0.0)
+    }
+
+    fn get_distance(&self, peer_id: u32) -> Option<usize> {
+        self.horizon.iter().position(|&id| id == peer_id)
     }
 
     pub fn create(
@@ -161,6 +166,7 @@ impl Monad {
         horizon: Vec<u32>,
         alpha: f32,
         beta: f32,
+        kappa: f32,
         lambda: f32,
         tau_s: f32,
         tau_f: f32,
@@ -174,6 +180,7 @@ impl Monad {
             capacity: INITIAL_CAPACITY,
             alpha,
             beta,
+            kappa,
             lambda,
             tau_s,
             tau_f,
