@@ -41,25 +41,34 @@ pub struct Vacuum {
     monad_indices: HashMap<u32, usize>,
 }
 
+#[derive(Default)]
+pub struct TopologyUpdate {
+    pub connected_ids: HashSet<u32>,
+    pub excited_ids: HashSet<u32>,
+    pub newborns: Vec<Monad>,
+}
+
 impl Vacuum {
     pub fn create() -> Vacuum {
         let monads = vec![Self::create_primordial(0, 1), Self::create_primordial(1, 0)];
-        let monad_indices: HashMap<u32, usize> = monads
-            .iter()
-            .enumerate()
-            .map(|(index, monad)| (monad.id, index))
-            .collect();
+        let monad_indices: HashMap<u32, usize> = Self::build_index_map(&monads);
+        let max_id = monads.iter().map(|m| m.id).max().unwrap();
         Self {
             tick: 0,
-            max_id: 1,
+            max_id: max_id,
             monads: monads,
             monad_indices: monad_indices,
         }
     }
 
-    pub fn update_fugacity(&mut self) {
+    pub fn monads(&self) -> impl Iterator<Item = &Monad> {
+        self.monads.iter()
+    }
+
+    pub fn advance_time(&mut self) {
+        self.tick += 1;
         for monad in &mut self.monads {
-            monad.escalate_fugacity();
+            monad.accumulate_fugacity();
         }
     }
 
@@ -88,17 +97,39 @@ impl Vacuum {
         Some(Handshake::perform(source, target))
     }
 
-    pub fn update_topology(&mut self) {
-        for monad in &mut self.monads {
-            monad.update_capacity();
-        }
-        let dead_ids = self.kill_monads();
-        if dead_ids.is_empty() {
-            return;
+    pub fn update_topology(&mut self, update: TopologyUpdate) {
+        self.resolve_bounces(&update.excited_ids, &update.connected_ids);
+        self.extend(update.newborns);
+        self.update_capacity();
+        self.prune_monads();
+    }
+
+    pub fn get_at(&self, index: usize) -> Option<&Monad> {
+        self.monads.get(index)
+    }
+
+    pub fn is_bounce(&self, source_id: u32, target_id: u32) -> bool {
+        match self.get_monad(target_id) {
+            Some(target) => !target.knows(source_id),
+            None => true,
         }
     }
 
-    pub fn extend(&mut self, newborns: Vec<Monad>) {
+    fn get_monad_mut(&mut self, id: u32) -> &mut Monad {
+        &mut self.monads[self.monad_indices[&id]]
+    }
+
+    fn get_monad(&self, id: u32) -> Option<&Monad> {
+        self.find_monad(id).and_then(|index| self.monads.get(index))
+    }
+
+    fn resolve_bounces(&mut self, excited: &HashSet<u32>, connected: &HashSet<u32>) {
+        for id in excited.difference(connected) {
+            self.get_monad_mut(*id).accumulate_affinity();
+        }
+    }
+
+    fn extend(&mut self, newborns: Vec<Monad>) {
         let start_idx = self.monads.len();
         for (offset, monad) in newborns.iter().enumerate() {
             self.monad_indices.insert(monad.id, start_idx + offset);
@@ -106,30 +137,18 @@ impl Vacuum {
         self.monads.extend(newborns);
     }
 
-    pub fn get_at(&self, index: usize) -> Option<&Monad> {
-        self.monads.get(index)
-    }
-
-    pub fn get_at_mut(&mut self, index: usize) -> Option<&mut Monad> {
-        self.monads.get_mut(index)
-    }
-
-    pub fn get_monad(&self, id: u32) -> Option<&Monad> {
-        self.find_monad(id).and_then(|index| self.monads.get(index))
-    }
-
-    pub fn get_monad_mut(&mut self, id: u32) -> Option<&mut Monad> {
-        self.find_monad(id)
-            .and_then(|index| self.monads.get_mut(index))
+    fn update_capacity(&mut self) {
+        for monad in &mut self.monads {
+            monad.update_capacity();
+        }
     }
 
     fn find_monad(&self, id: u32) -> Option<usize> {
         self.monad_indices.get(&id).copied()
     }
 
-    fn kill_monads(&mut self) -> HashSet<u32> {
-        let mut all_dead_ids = HashSet::new();
-
+    fn prune_monads(&mut self) {
+        let mut changed = false;
         loop {
             let new_dead_ids: HashSet<u32> = self
                 .monads
@@ -137,19 +156,22 @@ impl Vacuum {
                 .filter(|m| m.horizon.is_empty())
                 .map(|m| m.id)
                 .collect();
-
             if new_dead_ids.is_empty() {
                 break;
             }
-
-            all_dead_ids.extend(&new_dead_ids);
+            changed = true;
             self.monads.retain(|m| !new_dead_ids.contains(&m.id));
             for monad in &mut self.monads {
                 monad.prune_horizon(&new_dead_ids);
             }
         }
+        if changed {
+            self.monad_indices = Self::build_index_map(&self.monads);
+        }
+    }
 
-        all_dead_ids
+    fn build_index_map(monads: &Vec<Monad>) -> HashMap<u32, usize> {
+        monads.iter().enumerate().map(|(i, m)| (m.id, i)).collect()
     }
 
     fn get_disjoint_monads(&mut self, idx1: usize, idx2: usize) -> Option<[&mut Monad; 2]> {
@@ -161,10 +183,6 @@ impl Vacuum {
         let source = &mut self.monads[source_idx];
         let newborn = source.spawn_newborn(self.max_id);
         (source, newborn)
-    }
-
-    fn get_ids(&self, indices: &[usize]) -> HashSet<u32> {
-        indices.iter().map(|&idx| self.monads[idx].id).collect()
     }
 
     fn create_primordial(source_id: u32, peer_id: u32) -> Monad {
@@ -179,5 +197,14 @@ impl Vacuum {
             TAU_F,
             TAU_A,
         )
+    }
+}
+
+impl TopologyUpdate {
+    pub fn record_success(&mut self, hs: Handshake, newborn_opt: Option<Monad>) {
+        self.connected_ids.extend([hs.source_id, hs.target_id]);
+        if let Some(newborn) = newborn_opt {
+            self.newborns.push(newborn);
+        }
     }
 }

@@ -19,14 +19,13 @@ pub fn map_to_view(vacuum: &Vacuum) -> VacuumView {
 }
 
 fn map_monads(vacuum: &Vacuum) -> Vec<MonadView> {
-    vacuum.monads.iter().map(MonadView::from_model).collect()
+    vacuum.monads().map(MonadView::from_model).collect()
 }
 
 fn map_links(vacuum: &Vacuum) -> Vec<LinkView> {
-    let monad_map: HashMap<u32, &Monad> = vacuum.monads.iter().map(|m| (m.id, m)).collect();
+    let monad_map: HashMap<u32, &Monad> = vacuum.monads().map(|m| (m.id, m)).collect();
     vacuum
-        .monads
-        .iter()
+        .monads()
         .flat_map(|m| m.get_higher_peers().map(move |right_id| (m.id, right_id)))
         .map(|(left_id, right_id)| (monad_map[&left_id], monad_map[&right_id]))
         .map(|(left, right)| LinkView::from_peers(left, right))

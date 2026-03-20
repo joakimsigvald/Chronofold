@@ -35,9 +35,23 @@
               "icon": "lucide-file",
               "title": "Chronofold Whitepaper"
             }
+          },
+          {
+            "id": "c1e281ea576685fa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "The future of AI.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "The future of AI"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       },
       {
         "id": "b55139651b26bab9",
@@ -216,10 +230,11 @@
       "bases:Skapa ny bas": false
     }
   },
-  "active": "1f7d0c7325476a5f",
+  "active": "c1e281ea576685fa",
   "lastOpenFiles": [
-    "14aemjf3.pam~",
     "Chronofold Whitepaper.md",
+    "The future of AI.md",
+    "14aemjf3.pam~",
     "AI-rewrite of base model.md",
     "Namnlös.canvas",
     "Namnlös.base",

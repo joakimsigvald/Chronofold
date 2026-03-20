@@ -22,16 +22,11 @@ async fn send_state(state: &VacuumView, socket: &mut WebSocket) -> Result<(), ()
 }
 
 async fn run_simulation(mut socket: WebSocket) {
-    // Initialize the Big Bang
     let mut engine = ChronofoldEngine::ignite();
-
     let view = map_to_view(engine.vacuum());
-    // Send initial state
     if send_state(&view, &mut socket).await.is_err() {
         return;
     }
-
-    // The Observer Loop
     loop {
         let text = socket
             .recv()
@@ -41,7 +36,6 @@ async fn run_simulation(mut socket: WebSocket) {
                 Message::Text(t) => Some(t),
                 _ => None,
             });
-
         match text.as_deref() {
             Some("ACK") => {
                 engine.advance();

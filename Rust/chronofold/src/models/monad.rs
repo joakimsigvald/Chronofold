@@ -38,12 +38,12 @@ impl Monad {
         }
     }
 
-    pub fn escalate_affinity(&mut self) {
-        self.update_affinity(None);
+    pub fn accumulate_fugacity(&mut self) {
+        self.fugacity += self.lambda * (1.0 - self.fugacity) / (self.valence() as f32);
     }
 
-    pub fn escalate_fugacity(&mut self) {
-        self.fugacity += self.lambda * (1.0 - self.fugacity) / (self.valence() as f32);
+    pub fn accumulate_affinity(&mut self) {
+        self.update_affinity(None);
     }
 
     pub fn update_capacity(&mut self) {
