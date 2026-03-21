@@ -102,8 +102,8 @@ impl Monad {
             .map(|id| self.horizon.push(id));
     }
 
-    pub fn index_of(&self, peer_id: u32) -> usize {
-        self.horizon.iter().position(|&id| id == peer_id).unwrap()
+    pub fn distance(&self, peer_id: u32) -> Option<usize> {
+        self.horizon.iter().position(|&id| id == peer_id)
     }
 
     pub fn get_higher_peers(&self) -> impl Iterator<Item = u32> + '_ {
@@ -116,7 +116,7 @@ impl Monad {
 
     fn update_affinity(&mut self, target_id: Option<u32>) {
         let penalty = target_id
-            .and_then(|id| self.get_distance(id))
+            .and_then(|id| self.distance(id))
             .map_or(1.0, |n| 1.0 - self.kappa.powi(n as i32));
         self.affinity += self.alpha * (penalty - self.affinity);
     }
@@ -152,13 +152,9 @@ impl Monad {
     }
 
     fn get_recency(&self, target_id: u32) -> f32 {
-        self.get_distance(target_id)
+        self.distance(target_id)
             .map(|n| 1.0 / 2.0_f32.powf(n as f32))
             .unwrap_or(0.0)
-    }
-
-    fn get_distance(&self, peer_id: u32) -> Option<usize> {
-        self.horizon.iter().position(|&id| id == peer_id)
     }
 
     pub fn create(

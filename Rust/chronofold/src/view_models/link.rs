@@ -9,15 +9,15 @@ pub struct LinkView {
 }
 
 impl LinkView {
-    pub fn from_peers(left: &Monad, right: &Monad) -> Self {
-        Self {
+    pub fn from_peers(left: &Monad, right: &Monad) -> Option<Self> {
+        let left_dist = left.distance(right.id)?;
+        let right_dist = right.distance(left.id)?;
+
+        Some(Self {
             left_id: left.id,
             right_id: right.id,
-            strength: Self::compute_strength(
-                right.index_of(left.id),
-                left.index_of(right.id),
-            ),
-        }
+            strength: Self::compute_strength(left_dist, right_dist),
+        })
     }
 
     fn compute_strength(left_idx: usize, right_idx: usize) -> f32 {

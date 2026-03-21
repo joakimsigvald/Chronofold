@@ -115,12 +115,12 @@ impl Vacuum {
         }
     }
 
-    fn get_monad_mut(&mut self, id: u32) -> &mut Monad {
-        &mut self.monads[self.monad_indices[&id]]
+    pub fn get_monad(&self, id: u32) -> Option<&Monad> {
+        self.find_monad(id).and_then(|index| self.monads.get(index))
     }
 
-    fn get_monad(&self, id: u32) -> Option<&Monad> {
-        self.find_monad(id).and_then(|index| self.monads.get(index))
+    fn get_monad_mut(&mut self, id: u32) -> &mut Monad {
+        &mut self.monads[self.monad_indices[&id]]
     }
 
     fn resolve_bounces(&mut self, excited: &HashSet<u32>, connected: &HashSet<u32>) {
