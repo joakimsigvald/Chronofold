@@ -5,11 +5,11 @@ use crate::models::monad::Monad;
 
 /// Penalty (α): How quickly Affinity (clinging) spikes after a failed signal.
 /// Lower values (like 0.05) make the network more resilient to rejection.
-const ALPHA: f32 = 0.1;
+const ALPHA: f32 = 0.15;
 
 /// Relaxation (β): The satisfying "cool-down" of Fugacity after a handshake.
 /// Higher values make successful connections more "fulfilling."
-const BETA: f32 = 0.1;
+const BETA: f32 = 0.2;
 
 // Cohesion (κ): The distance tolerance dial for Affinity.
 /// Pulls Affinity toward `1.0 - κ^n` upon a successful handshake at index `n`.
@@ -19,7 +19,7 @@ const KAPPA: f32 = 0.95;
 
 /// Friction (λ): Passive Fugacity growth per tick.
 /// High values make Monads crave novelty faster.
-const LAMBDA: f32 = 0.2;
+const LAMBDA: f32 = 0.1;
 
 /// Critical Stress (τ_S): The threshold for action.
 /// When internal stress > τ_S, the Monad is forced to signal.
@@ -27,7 +27,7 @@ const TAU_S: f32 = 0.5;
 
 /// Critical Expansion (τ_F): The threshold for growth.
 /// When Fugacity > τ_F, the Monad gains +1 Dimensional Capacity.
-const TAU_F: f32 = 0.7;
+const TAU_F: f32 = 0.6;
 
 /// Critical Contraction (τ_A): The threshold for retreat.
 /// When Affinity > τ_A, the Monad loses -1 Dimensional Capacity.
