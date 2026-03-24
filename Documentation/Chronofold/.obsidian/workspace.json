@@ -29,7 +29,7 @@
               "state": {
                 "file": "Chronofold Whitepaper.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
               "title": "Chronofold Whitepaper"

@@ -1,5 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
+use crate::models::topology_update::TopologyUpdate;
 use crate::models::handshake::Handshake;
 use crate::models::monad::Monad;
 
@@ -25,10 +26,6 @@ const LAMBDA: f32 = 0.1;
 /// When internal stress > τ_S, the Monad is forced to signal.
 const TAU_S: f32 = 0.5;
 
-/// Critical Expansion (τ_F): The threshold for growth.
-/// When Fugacity > τ_F, the Monad gains +1 Dimensional Capacity.
-const TAU_F: f32 = 0.6;
-
 /// Critical Contraction (τ_A): The threshold for retreat.
 /// When Affinity > τ_A, the Monad loses -1 Dimensional Capacity.
 const TAU_A: f32 = 0.7;
@@ -39,13 +36,6 @@ pub struct Vacuum {
     pub max_id: u32,
     monads: Vec<Monad>,
     monad_indices: HashMap<u32, usize>,
-}
-
-#[derive(Default)]
-pub struct TopologyUpdate {
-    pub connected_ids: HashSet<u32>,
-    pub excited_ids: HashSet<u32>,
-    pub newborns: Vec<Monad>,
 }
 
 impl Vacuum {
@@ -98,8 +88,8 @@ impl Vacuum {
     }
 
     pub fn update_topology(&mut self, update: TopologyUpdate) {
-        self.resolve_bounces(&update.excited_ids, &update.connected_ids);
-        self.extend(update.newborns);
+        self.resolve_bounces(&update);
+        self.extend(update.newborns());
         self.update_capacity();
         self.prune_monads();
     }
@@ -123,9 +113,9 @@ impl Vacuum {
         &mut self.monads[self.monad_indices[&id]]
     }
 
-    fn resolve_bounces(&mut self, excited: &HashSet<u32>, connected: &HashSet<u32>) {
-        for id in excited.difference(connected) {
-            self.get_monad_mut(*id).accumulate_affinity();
+    fn resolve_bounces(&mut self, update: &TopologyUpdate) {
+        for (source_id, target_id) in update.bounces() {
+            self.get_monad_mut(*source_id).apply_bounce_penalty(*target_id);
         }
     }
 
@@ -194,17 +184,7 @@ impl Vacuum {
             KAPPA,
             LAMBDA,
             TAU_S,
-            TAU_F,
             TAU_A,
         )
-    }
-}
-
-impl TopologyUpdate {
-    pub fn record_success(&mut self, hs: Handshake, newborn_opt: Option<Monad>) {
-        self.connected_ids.extend([hs.source_id, hs.target_id]);
-        if let Some(newborn) = newborn_opt {
-            self.newborns.push(newborn);
-        }
     }
 }

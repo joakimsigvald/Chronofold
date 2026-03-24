@@ -1,8 +1,9 @@
 use std::collections::HashSet;
 
+use crate::models::Invite;
+
 const INITIAL_AFFINITY: f32 = 0.0;
 const INITIAL_FUGACITY: f32 = 0.0;
-const INITIAL_CAPACITY: u8 = 1;
 
 #[derive(Clone)]
 pub struct Monad {
@@ -10,13 +11,11 @@ pub struct Monad {
     pub horizon: Vec<u32>,
     pub fugacity: f32,
     pub affinity: f32,
-    pub capacity: u8,
     pub alpha: f32,
     pub beta: f32,
     pub kappa: f32,
     pub lambda: f32,
     pub tau_s: f32,
-    pub tau_f: f32,
     pub tau_a: f32,
 }
 
@@ -29,52 +28,40 @@ impl Monad {
         ((1.0 - self.affinity) * self.fugacity).sqrt()
     }
 
-    pub fn get_targeted_id(&self) -> Option<u32> {
-        let idx = self.target_index();
-        if idx >= self.valence() {
-            None // Genesis
-        } else {
-            Some(self.horizon[idx]) // Internal
-        }
-    }
-
     pub fn accumulate_fugacity(&mut self) {
         self.fugacity += self.lambda * (1.0 - self.fugacity) / (self.valence() as f32);
     }
 
-    pub fn accumulate_affinity(&mut self) {
+    pub fn apply_bounce_penalty(&mut self, target_id: u32) {
         self.update_affinity(None);
+        if let Some(pos) = self.distance(target_id) {
+            let id = self.horizon.remove(pos);
+            self.horizon.push(id);
+        }
     }
 
     pub fn update_capacity(&mut self) {
-        if self.fugacity > self.tau_f {
-            self.capacity = self.capacity.saturating_add(1);
-        }
         if self.affinity > self.tau_a {
-            self.capacity = self.capacity.saturating_sub(1);
-        }
-        if self.is_over_capacity() {
             self.horizon.pop();
         }
     }
 
-    pub fn entangle(&mut self, target: &mut Monad) {
-        self.update_fugacity(target.id);
-        self.update_affinity(Some(target.id));
-        self.elevate(target.id);
-        self.sample_from(target);
+    pub fn entangle(&mut self, target_id: u32, target_peer_id: u32) {
+        self.update_fugacity(target_id);
+        self.update_affinity(Some(target_id));
+        self.elevate(target_peer_id);
+        self.elevate(target_id);
     }
 
     pub fn spawn_newborn(&mut self, newborn_id: u32) -> Monad {
         Monad::create(
             newborn_id,
-            vec![self.id],
+            vec![],
             self.alpha,
             self.beta,
             self.kappa,
             self.lambda,
             self.tau_s,
-            self.tau_f,
             self.tau_a,
         )
     }
@@ -83,23 +70,8 @@ impl Monad {
         self.horizon.retain(|id| !dead_ids.contains(id));
     }
 
-    pub fn capacity(&self) -> usize {
-        self.capacity as usize
-    }
-
     pub fn valence(&self) -> usize {
         self.horizon.len()
-    }
-
-    pub fn is_over_capacity(&self) -> bool {
-        self.valence() > self.capacity()
-    }
-
-    pub fn sample_from(&mut self, peer: &Monad) {
-        self.has_free_capacity()
-            .then(|| self.find_novel_link_from(peer))
-            .flatten()
-            .map(|id| self.horizon.push(id));
     }
 
     pub fn distance(&self, peer_id: u32) -> Option<usize> {
@@ -114,6 +86,19 @@ impl Monad {
         self.horizon.contains(&peer_id)
     }
 
+    pub fn get_handshake_invite(&self, source_idx: usize) -> Invite {
+        let target_idx = self.target_index();
+        let target_id = self.horizon.get(target_idx);
+        Invite {
+            source_idx,
+            distance: target_idx,
+            valence: self.valence(),
+            stress: self.stress(),
+            source_id: self.id,
+            target_id: target_id.copied(),
+        }
+    }
+
     fn update_affinity(&mut self, target_id: Option<u32>) {
         let penalty = target_id
             .and_then(|id| self.distance(id))
@@ -126,29 +111,13 @@ impl Monad {
             (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target_id));
     }
 
-    fn find_novel_link_from(&self, peer: &Monad) -> Option<u32> {
-        peer.horizon
-            .iter()
-            .find(|&id| *id != self.id && !self.knows(*id))
-            .copied()
-    }
-
-    fn has_free_capacity(&self) -> bool {
-        self.valence() < self.capacity()
-    }
-
     fn target_index(&self) -> usize {
-        let p = self.aperture();
-        if p < 1.0 {
-            (p * (self.capacity as f32)).floor() as usize
-        } else {
-            self.capacity() - 1
-        }
+        ((self.aperture() * (self.valence() as f32 + 1.0)) as usize).min(self.valence())
     }
 
-    fn elevate(&mut self, target_id: u32) {
-        self.horizon.retain(|&id| id != target_id);
-        self.horizon.insert(0, target_id);
+    fn elevate(&mut self, peer_id: u32) {
+        self.horizon.retain(|&id| id != peer_id);
+        self.horizon.insert(0, peer_id);
     }
 
     fn get_recency(&self, target_id: u32) -> f32 {
@@ -165,7 +134,6 @@ impl Monad {
         kappa: f32,
         lambda: f32,
         tau_s: f32,
-        tau_f: f32,
         tau_a: f32,
     ) -> Monad {
         Self {
@@ -173,13 +141,11 @@ impl Monad {
             horizon,
             affinity: INITIAL_AFFINITY,
             fugacity: INITIAL_FUGACITY,
-            capacity: INITIAL_CAPACITY,
             alpha,
             beta,
             kappa,
             lambda,
             tau_s,
-            tau_f,
             tau_a,
         }
     }

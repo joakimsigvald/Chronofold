@@ -87,7 +87,7 @@ Because the void occupies exactly one discrete state at the topological boundary
 
 **Receive Phase:** The outcome of the proposal depends on whether the target index falls within populated space or the unmapped void:
 
-- **Internal Target ($n < N$):** The targeted Monad evaluates the incoming proposal. It accepts the handshake only if it has not yet collapsed into the Resolved State, and the signaling Monad is already present in its Active Horizon. If the target is already Resolved, or if the sender is topologically unknown to it, the signal is repelled (bounced).
+- **Internal Target ($n < N$):** The targeted Monad evaluates the incoming proposal. It accepts the handshake only if the signaling Monad is already present in its Active Horizon and is not already entangled with another Monad.
     
 - **Void Target ($n = N$):** The propagation vector reaches beyond the populated horizon into the void. It is automatically accepted, spawning a newborn Monad.
     
@@ -138,7 +138,7 @@ Following the initial entanglement of any successful handshake, the local topolo
 The handshake event is finalized by causally entangling the participating Monads, elevating each to the front of the other's active horizon. 
 #### 5. Bounce (Failed Handshake)
 
-Triggered when an internal signal ($n < N$) is rejected by a target that has already collapsed into the Resolved State. The initiator pushes the unresponsive peer to the absolute end of its Active Horizon ($n = N - 1$). This maximizes relational distance, physically driving the stagnant connection toward topological entropy.
+Triggered when an excited Monad remain unresolved due to a rejection (and no other Monad initiated a handshake with it). The initiator pushes the unresponsive peer to the absolute end of its Active Horizon ($n = N - 1$). This maximizes relational distance, physically driving the stagnant connection toward topological entropy.
 
 ---
 
