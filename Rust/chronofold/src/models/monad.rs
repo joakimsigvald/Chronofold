@@ -49,7 +49,9 @@ impl Monad {
     pub fn entangle(&mut self, target_id: u32, target_peer_id: u32) {
         self.update_fugacity(target_id);
         self.update_affinity(Some(target_id));
-        self.elevate(target_peer_id);
+        if target_peer_id != target_id && target_peer_id != self.id {
+            self.elevate(target_peer_id);
+        }
         self.elevate(target_id);
     }
 
@@ -74,6 +76,10 @@ impl Monad {
         self.horizon.len()
     }
 
+    pub fn mass(&self) -> f32 {
+        (self.valence() as f32) + self.stress()
+    }
+
     pub fn distance(&self, peer_id: u32) -> Option<usize> {
         self.horizon.iter().position(|&id| id == peer_id)
     }
@@ -91,9 +97,6 @@ impl Monad {
         let target_id = self.horizon.get(target_idx);
         Invite {
             source_idx,
-            distance: target_idx,
-            valence: self.valence(),
-            stress: self.stress(),
             source_id: self.id,
             target_id: target_id.copied(),
         }

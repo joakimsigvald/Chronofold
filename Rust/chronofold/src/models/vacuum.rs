@@ -98,13 +98,6 @@ impl Vacuum {
         self.monads.get(index)
     }
 
-    pub fn is_bounce(&self, source_id: u32, target_id: u32) -> bool {
-        match self.get_monad(target_id) {
-            Some(target) => !target.knows(source_id),
-            None => true,
-        }
-    }
-
     pub fn get_monad(&self, id: u32) -> Option<&Monad> {
         self.find_monad(id).and_then(|index| self.monads.get(index))
     }
