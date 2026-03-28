@@ -27,7 +27,7 @@ export const CreateVacuum = () => {
     const _fill = (monad) => { 
         const r = monad.fugacity;
         const g = monad.affinity;
-        const b = 1;
+        const b = monad.loneliness;
         const red = Math.round(r * 255);
         const green = Math.round(g * 255);
         const blue = Math.round(b * 255);

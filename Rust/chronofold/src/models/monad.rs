@@ -29,7 +29,7 @@ impl Monad {
     }
 
     pub fn accumulate_fugacity(&mut self) {
-        self.fugacity += self.lambda * (1.0 - self.fugacity) / (self.valence() as f32);
+        self.fugacity += self.lambda * (1.0 - self.fugacity);
     }
 
     pub fn apply_bounce_penalty(&mut self, target_id: u32) {
@@ -77,7 +77,7 @@ impl Monad {
     }
 
     pub fn mass(&self) -> f32 {
-        (self.valence() as f32) + self.stress()
+        (self.valence() as f32) * self.stress()
     }
 
     pub fn distance(&self, peer_id: u32) -> Option<usize> {
@@ -99,6 +99,7 @@ impl Monad {
             source_idx,
             source_id: self.id,
             target_id: target_id.copied(),
+            source_mass: self.mass()
         }
     }
 
