@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::models::Invite;
 
-const INITIAL_AFFINITY: f32 = 0.0;
+const INITIAL_AFFINITY: f32 = 0.5;
 const INITIAL_FUGACITY: f32 = 0.0;
 
 #[derive(Clone)]
@@ -40,8 +40,8 @@ impl Monad {
         }
     }
 
-    pub fn update_capacity(&mut self) {
-        if self.affinity > self.tau_a {
+    pub fn trim_horizon(&mut self) {
+        if self.affinity > self.tau_a.powi(self.valence() as i32) {
             self.horizon.pop();
         }
     }
@@ -112,7 +112,12 @@ impl Monad {
     }
 
     fn target_index(&self) -> usize {
-        ((self.aperture() * (self.valence() as f32 + 1.0)) as usize).min(self.valence())
+        let warped_p = Self::smoothstep(self.aperture());
+        ((warped_p * (self.valence() as f32 + 1.0)) as usize).min(self.valence())
+    }
+
+    fn smoothstep(v: f32) -> f32 {
+        (3.0 * v * v) - (2.0 * v * v * v)
     }
 
     fn elevate(&mut self, peer_id: u32) {

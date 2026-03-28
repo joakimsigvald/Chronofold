@@ -150,7 +150,7 @@ The decision to act, and the structural limits of the horizon, dynamically shift
 
 Fugacity naturally escalates as unrequited time progresses before a handshake resolution:
 
-$$F \leftarrow F + \lambda \frac{1 - F}{N}$$
+$$F \leftarrow F + \lambda(1 - F)$$
 
 #### 2. Failed Handshake (Bounce)
 
