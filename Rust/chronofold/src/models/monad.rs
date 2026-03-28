@@ -46,13 +46,10 @@ impl Monad {
         }
     }
 
-    pub fn entangle(&mut self, target_id: u32, target_peer_id: u32) {
-        self.update_fugacity(target_id);
-        self.update_affinity(Some(target_id));
-        if target_peer_id != target_id && target_peer_id != self.id {
-            self.elevate(target_peer_id);
-        }
-        self.elevate(target_id);
+    pub fn entangle(&mut self, peer_id: u32) {
+        self.update_fugacity(peer_id);
+        self.update_affinity(Some(peer_id));
+        self.elevate(peer_id);
     }
 
     pub fn spawn_newborn(&mut self, newborn_id: u32) -> Monad {
@@ -98,21 +95,20 @@ impl Monad {
         Invite {
             source_idx,
             source_id: self.id,
+            source_mass: self.mass(),
             target_id: target_id.copied(),
-            source_mass: self.mass()
         }
     }
 
-    fn update_affinity(&mut self, target_id: Option<u32>) {
-        let penalty = target_id
+    fn update_affinity(&mut self, peer_id: Option<u32>) {
+        let penalty = peer_id
             .and_then(|id| self.distance(id))
             .map_or(1.0, |n| 1.0 - self.kappa.powi(n as i32));
         self.affinity += self.alpha * (penalty - self.affinity);
     }
 
-    fn update_fugacity(&mut self, target_id: u32) {
-        self.fugacity =
-            (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(target_id));
+    fn update_fugacity(&mut self, peer_id: u32) {
+        self.fugacity = (1.0 - self.beta) * self.fugacity + (self.beta * self.get_recency(peer_id));
     }
 
     fn target_index(&self) -> usize {

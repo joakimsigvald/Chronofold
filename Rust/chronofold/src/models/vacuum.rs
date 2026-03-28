@@ -10,21 +10,21 @@ const ALPHA: f32 = 0.15;
 
 /// Relaxation (β): The satisfying "cool-down" of Fugacity after a handshake.
 /// Higher values make successful connections more "fulfilling."
-const BETA: f32 = 0.2;
+const BETA: f32 = 0.15;
 
 // Cohesion (κ): The distance tolerance dial for Affinity.
 /// Pulls Affinity toward `1.0 - κ^n` upon a successful handshake at index `n`.
 /// Higher values (e.g., 0.95) let the Monad tolerate deeper connections,
 /// while lower values cause Affinity to spike aggressively even at short distances.
-const KAPPA: f32 = 0.95;
+const KAPPA: f32 = 0.90;
 
 /// Friction (λ): Passive Fugacity growth per tick.
 /// High values make Monads crave novelty faster.
-const LAMBDA: f32 = 0.1;
+const LAMBDA: f32 = 0.15;
 
 /// Critical Stress (τ_S): The threshold for action.
 /// When internal stress > τ_S, the Monad is forced to signal.
-const TAU_S: f32 = 0.5;
+const TAU_S: f32 = 0.6;
 
 /// Critical Contraction (τ_A): The threshold for retreat.
 /// When Affinity > τ_A, the Monad loses -1 Dimensional Capacity.

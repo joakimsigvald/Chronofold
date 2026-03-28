@@ -1,5 +1,5 @@
 export const CreateSocket = ({ onMessage, onConnect, onPause, onResume, onDisconnect }) => {
-    const timeMs = 500;
+    const timeMs = 200;
 
     let ws = null;
     let isPaused = false;
