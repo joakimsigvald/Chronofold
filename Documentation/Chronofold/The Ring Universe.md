@@ -19,6 +19,8 @@ The Monad is the fundamental actor of the universe. It contains no internal stat
 
 The Connector is an undirected edge linking exactly two Monads. It acts as the medium of topological exchange. Because Monads reference the Connector (rather than pointing directly to each other), dangling pointers are mathematically impossible during graph rewrites.
 
+A strict constraint exists: between any two unique Monads, there can exist a maximum of one Connector. Additionally, a Monad cannot connect to itself (no self-loops).
+
 ## 3. The Engine of Time
 
 Time does not exist globally; it is the sequence of events. To process these events without introducing a "topological wind" or a centralized manager, the universe relies on a **Global FIFO Queue**.
@@ -57,9 +59,9 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
     
 - **Consequence:** 1. A new Connector is forged.
     
-    2. Monad A cleaves itself into two separate Monads (A1 and A2), sharing the new Connector between them. The previous Connectors are distributed sequentially between the two halves.
+    2. Monad A cleaves itself in half into two separate Monads (A1 and A2), sharing the new Connector between them. The split is made between the active connector and the next, and that is where the new connector is positioned.
     
-    3. Both A1 and A2 set their Dials to point at the newly shared Connector.
+    3. A2 sets its Dial to point at the newly shared Connector.
     
     4. **Continuation:** `[Advance A1]` and `[Advance A2]` are pushed to the queue.
     
@@ -95,7 +97,7 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
     
     1. The active Connector between Monad A and Monad B is destroyed and removed from both Rings.
         
-    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe.
+    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe. Any event belonging to the deleted monad is either removed immediately or when it is scheduled for execution.
         
     3. **Continuation:** `[Advance]` is pushed to the queue for any Monad that survived the Snap.
 
