@@ -81,20 +81,23 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
     4. **Continuation:** `[Advance A]` is pushed to the queue. _(Note: Monad B is left undisturbed, but its Dial is naturally set to land on the newly forged $c_{BC}$ on its next `Advance` turn, directing the causal flow)._
         
 
-### Priority 3: Snap (Entropy / Redundancy Decay)
+### Priority 3: Snap (Entropy / Decay)
 
-- **Selector:** Local space is deadlocked and saturated.
+- **Selector:** Local space is deadlocked, or a connection is a dead end.
     
-- **Condition:** Monad A cannot Split (length $< 6$) and cannot Weave (Monad B is already connected to Monad A's next target, meaning the local neighborhood is fully triangulated).
+- **Condition:** Monad A cannot Split (length $< 6$), AND the Weave fails for one of two reasons:
     
+    1. **Redundancy:** Monad A presents Target C, but Monad B already has a Connector to Monad C.
+        
+    2. **Isolation:** Monad A (or Monad B) has a Ring length of exactly 1, meaning there is no "next" Target to present.
+        
 - **Consequence:**
     
     1. The active Connector between Monad A and Monad B is destroyed and removed from both Rings.
         
-    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$, that Monad instantly evaporates from the universe.
+    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe.
         
-    3. **Continuation:** `[Advance A]` is pushed to the queue (if Monad A survived).
-        
+    3. **Continuation:** `[Advance]` is pushed to the queue for any Monad that survived the Snap.
 
 ## 6. Initialization (The Big Bang)
 
