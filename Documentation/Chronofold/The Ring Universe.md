@@ -1,129 +1,115 @@
-# The Ring Universe: A Relational Framework for Emergent Spacetime
+# The Ring Universe: V3.0
+
+### A Relational Framework for Emergent Spacetime and Quantum Mechanics
 
 ## 1. Core Philosophy
 
-This model adheres strictly to the **Principle of Maximal Simplicity**. It assumes no background space, no global clock, no continuous mathematical variables, and no random number generators. All spatial geometry and temporal flow emerge purely from discrete, localized graph rewrites driven by deterministic rules.
+This model adheres strictly to the **Principle of Maximal Simplicity**. It assumes no background space, no global clock, no continuous mathematical variables, and no random number generators. All spatial geometry, temporal flow, and quantum phenomena emerge purely from discrete, localized graph rewrites.
+
+Unlike previous models, this framework accepts localized superposition as a fundamental feature rather than a computational bug. The universe processes conflicting actions not by enforcing an absolute sequence, but by branching reality locally and relying on topological interference to organically collapse the waveform.
 
 ## 2. Fundamental Entities
 
-### 2.1 The Monad
+The universe consists entirely of two discrete elements:
 
-The Monad is the fundamental actor of the universe. It contains no internal state variables (no stress, no phase, no probability scalars). It consists solely of:
+### 2.1 The Monad (Topological Mass & Local Time)
+
+The Monad is the fundamental node of the universe. It contains no internal state variables (no stress, no phase, no probability scalars). It consists solely of:
 
 - **The Ring:** An ordered, cyclic array of Connectors. The length of the Ring defines the Monad's local mass/tension.
     
-- **The Dial:** An index pointer indicating exactly one active Connector in the Ring at any given moment.
+- **The Dial:** An index pointer indicating exactly one active Connector in the Ring at any given moment. This dial serves as the Monad's localized clock.
     
 
-### 2.2 The Connector
+### 2.2 The Connector (The Engine of Physics)
 
-The Connector is an undirected edge linking exactly two Monads. It acts as the medium of topological exchange. Because Monads reference the Connector (rather than pointing directly to each other), dangling pointers are mathematically impossible during graph rewrites.
+The Connector is an undirected edge linking exactly two Monads. While previous iterations treated the Monad as the actor, **the Connector is the sole active agent in this universe.** It acts as the medium of topological exchange and executes all physical laws.
 
-A strict constraint exists: between any two unique Monads, there can exist a maximum of one Connector. Additionally, a Monad cannot connect to itself (no self-loops).
+- A strict constraint exists: between any two unique Monads, there can exist a maximum of one Connector.
+    
+- A Monad cannot connect to itself (no self-loops).
+    
 
 ## 3. The Engine of Time (The Tick-Tock Architecture)
 
-Time does not exist as a global continuum; it is the discrete sequence of local events. To process these events without introducing a "topological wind" or a centralized manager, the universe relies on a synchronized, three-phase event engine utilizing two alternating spatial queues and one action queue.
+Time does not exist as a global continuum; it is the discrete sequence of local events. To process these events without introducing a sequential "topological wind," the universe utilizes a synchronized, three-phase event engine with two alternating spatial queues and one action queue:
 
-- **Advance-Queue A & Advance-Queue B:** These handle the flow of time (the search for alignment).
+- **Advance-Queue A & Advance-Queue B:** These handle the flow of time.
     
-- **The Act-Queue:** This handles the mutation of space (the topological rewrites).
+- **The Act-Queue:** This handles the mutation of space.
     
 
 The Engine strictly cycles through three deterministic phases:
 
-**Phase 1: The Tick (Search)** The Engine exclusively pops instructions from the active Advance-Queue (e.g., Queue A) until it is completely empty.
+**Phase 1: The Tick (Advance & Evaluate)**
+
+The Engine exclusively processes instructions from the active Advance-Queue (e.g., Queue A).
 
 - For each instruction, the target Monad moves its Dial one step clockwise.
     
-- If mutual alignment is achieved across a Connector, an `[Act]` event is generated and pushed to the **Act-Queue**.
+- Once all Dials have moved, the Connectors evaluate the graph. If a Connector detects that the Dials of _both_ its attached Monads are pointing at it, mutual alignment is achieved.
     
-- If there is no alignment (a Miss), the Monad pushes its next `[Advance]` instruction to the standby Advance-Queue (Queue B).
+- The activated Connector generates an `[Act]` event for itself and pushes it to the **Act-Queue**.
     
-
-**Phase 2: The Resolve (Mutate)** Once Phase 1 finishes, the Engine shifts entirely to the **Act-Queue**.
-
-- It pops and executes every pending Atomic Rewrite (Split, Weave, or Snap) based on the local geometry of the interacting Monads.
-    
-- Upon completing an action, the surviving Monads push their next `[Advance]` instructions to the standby Advance-Queue (Queue B) so they may participate in the next temporal cycle.
-    
-- _(Note: The deterministic resolution of simultaneous, conflicting Act-Events is currently under development)._
+- The participating Monads are pushed to the standby Advance-Queue (Queue B) for the next cycle.
     
 
-**Phase 3: The Tock (Swap)** Once the Act-Queue is entirely empty, the current spatial frame is resolved. The Engine swaps the active and standby queues (Queue B becomes the new Queue A), and the cycle loops back to Phase 1.
+**Phase 2: The Resolve (Mutate Space)**
 
-## 4. The Event Loop & The Handshake
+Once Phase 1 finishes, the Engine shifts entirely to the **Act-Queue**.
 
-When `[Advance A]` is popped from the active Advance-Queue, Monad A executes the following sequence:
-
-### Step 1: The Advance
-
-Monad A moves its Dial one step clockwise to the next Connector in its Ring.
-
-### Step 2: The Alignment Check
-
-Monad A checks the peer on the other side of the active Connector (Monad B).
-
-- **The Miss:** If Monad B's Dial is _not_ pointing at this shared Connector, no interaction occurs. Monad A simply pushes its next `[Advance A]` instruction to the **standby Advance-Queue**.
+- The Engine processes every activated Connector.
     
-- **The Handshake:** If Monad B's Dial _is_ pointing at this shared Connector, mutual alignment is achieved. Instead of executing the physics immediately, Monad A (as the Initiator) generates an `[Act]` event and pushes it to the **Act-Queue**.
+- The Connector executes the Universal Imperative (The Weave).
     
 
-## 5. Atomic Rewrites (The Physics)
+**Phase 3: The Tock (Swap)**
 
-During **Phase 2 (The Resolve)**, when an `[Act(Monad A)]` event is popped from the Act-Queue, Monad A evaluates its current local state against a strict priority hierarchy to execute exactly one action.
+Once the Act-Queue is entirely empty, the current spatial frame is resolved. The Engine swaps the active and standby queues (Queue B becomes the new Queue A), and the cycle loops back to Phase 1.
 
-### Priority 1: Split (Generation / Pressure Release)
+## 4. The Universal Imperative (The Weave)
 
-- **Selector:** The Monad is under critical geometric tension.
+The Connectors possess only one fundamental urge: to **Weave**. There are no complex, hierarchical action rules. The network is a blind machine constantly attempting to cross-link itself into a denser topology.
+
+- **The Intent:** When activated, a Connector evaluates the local geometry of its two attached Monads. It attempts to forge new topological links between their neighboring connections (specifically targeting the next sequential Connectors in their respective Rings).
     
-- **Condition:** Monad A's Ring length is $\ge 6$.
-    
-- **Consequence:** 1. A new Connector is forged.
-    
-    2. Monad A cleaves itself in half into two separate Monads (A1 and A2), sharing the new Connector between them. The split is made between the active connector and the next, and that is where the new connector is positioned.
-    
-    3. A2 sets its Dial to point at the newly shared Connector.
-    
-    4. **Continuation:** `[Advance A1]` and `[Advance A2]` are pushed to the **standby Advance-Queue**.
+- _(Note: The exact routing math of the Weave is an open problem, but its functional goal is the continuous inward folding of local geometry)._
     
 
-### Priority 2: Weave (Gravity / Topological Folding)
+## 5. Emergent Phenomena (Split and Snap)
 
-- **Selector:** The Monad has available capacity and seeks novel geometry.
-    
-- **Condition:** Monad A's Ring length is $< 6$. Monad A looks at its _next_ sequential Connector, which leads to Target Monad C. Monad B (the peer) must _not_ already have a Connector to Monad C.
-    
-- **Consequence:**
-    
-    1. A new Connector $c_{BC}$ is created between Monad B and Target Monad C.
-        
-    2. Monad B inserts $c_{BC}$ into its Ring exactly after its connection to Monad A.
-        
-    3. Target Monad C inserts $c_{BC}$ into its Ring exactly after its connection to Monad A.
-        
-    4. **Continuation:** `[Advance A]` is pushed to the **standby Advance-Queue**. _(Note: Monad B is left undisturbed, but its Dial is naturally set to land on the newly forged $c_{BC}$ on its next `Advance` turn, directing the causal flow)_.
-        
+Because the only action in the universe is the Weave, standard particle behaviors (generation and decay) are not hardcoded rules. They are emergent geometric consequences of the Weave interacting with the strict one-connector limit.
 
-### Priority 3: Snap (Entropy / Decay)
+### Emergent Split (Generation / Fission)
 
-- **Selector:** Local space is deadlocked, or a connection is a dead end.
-    
-- **Condition:** Monad A cannot Split (length $< 6$), AND the Weave fails for one of two reasons:
-    
-    1. **Redundancy:** Monad A presents Target C, but Monad B already has a Connector to Monad C.
-        
-    2. **Isolation:** Monad A (or Monad B) has a Ring length of exactly 1, meaning there is no "next" Target to present.
-        
-- **Consequence:**
-    
-    1. The active Connector between Monad A and Monad B is destroyed and removed from both Rings.
-        
-    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe. Any pending event belonging to the deleted monad in the Act-Queue is either removed immediately or ignored when scheduled for execution.
-        
-    3. **Continuation:** `[Advance]` is pushed to the **standby Advance-Queue** for any Monad that survived the Snap.
+This replaces the previous arbitrary requirement where a Monad splits if its Ring length is $\ge 6$.
 
-## 6. Initialization (The Big Bang)
+- **The Cause:** If a Connector attempts a Weave that organically loops back on itself, it attempts to forge a _second_ Connector between two Monads that are already directly linked.
+    
+- **The Consequence:** This creates an illegal "Topological Short Circuit." The geometry cannot resolve the Weave without breaking the fundamental law of the universe. To accommodate the new link, the immense structural paradox forces the Monads to fracture. Space expands locally, cleaving the dense Monad into smaller nodes to legally route the Weave.
+    
+
+### Emergent Snap (Entropy / Decay)
+
+- **The Cause:** A Weave attempts to pull a connection from a Monad that is completely isolated (Ring length of 1), or two superposed Weaves create an unresolvable localized topological knot.
+    
+- **The Consequence:** The connection is deadlocked or dead-ended. The active Connector destroys itself, removing itself from both Rings. If a Monad's Ring length drops to 0, it instantly evaporates from the universe.
+    
+
+## 6. Emergent Quantum Mechanics (Superposition and Collapse)
+
+In a perfectly synchronous Tick-Tock engine, conflicting actions are inevitable. If two distinct Connectors attempt to Weave into the exact same Target Monad during the exact same Resolve Phase, a geometric paradox occurs.
+
+Instead of a central clock deciding which Weave executes first (which would introduce an absolute reference frame), the universe accommodates both.
+
+- **Localized Superposition:** The local geometry branches into multiple concurrent states, representing all valid Weave applications. A "Wave" of topological mutation propagates through the graph.
+    
+- **Constructive Interference (Merge):** If the divergent branches naturally lead to the exact same macroscopic geometric shape after a few ticks, the branches mathematically merge. The wave amplifies, creating stable, dense topological structures (matter).
+    
+- **Destructive Interference (Collapse):** If the branches contradict each other, they create topological knots. These deadlocks naturally trigger an **Emergent Snap**, deleting the impossible geometry. The superposition physically collapses, pruning the Multiway Graph back into a single, definitive timeline. The Born rule naturally emerges as a measure of topological stability.
+    
+
+## 7. Initialization (The Big Bang)
 
 To prevent the universe from instantly deadlocking and Snapping into nothingness, the simulation cannot begin with a binary pair.
 
@@ -131,7 +117,7 @@ The universe is initialized with a **Primordial Seed**: a simple, open loop of *
 
 - **The Geometry:** Each Monad starts with exactly 2 Connectors (Left and Right).
     
-- **Queue Initialization:** * **Advance-Queue 1 (Active):** Seeded with exactly one `[Advance]` instruction for each of the 7 primordial Monads.
+- **Queue Initialization:** - **Advance-Queue 1 (Active):** Seeded with exactly one `[Advance]` instruction for each of the 7 primordial Monads.
     
     - **Act-Queue:** Initialized completely empty.
         
@@ -139,4 +125,4 @@ The universe is initialized with a **Primordial Seed**: a simple, open loop of *
         
 - **The Spark:** The Engine boots up and immediately enters **Phase 1 (The Tick)**, pulling from Advance-Queue 1. This ensures the initial Monads advance their Dials to search for the first alignments, organically populating the Act-Queue and Advance-Queue 2 for the subsequent phases.
     
-- **Cosmic Inflation:** This specific geometry guarantees enough internal volume for the network to rapidly Weave, hit the Split threshold ($\ge 6$), and trigger self-sustaining cosmic inflation.
+- **Cosmic Inflation:** This specific geometry guarantees enough internal volume for the network to rapidly Weave, hit topological short circuits (Splits), and trigger self-sustaining cosmic inflation.
