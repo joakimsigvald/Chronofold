@@ -21,18 +21,40 @@ The Connector is an undirected edge linking exactly two Monads. It acts as the m
 
 A strict constraint exists: between any two unique Monads, there can exist a maximum of one Connector. Additionally, a Monad cannot connect to itself (no self-loops).
 
-## 3. The Engine of Time
+## 3. The Engine of Time (The Tick-Tock Architecture)
 
-Time does not exist globally; it is the sequence of events. To process these events without introducing a "topological wind" or a centralized manager, the universe relies on a **Global FIFO Queue**.
+Time does not exist as a global continuum; it is the discrete sequence of local events. To process these events without introducing a "topological wind" or a centralized manager, the universe relies on a synchronized, three-phase event engine utilizing two alternating spatial queues and one action queue.
 
-- The queue exclusively contains one type of instruction: `[Advance Monad_ID]`.
+- **Advance-Queue A & Advance-Queue B:** These handle the flow of time (the search for alignment).
     
-- The engine pops the first instruction, executes the local physics logic for that specific Monad, and appends the resulting continuations to the back of the queue.
+- **The Act-Queue:** This handles the mutation of space (the topological rewrites).
     
+
+The Engine strictly cycles through three deterministic phases:
+
+**Phase 1: The Tick (Search)** The Engine exclusively pops instructions from the active Advance-Queue (e.g., Queue A) until it is completely empty.
+
+- For each instruction, the target Monad moves its Dial one step clockwise.
+    
+- If mutual alignment is achieved across a Connector, an `[Act]` event is generated and pushed to the **Act-Queue**.
+    
+- If there is no alignment (a Miss), the Monad pushes its next `[Advance]` instruction to the standby Advance-Queue (Queue B).
+    
+
+**Phase 2: The Resolve (Mutate)** Once Phase 1 finishes, the Engine shifts entirely to the **Act-Queue**.
+
+- It pops and executes every pending Atomic Rewrite (Split, Weave, or Snap) based on the local geometry of the interacting Monads.
+    
+- Upon completing an action, the surviving Monads push their next `[Advance]` instructions to the standby Advance-Queue (Queue B) so they may participate in the next temporal cycle.
+    
+- _(Note: The deterministic resolution of simultaneous, conflicting Act-Events is currently under development)._
+    
+
+**Phase 3: The Tock (Swap)** Once the Act-Queue is entirely empty, the current spatial frame is resolved. The Engine swaps the active and standby queues (Queue B becomes the new Queue A), and the cycle loops back to Phase 1.
 
 ## 4. The Event Loop & The Handshake
 
-When `[Advance A]` is popped from the queue, Monad A executes the following atomic sequence:
+When `[Advance A]` is popped from the active Advance-Queue, Monad A executes the following sequence:
 
 ### Step 1: The Advance
 
@@ -42,14 +64,14 @@ Monad A moves its Dial one step clockwise to the next Connector in its Ring.
 
 Monad A checks the peer on the other side of the active Connector (Monad B).
 
-- **The Miss:** If Monad B's Dial is _not_ pointing at this shared Connector, no interaction occurs. Monad A simply pushes `[Advance A]` to the back of the queue.
+- **The Miss:** If Monad B's Dial is _not_ pointing at this shared Connector, no interaction occurs. Monad A simply pushes its next `[Advance A]` instruction to the **standby Advance-Queue**.
     
-- **The Handshake:** If Monad B's Dial _is_ pointing at this shared Connector, mutual alignment is achieved. Monad A (as the Initiator) triggers an Atomic Rewrite based on the local geometry.
+- **The Handshake:** If Monad B's Dial _is_ pointing at this shared Connector, mutual alignment is achieved. Instead of executing the physics immediately, Monad A (as the Initiator) generates an `[Act]` event and pushes it to the **Act-Queue**.
     
 
 ## 5. Atomic Rewrites (The Physics)
 
-Upon a successful Handshake, Monad A evaluates its state against a strict priority hierarchy to execute exactly one action.
+During **Phase 2 (The Resolve)**, when an `[Act(Monad A)]` event is popped from the Act-Queue, Monad A evaluates its current local state against a strict priority hierarchy to execute exactly one action.
 
 ### Priority 1: Split (Generation / Pressure Release)
 
@@ -63,7 +85,7 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
     
     3. A2 sets its Dial to point at the newly shared Connector.
     
-    4. **Continuation:** `[Advance A1]` and `[Advance A2]` are pushed to the queue.
+    4. **Continuation:** `[Advance A1]` and `[Advance A2]` are pushed to the **standby Advance-Queue**.
     
 
 ### Priority 2: Weave (Gravity / Topological Folding)
@@ -80,7 +102,7 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
         
     3. Target Monad C inserts $c_{BC}$ into its Ring exactly after its connection to Monad A.
         
-    4. **Continuation:** `[Advance A]` is pushed to the queue. _(Note: Monad B is left undisturbed, but its Dial is naturally set to land on the newly forged $c_{BC}$ on its next `Advance` turn, directing the causal flow)._
+    4. **Continuation:** `[Advance A]` is pushed to the **standby Advance-Queue**. _(Note: Monad B is left undisturbed, but its Dial is naturally set to land on the newly forged $c_{BC}$ on its next `Advance` turn, directing the causal flow)_.
         
 
 ### Priority 3: Snap (Entropy / Decay)
@@ -97,9 +119,9 @@ Upon a successful Handshake, Monad A evaluates its state against a strict priori
     
     1. The active Connector between Monad A and Monad B is destroyed and removed from both Rings.
         
-    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe. Any event belonging to the deleted monad is either removed immediately or when it is scheduled for execution.
+    2. **Garbage Collection:** If Monad A or Monad B's Ring length drops to $0$ (which happens if it triggered the Isolation condition), that Monad instantly evaporates from the universe. Any pending event belonging to the deleted monad in the Act-Queue is either removed immediately or ignored when scheduled for execution.
         
-    3. **Continuation:** `[Advance]` is pushed to the queue for any Monad that survived the Snap.
+    3. **Continuation:** `[Advance]` is pushed to the **standby Advance-Queue** for any Monad that survived the Snap.
 
 ## 6. Initialization (The Big Bang)
 
@@ -107,8 +129,14 @@ To prevent the universe from instantly deadlocking and Snapping into nothingness
 
 The universe is initialized with a **Primordial Seed**: a simple, open loop of **7 Monads** (a 7-Ring).
 
-- Each Monad starts with exactly 2 Connectors (Left and Right).
+- **The Geometry:** Each Monad starts with exactly 2 Connectors (Left and Right).
     
-- The FIFO queue is seeded with one `[Advance]` instruction for each of the 7 Monads.
+- **Queue Initialization:** * **Advance-Queue 1 (Active):** Seeded with exactly one `[Advance]` instruction for each of the 7 primordial Monads.
     
-- This specific geometry guarantees enough internal volume for the network to rapidly Weave, hit the Split threshold ($\ge 6$), and trigger self-sustaining cosmic inflation.
+    - **Act-Queue:** Initialized completely empty.
+        
+    - **Advance-Queue 2 (Standby):** Initialized completely empty.
+        
+- **The Spark:** The Engine boots up and immediately enters **Phase 1 (The Tick)**, pulling from Advance-Queue 1. This ensures the initial Monads advance their Dials to search for the first alignments, organically populating the Act-Queue and Advance-Queue 2 for the subsequent phases.
+    
+- **Cosmic Inflation:** This specific geometry guarantees enough internal volume for the network to rapidly Weave, hit the Split threshold ($\ge 6$), and trigger self-sustaining cosmic inflation.
